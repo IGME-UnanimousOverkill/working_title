@@ -30,6 +30,7 @@ namespace UnanimousOverkillGame
             get { return rectangle.Y; }
             set { rectangle.Y = value; }
         }
+        public Rectangle Rect { get { return rectangle; } }
         public Texture2D Texture
         {
             get { return texture; }
