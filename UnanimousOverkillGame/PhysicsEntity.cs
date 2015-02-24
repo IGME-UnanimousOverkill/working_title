@@ -1,0 +1,47 @@
+﻿#region Using Statements
+using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.GamerServices;
+#endregion
+
+namespace UnanimousOverkillGame
+{
+    /// <summary>
+    /// All classes handling physics use this class.
+    /// </summary>
+    abstract class PhysicsEntity : GameObject
+    {
+
+        /// <summary>
+        /// Instantiates a basic PhysicsEntity.  Nothing special here.
+        /// </summary>
+        public PhysicsEntity(int x, int y, int width, int height, Texture2D texture)
+            : base(x, y, width, height, texture)
+        {
+
+        }
+
+        /// <summary>
+        /// Entity rises a certain height into the air.
+        /// Relies on Fall method to fall.
+        /// </summary>
+        public void Jump(Vector2 force)
+        {
+
+            Fall();
+        }
+
+        /// <summary>
+        /// Causes the entity to be affected by gravity.
+        /// </summary>
+        public void Fall()
+        {
+
+        }
+    }
+}
