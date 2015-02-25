@@ -48,3 +48,30 @@ C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Sharp
 C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.RawInput.xml
 C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D9.xml
 C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.csprojResolveAssemblyReference.cache
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.exe
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.pdb
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.exe
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.pdb
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\MonoGame.Framework.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.MediaFoundation.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XAudio2.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D11.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.DXGI.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct2D1.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Lidgren.Network.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XInput.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.RawInput.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D9.dll
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.MediaFoundation.xml
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.xml
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XAudio2.xml
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D11.xml
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.DXGI.xml
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct2D1.xml
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XInput.xml
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.RawInput.xml
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D9.xml
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.csprojResolveAssemblyReference.cache
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom.txt
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\placeholder.png

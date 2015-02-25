@@ -16,7 +16,7 @@ namespace UnanimousOverkillGame
     abstract class GameObject
     {
         //Fields
-        Texture2D texture;
+        protected Texture2D texture;
         protected Rectangle rectangle;
 
         //Properties
@@ -50,7 +50,7 @@ namespace UnanimousOverkillGame
         /// Draws the texture, if there is one.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        protected void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (texture != null)
             { spriteBatch.Draw(texture, rectangle, Color.White); }

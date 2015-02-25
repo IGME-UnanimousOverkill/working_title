@@ -18,6 +18,7 @@ namespace UnanimousOverkillGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        RoomManager roomManager;
 
         public Game1()
             : base()
@@ -35,6 +36,8 @@ namespace UnanimousOverkillGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            roomManager = new RoomManager();
+            roomManager.LoadRoom(Content.RootDirectory + "/Rooms/TestRoom.txt");
 
             base.Initialize();
         }
@@ -49,6 +52,11 @@ namespace UnanimousOverkillGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            System.IO.Stream tileStream = TitleContainer.OpenStream("Content/placeholder.png");
+            roomManager.SetTileTexture(Texture2D.FromStream(GraphicsDevice, tileStream));
+            tileStream.Close();
+
+            roomManager.SpawnRoom();
         }
 
         /// <summary>
@@ -82,8 +90,12 @@ namespace UnanimousOverkillGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            roomManager.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
