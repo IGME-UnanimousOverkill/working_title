@@ -54,6 +54,7 @@ namespace UnanimousOverkillGame
                 levels.Add(readerLine);
                 readerLine = levelReader.ReadLine();
             }
+            levelReader.Close();
             level = new char[levels[0].Length, levels.Count];
             int x = 0;
             int y = 0;
