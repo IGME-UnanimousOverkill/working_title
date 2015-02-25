@@ -75,3 +75,5 @@ C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Win
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.csprojResolveAssemblyReference.cache
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom.txt
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\placeholder.png
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\placeholder.png
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom.txt
