@@ -22,7 +22,7 @@ namespace UnanimousOverkillGame
         private Texture2D boundsTexture;
 
         private const int TILE_WIDTH = 50;
-        private const int TILE_HEIGHT = 60;
+        private const int TILE_HEIGHT = 50;
 
         /// <summary>
         /// Default constructor for RoomManager
