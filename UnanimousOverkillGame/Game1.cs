@@ -19,6 +19,7 @@ namespace UnanimousOverkillGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RoomManager roomManager;
+        KeyboardState kbState;
 
         public Game1()
             : base()
@@ -60,8 +61,10 @@ namespace UnanimousOverkillGame
 
             // TODO: use this.Content to load your game content here
             System.IO.Stream tileStream = TitleContainer.OpenStream("Content/placeholder.png");
-            roomManager.SetTileTexture(Texture2D.FromStream(GraphicsDevice, tileStream));
+            System.IO.Stream boundStream = TitleContainer.OpenStream("Content/boundsTest.png");
+            roomManager.SetTileTexture(Texture2D.FromStream(GraphicsDevice, tileStream), Texture2D.FromStream(GraphicsDevice, boundStream));
             tileStream.Close();
+            boundStream.Close();
 
             roomManager.SpawnRoom();
         }
@@ -86,6 +89,7 @@ namespace UnanimousOverkillGame
                 Exit();
 
             // TODO: Add your update logic here
+            kbState = Keyboard.GetState();
 
             base.Update(gameTime);
         }
@@ -101,6 +105,12 @@ namespace UnanimousOverkillGame
             spriteBatch.Begin();
 
             roomManager.Draw(spriteBatch);
+
+            // Hold down space to should tile physics boundaries.
+            if (kbState.IsKeyDown(Keys.Space))
+            {
+                roomManager.BoundsDraw(spriteBatch);
+            }
 
             spriteBatch.End();
 

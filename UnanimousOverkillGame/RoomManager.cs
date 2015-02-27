@@ -19,6 +19,7 @@ namespace UnanimousOverkillGame
         private List<ForegroundTile> foreground;
         // This will be replaced with tile sets.
         private Texture2D placeholderTexture;
+        private Texture2D boundsTexture;
 
         private const int TILE_WIDTH = 50;
         private const int TILE_HEIGHT = 60;
@@ -34,9 +35,10 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Sets the tile texture. This will be editted to include texture packs.
         /// </summary>
-        public void SetTileTexture(Texture2D tileTexture)
+        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds)
         {
             placeholderTexture = tileTexture;
+            boundsTexture = bounds;
         }
 
         /// <summary>
@@ -76,14 +78,14 @@ namespace UnanimousOverkillGame
         public void SpawnRoom()
         {
             foreground.Clear();
-            for (int y = 0; y < level.GetLength(1); y++)
+            for (int y = level.GetLength(1) - 1; y >= 0; y--)
             {
                 for (int x = 0; x < level.GetLength(0); x++)
                 {
                     switch(level[x,y])
                     {
                         case ('*'):
-                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, placeholderTexture);
+                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * 1.33), (int)(TILE_HEIGHT * 1.33), placeholderTexture, boundsTexture);
                             foreground.Add(tile);
                             break;
                     }
@@ -99,6 +101,17 @@ namespace UnanimousOverkillGame
             foreach (ForegroundTile tile in foreground)
             {
                 tile.Draw(batch);
+            }
+        }
+
+        /// <summary>
+        /// Show the physics bounding boxes for all tiles, for debugging.
+        /// </summary>
+        public void BoundsDraw(SpriteBatch batch)
+        {
+            foreach (ForegroundTile tile in foreground)
+            {
+                tile.DrawBounds(batch);
             }
         }
     }
