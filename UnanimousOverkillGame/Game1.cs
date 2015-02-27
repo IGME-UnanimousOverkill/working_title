@@ -39,6 +39,13 @@ namespace UnanimousOverkillGame
             roomManager = new RoomManager();
             roomManager.LoadRoom(Content.RootDirectory + "/Rooms/TestRoom.txt");
 
+            var screen = System.Windows.Forms.Screen.PrimaryScreen;
+            Window.IsBorderless = true;
+            Window.Position = new Point(screen.Bounds.X, screen.Bounds.Y);
+            graphics.PreferredBackBufferWidth = screen.Bounds.Width;
+            graphics.PreferredBackBufferHeight = screen.Bounds.Height;
+            graphics.ApplyChanges();
+
             base.Initialize();
         }
 
