@@ -19,16 +19,19 @@ namespace UnanimousOverkillGame
         protected Texture2D texture;
         protected Rectangle rectangle;
 
+        protected int prevX;
+        protected int prevY;
+
         //Properties
         public int X
         { 
             get { return rectangle.X; }
-            set { rectangle.X = value; }
+            set { prevX = rectangle.X; rectangle.X = value; }
         }
         public int Y
         {
             get { return rectangle.Y; }
-            set { rectangle.Y = value; }
+            set { prevY = rectangle.Y; rectangle.Y = value; }
         }
         public Rectangle Rect { get { return rectangle; } }
         public Texture2D Texture
