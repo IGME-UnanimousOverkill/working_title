@@ -11,6 +11,15 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace UnanimousOverkillGame
 {
+    //player state enum to determine if the player is walking which direction for the animation will add more states later
+    //fyi the animation doesn't fully work, it always walks where it shouldn't and i haven't looked into it yet
+    enum PlayerState
+    {
+        FaceLeft,
+        WalkLeft,
+        FaceRight,
+        WalkRight
+    }
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -21,6 +30,9 @@ namespace UnanimousOverkillGame
         RoomManager roomManager;
         KeyboardState kbState;
 
+        //player
+        Player player;
+        
         public Game1()
             : base()
         {
@@ -66,6 +78,12 @@ namespace UnanimousOverkillGame
             tileStream.Close();
             boundStream.Close();
 
+            //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
+            System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
+            Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
+            player = new Player(10, 10, 25, 50, spriteSheet);
+            imageStream.Close();
+
             roomManager.SpawnRoom();
         }
 
@@ -88,11 +106,16 @@ namespace UnanimousOverkillGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            //calls the player update method to get the logic for movement
+            player.Update(gameTime);
+
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
 
             base.Update(gameTime);
         }
+
+
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -100,17 +123,22 @@ namespace UnanimousOverkillGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
             roomManager.Draw(spriteBatch);
 
+            kbState = Keyboard.GetState();
             // Hold down space to should tile physics boundaries.
             if (kbState.IsKeyDown(Keys.Space))
             {
                 roomManager.BoundsDraw(spriteBatch);
             }
+
+            //calls the player draw method to actually draw the player to the screen
+            player.Draw(spriteBatch);
+
 
             spriteBatch.End();
 
