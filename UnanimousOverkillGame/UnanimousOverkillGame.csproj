@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="BasicEnemy.cs" />
     <Compile Include="Bottle.cs" />
+    <Compile Include="CollisionManager.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="ForegroundTile.cs" />
     <Compile Include="Game1.cs" />
