@@ -186,7 +186,7 @@ namespace UnanimousOverkillGame
                         spriteBatch.Draw(spriteSheet,
                                         playerLoc,
                                         new Rectangle(
-                                            frame * MARIO_RECT_WIDTH,
+                                            0,
                                             MARIO_RECT_Y_OFFSET,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
@@ -203,7 +203,7 @@ namespace UnanimousOverkillGame
                         spriteBatch.Draw(spriteSheet,
                                         playerLoc,
                                         new Rectangle(
-                                            frame * MARIO_RECT_WIDTH,
+                                            0,
                                             MARIO_RECT_Y_OFFSET,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
