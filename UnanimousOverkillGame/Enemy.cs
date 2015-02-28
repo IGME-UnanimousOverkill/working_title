@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace UnanimousOverkillGame
 {
-    class Enemy : PhysicsEntity
+    abstract class Enemy : PhysicsEntity
     {
         public Enemy(int x, int y, int width, int height, Texture2D texture)
             : base(x, y, width, height, texture)
