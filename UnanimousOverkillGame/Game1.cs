@@ -81,7 +81,7 @@ namespace UnanimousOverkillGame
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
             System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
-            player = new Player(10, 10, 25, 50, spriteSheet);
+            player = new Player(50, 230, 25, 50, spriteSheet);
             imageStream.Close();
 
             roomManager.SpawnRoom();

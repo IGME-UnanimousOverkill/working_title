@@ -54,7 +54,7 @@ namespace UnanimousOverkillGame
             holding = false;
             fps = 10.0;
             timePerFrame = 1.0 / fps;
-            playerLoc = new Vector2(400, 400); //initializes player position in form to 400,400 *** will change later
+            playerLoc = new Vector2(x, y); //initializes player position in form to 400,400 *** will change later
             spriteSheet = texture; //takes the sprite sheet in here so you can "animate" in the draw method
         }
 
@@ -186,7 +186,7 @@ namespace UnanimousOverkillGame
                         spriteBatch.Draw(spriteSheet,
                                         playerLoc,
                                         new Rectangle(
-                                            frame * MARIO_RECT_WIDTH,
+                                            0,
                                             MARIO_RECT_Y_OFFSET,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
@@ -203,7 +203,7 @@ namespace UnanimousOverkillGame
                         spriteBatch.Draw(spriteSheet,
                                         playerLoc,
                                         new Rectangle(
-                                            frame * MARIO_RECT_WIDTH,
+                                            0,
                                             MARIO_RECT_Y_OFFSET,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
