@@ -23,14 +23,18 @@ namespace UnanimousOverkillGame
                 {
                     if (objects.ElementAt(obj) != collisioCheckObjects.ElementAt(col) && collisioCheckObjects.ElementAt(col).Rect.Intersects(objects.ElementAt(obj).Rect))
                     {
-                        //previous position and current position required? or do we not think clipping will happen
-                        //i do fix position here
-                        //i feel there needs to be a way for the movables to know they've collided, like an on collision method 
-
+                        
                     }
                 }
             }
         }
+
+        private double findIntercept(int x1, int y1, int x2, int y2)
+        {
+            return y1-(((y2-y1)/(x2-x1))*x1);
+        }
+
+
 
         public CollisionManager(GameObject[] allGameObjects, params PhysicsEntity[] objectsToBeChecked)
         {
