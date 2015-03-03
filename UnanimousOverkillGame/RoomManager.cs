@@ -16,7 +16,7 @@ namespace UnanimousOverkillGame
     {
         // 2D array for level
         private char[,] level;
-        private List<ForegroundTile> foreground;
+        public List<ForegroundTile> foreground;
         // This will be replaced with tile sets.
         private Texture2D placeholderTexture;
         private Texture2D boundsTexture;

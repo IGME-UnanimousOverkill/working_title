@@ -28,6 +28,7 @@ namespace UnanimousOverkillGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RoomManager roomManager;
+        CollisionManager collisionManager;
         KeyboardState kbState;
 
         //player
@@ -51,6 +52,8 @@ namespace UnanimousOverkillGame
             // TODO: Add your initialization logic here
             roomManager = new RoomManager();
             roomManager.LoadRoom(Content.RootDirectory + "/Rooms/TestRoom.txt");
+
+            
 
             var screen = System.Windows.Forms.Screen.PrimaryScreen;
             Window.IsBorderless = true;
@@ -85,6 +88,9 @@ namespace UnanimousOverkillGame
             imageStream.Close();
 
             roomManager.SpawnRoom();
+
+            collisionManager = new CollisionManager(roomManager.foreground.ToArray(), player);
+
         }
 
         /// <summary>
@@ -111,6 +117,8 @@ namespace UnanimousOverkillGame
 
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
+
+
 
             base.Update(gameTime);
         }
