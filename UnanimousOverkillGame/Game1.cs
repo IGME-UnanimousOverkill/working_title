@@ -52,9 +52,7 @@ namespace UnanimousOverkillGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            roomManager = new RoomManager();
-
-            
+            roomManager = new RoomManager(RoomManager.ROOM_DIR + "TestRoom.txt");
 
             var screen = System.Windows.Forms.Screen.PrimaryScreen;
             Window.IsBorderless = true;
@@ -84,9 +82,7 @@ namespace UnanimousOverkillGame
             player = new Player(50, 230, 25, 50, spriteSheet);
             imageStream.Close();
 
-            roomManager.SpawnRoom();
-
-            collisionManager = new CollisionManager(roomManager.foreground.ToArray(), player);
+            collisionManager = new CollisionManager(roomManager.getColliders().ToArray(), player);
 
         }
 
@@ -111,6 +107,7 @@ namespace UnanimousOverkillGame
 
             //calls the player update method to get the logic for movement
             player.Update(gameTime);
+            roomManager.Update(gameTime);
 
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();

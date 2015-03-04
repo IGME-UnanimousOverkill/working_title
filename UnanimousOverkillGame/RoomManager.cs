@@ -16,10 +16,23 @@ namespace UnanimousOverkillGame
         // This will be replaced with tile sets.
         private Texture2D placeholderTexture;
         private Texture2D boundsTexture;
+        public const string ROOM_DIR = "Content/Rooms/";
 
-        public void LoadRoom(string path)
+        public RoomManager(string firstRoom)
+        {
+            head = new Room();
+            head.LoadRoom(firstRoom);
+            current = head;
+        }
+
+        public void Update(GameTime time)
         {
 
+        }
+
+        public List<PhysicsEntity> getColliders()
+        {
+            return current.GetColliders();
         }
 
         public void LoadContent(GraphicsDevice graphics)
@@ -30,6 +43,10 @@ namespace UnanimousOverkillGame
             boundsTexture = Texture2D.FromStream(graphics, boundStream);
             tileStream.Close();
             boundStream.Close();
+
+            current.SetTileTexture(placeholderTexture, boundsTexture);
+
+            current.SpawnRoom();
         }
 
         public void Draw(SpriteBatch batch)

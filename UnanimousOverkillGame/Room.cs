@@ -29,6 +29,7 @@ namespace UnanimousOverkillGame
         // 2D array for level
         private char[,] level;
         private List<ForegroundTile> foreground;
+        private List<PhysicsEntity> colliders;
         private Room previousRoom;
         private List<Room> nextRooms;
         // This will be replaced with tile sets.
@@ -44,12 +45,14 @@ namespace UnanimousOverkillGame
         public Room()
         {
             foreground = new List<ForegroundTile>();
+            colliders = new List<PhysicsEntity>();
         }
 
         public Room(Room previous)
         {
             previousRoom = previous;
             foreground = new List<ForegroundTile>();
+            colliders = new List<PhysicsEntity>();
         }
 
         /// <summary>
@@ -59,6 +62,11 @@ namespace UnanimousOverkillGame
         {
             placeholderTexture = tileTexture;
             boundsTexture = bounds;
+        }
+
+        public List<PhysicsEntity> GetColliders()
+        {
+            return colliders;
         }
 
         /// <summary>
@@ -107,6 +115,7 @@ namespace UnanimousOverkillGame
                         case ('*'):
                             ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * 1.33), (int)(TILE_HEIGHT * 1.33), placeholderTexture, boundsTexture);
                             foreground.Add(tile);
+                            colliders.Add(tile);
                             break;
                     }
                 }

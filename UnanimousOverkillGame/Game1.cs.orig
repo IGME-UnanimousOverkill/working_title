@@ -83,14 +83,11 @@ namespace UnanimousOverkillGame
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
             player = new Player(50, 230, 25, 50, spriteSheet);
             imageStream.Close();
-<<<<<<< HEAD
-=======
 
             roomManager.SpawnRoom();
 
             collisionManager = new CollisionManager(roomManager.foreground.ToArray(), player);
 
->>>>>>> 97c5b641e4eff47a7b6dc74ac552464987b60756
         }
 
         /// <summary>
