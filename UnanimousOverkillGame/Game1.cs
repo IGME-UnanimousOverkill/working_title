@@ -18,7 +18,9 @@ namespace UnanimousOverkillGame
         FaceLeft,
         WalkLeft,
         FaceRight,
-        WalkRight
+        WalkRight,
+        Jumping,
+        Falling
     }
     /// <summary>
     /// This is the main type for your game

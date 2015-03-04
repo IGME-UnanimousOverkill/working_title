@@ -18,5 +18,10 @@ namespace UnanimousOverkillGame
         {
 
         }
+
+        public virtual void Update()
+        {
+            
+        }
     }
 }
