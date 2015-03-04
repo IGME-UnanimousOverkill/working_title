@@ -23,6 +23,9 @@ namespace UnanimousOverkillGame
         protected int prevY;
 
         //Properties
+
+        public int PrevX { get { return prevX; } }
+        public int PrevY { get { return prevY; } }
         public int X
         { 
             get { return rectangle.X; }

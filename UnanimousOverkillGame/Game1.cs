@@ -18,7 +18,9 @@ namespace UnanimousOverkillGame
         FaceLeft,
         WalkLeft,
         FaceRight,
-        WalkRight
+        WalkRight,
+        Jumping,
+        Falling
     }
     /// <summary>
     /// This is the main type for your game
@@ -28,6 +30,7 @@ namespace UnanimousOverkillGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RoomManager roomManager;
+        CollisionManager collisionManager;
         KeyboardState kbState;
 
         //player
@@ -50,6 +53,8 @@ namespace UnanimousOverkillGame
         {
             // TODO: Add your initialization logic here
             roomManager = new RoomManager();
+
+            
 
             var screen = System.Windows.Forms.Screen.PrimaryScreen;
             Window.IsBorderless = true;
@@ -78,6 +83,11 @@ namespace UnanimousOverkillGame
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
             player = new Player(50, 230, 25, 50, spriteSheet);
             imageStream.Close();
+
+            roomManager.SpawnRoom();
+
+            collisionManager = new CollisionManager(roomManager.foreground.ToArray(), player);
+
         }
 
         /// <summary>
@@ -104,6 +114,8 @@ namespace UnanimousOverkillGame
 
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
+
+
 
             base.Update(gameTime);
         }
