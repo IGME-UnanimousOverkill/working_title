@@ -35,6 +35,7 @@ namespace UnanimousOverkillGame
         // This will be replaced with tile sets.
         private Texture2D placeholderTexture;
         private Texture2D boundsTexture;
+        private RoomManager manager;
 
         private const int TILE_WIDTH = 50;
         private const int TILE_HEIGHT = 50;
@@ -42,17 +43,21 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Default constructor for RoomManager
         /// </summary>
-        public Room()
+        public Room(RoomManager roomManager)
         {
+            manager = roomManager;
             foreground = new List<ForegroundTile>();
             colliders = new List<PhysicsEntity>();
+            nextRooms = new List<Room>();
         }
 
-        public Room(Room previous)
+        public Room(RoomManager roomManager, Room previous)
         {
+            manager = roomManager;
             previousRoom = previous;
             foreground = new List<ForegroundTile>();
             colliders = new List<PhysicsEntity>();
+            nextRooms = new List<Room>();
         }
 
         /// <summary>
@@ -64,6 +69,9 @@ namespace UnanimousOverkillGame
             boundsTexture = bounds;
         }
 
+        /// <summary>
+        /// Gets a list of collidable objects in the room.
+        /// </summary>
         public List<PhysicsEntity> GetColliders()
         {
             return colliders;
@@ -117,9 +125,28 @@ namespace UnanimousOverkillGame
                             foreground.Add(tile);
                             colliders.Add(tile);
                             break;
+                            // Cases for entrances and exits.
+                        case ('>'):
+                            Room room = manager.RandomRoom(this);
+                            Door nextDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, room, manager);
+                            nextRooms.Add(room);
+                            colliders.Add(nextDoor);
+                            break;
+                        case ('<'):
+                            Door previousDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, previousRoom, manager);
+                            colliders.Add(previousDoor);
+                            break;
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the room.
+        /// </summary>
+        public void Update(GameTime time)
+        {
+
         }
 
         /// <summary>

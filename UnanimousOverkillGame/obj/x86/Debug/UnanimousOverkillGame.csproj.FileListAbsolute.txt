@@ -26,3 +26,5 @@ C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Win
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D9.xml
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.exe
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.pdb
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom3.txt
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom2.txt

@@ -52,7 +52,7 @@ namespace UnanimousOverkillGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            roomManager = new RoomManager(RoomManager.ROOM_DIR + "TestRoom.txt");
+            roomManager = new RoomManager();
 
             var screen = System.Windows.Forms.Screen.PrimaryScreen;
             Window.IsBorderless = true;

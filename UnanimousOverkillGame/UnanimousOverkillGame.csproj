@@ -38,6 +38,7 @@
     <Compile Include="BasicEnemy.cs" />
     <Compile Include="Bottle.cs" />
     <Compile Include="CollisionManager.cs" />
+    <Compile Include="Door.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="ForegroundTile.cs" />
     <Compile Include="Game1.cs" />
@@ -73,6 +74,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Rooms\TestRoom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Rooms\TestRoom3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Rooms\TestRoom2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
