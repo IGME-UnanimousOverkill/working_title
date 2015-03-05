@@ -11,9 +11,8 @@ namespace UnanimousOverkillGame
     class CollisionManager
     {
 
-        private readonly double verticalSlope = -100000;
-        private List<GameObject> objects;
-        private List<PhysicsEntity> collisioCheckObjects;
+        private List<GameObject> objects;//list of all objects in to check collisions against
+        private List<PhysicsEntity> collisioCheckObjects;//objects who collisions we care about
         
 
 
@@ -22,62 +21,69 @@ namespace UnanimousOverkillGame
 
         public void CheckCollisions()
         {
-            PhysicsEntity tempPhys;
-            GameObject tempGame;
-            int interceptPoint = 0;
-            double slope = 0;
-            int i = 0, j = 0;
-            int objHeightMod = 0, objWidthMod = 0;
 
-            bool breaker = false;
-            for (int col = 0; col < collisioCheckObjects.Count; col++)
+            PhysicsEntity tempPhys;//current physics object being used
+            GameObject tempGame;//current game object being used
+            int interceptPoint = 0;//place where objects intercept, is either an x or a y depending on the situation
+            double slope = 0;//physics objects movement
+            int i = 0, j = 0;//physics objects height modifier and width modifier respectivelu
+            int objHeightMod = 0, objWidthMod = 0;//same as above, but game object
+
+            bool breaker = false;//helps to break from nested loop later on
+            for (int col = 0; col < collisioCheckObjects.Count; col++)//iterates through important objects
             {
+
                 tempPhys = collisioCheckObjects.ElementAt(col);
-                for (int obj = 0; obj < objects.Count; obj++)
+
+                if (tempPhys.PrevY == tempPhys.Y && tempPhys.PrevX == tempPhys.X)//this object hasn't moved, so we don't care
                 {
-                    
+                    continue;
+                }
 
-                    slope = FindSlope(tempPhys.PrevX, tempPhys.X, tempPhys.PrevY, tempPhys.Y);
-
+                for (int obj = 0; obj < objects.Count; obj++)//iterates through list of all objects
+                {
+                    //if (obj == 22)
+                     //   continue;
                     tempGame = objects.ElementAt(obj);
-                    //if  the object was already edited in one direction, change shit here?
-                    //I can see clipping being a huge problem the way i'm doing it
 
-                    objWidthMod = (tempPhys.X - tempPhys.PrevX >= 0) ? 0 : 1;
-                    objHeightMod = (tempPhys.Y - tempPhys.PrevY >= 0) ? 0 : 1;
+                    objWidthMod = (tempPhys.X > tempPhys.PrevX) ? 0 : 1;//if the physics object is moving forward, mod = 0 because only right side of other entity needs check
+                    objHeightMod = (tempPhys.Y > tempPhys.PrevY) ? 0 : 1;//if physics object is moving  down, mod = 0 because only top side of other entity needs check
+                    i = 1 - objHeightMod;//height mod of physics entity
+                    j = 1 - objWidthMod;//width mod of physics object
 
-                    i = -(0 - objHeightMod);
-                    j = -(0 - objWidthMod);
-
-                    if (slope == 0)
-                    {
-                        if ((interceptPoint = FindX(tempGame.Y + tempGame.Rect.Height * objHeightMod, slope, FindB(tempPhys.Y + tempPhys.Rect.Height * i, tempPhys.X + tempPhys.Rect.Width * j, slope))) >= tempGame.X && interceptPoint <= tempGame.Y + tempGame.Rect.Height)
+                    if(tempPhys.X - tempPhys.PrevX==0) {//if this is a vertical line
+                        if (tempPhys.X >= tempGame.X && tempPhys.X <= tempGame.X + tempGame.Rect.Width && (interceptPoint = tempGame.Y + (tempGame.Rect.Height * objHeightMod)) <= Math.Max(tempPhys.X + (tempPhys.Rect.Height * i), tempPhys.PrevY + (tempPhys.Rect.Height * i)) && interceptPoint >= Math.Min(tempPhys.X + (tempPhys.Rect.Height * i), tempPhys.PrevY + (tempPhys.Rect.Height * i)))
                         {
-                            tempPhys.X = interceptPoint + (tempGame.Rect.Height * objHeightMod) - (tempPhys.Rect.Width * j);
+                            tempPhys.Y = interceptPoint - (tempPhys.Rect.Height * i) + ((i == 1) ? -1 : 1);
                             //let it know it hit a wall, 
-                            breaker = true;
+
                         }
-                        else if ((interceptPoint = FindX(tempGame.Y + tempGame.Rect.Height * objHeightMod, slope, FindB(tempPhys.Y + tempPhys.Rect.Height * i, tempPhys.X + tempPhys.Rect.Width * j, slope))) >= tempGame.X && interceptPoint <= tempGame.Y + tempGame.Rect.Height)
+                        else if (tempPhys.X + tempPhys.Rect.Width >= tempGame.X && tempPhys.X + tempPhys.Rect.Width <= tempGame.X + tempGame.Rect.Width && (interceptPoint = tempGame.Y + (tempGame.Rect.Height * objHeightMod)) <= Math.Max(tempPhys.X + (tempPhys.Rect.Height * i), tempPhys.PrevY + (tempPhys.Rect.Height * i)) && interceptPoint >= Math.Min(tempPhys.X + (tempPhys.Rect.Height * i), tempPhys.PrevY + (tempPhys.Rect.Height * i)))
                         {
-                            tempPhys.X = interceptPoint + (tempGame.Rect.Height * objHeightMod) - (tempPhys.Rect.Width * j);
+                            tempPhys.Y = interceptPoint - (tempPhys.Rect.Height * i) + ((i == 1) ? -1 : 1);
                             //let it know it hit a floor or ceiling
-                            breaker = true;
+
                         }
                         continue;
                     }
-                    if (slope == verticalSlope)
+
+                    slope = FindSlope(tempPhys.PrevX, tempPhys.X, tempPhys.PrevY, tempPhys.Y);
+
+                    if (slope == 0)
                     {
-                        if ((interceptPoint = FindY(tempGame.X + tempGame.Rect.Width * objWidthMod, slope, FindB(tempPhys.Y + tempPhys.Rect.Height * i, tempPhys.X + tempPhys.Rect.Width * j, slope))) >= tempGame.Y && interceptPoint <= tempGame.Y + tempGame.Rect.Height)
+                        if (tempPhys.Y >= tempGame.Y && tempPhys.Y <= tempGame.Y+tempGame.Rect.Height && (interceptPoint = tempGame.X + (tempGame.Rect.Width * objWidthMod)) <= Math.Max(tempPhys.X + (tempPhys.Rect.Width * j), tempPhys.PrevX + (tempPhys.Rect.Width * j)) && interceptPoint >= Math.Min(tempPhys.X + (tempPhys.Rect.Width * j), tempPhys.PrevX + (tempPhys.Rect.Width * j)))
                         {
-                            tempPhys.Y = interceptPoint - (tempPhys.Rect.Height * i);
+                            tempPhys.X = interceptPoint - (tempPhys.Rect.Width * j) + ((j==1) ? -1:1);
+                            tempPhys.positionChangedManually();
                             //let it know it hit a wall, 
-                            breaker = true;
+                            
                         }
-                        else if ((interceptPoint = FindY(tempGame.X + tempGame.Rect.Width * objWidthMod, slope, FindB(tempPhys.Y + tempPhys.Rect.Height * i, tempPhys.X + tempPhys.Rect.Width * j, slope))) >= tempGame.Y && interceptPoint <= tempGame.Y + tempGame.Rect.Height)
+                        else if (tempPhys.Y + tempPhys.Rect.Height >= tempGame.Y && tempPhys.Y + tempPhys.Rect.Height <= tempGame.Y+tempGame.Rect.Height && (interceptPoint = tempGame.X + (tempGame.Rect.Width * objWidthMod)) <= Math.Max(tempPhys.X + (tempPhys.Rect.Width * j), tempPhys.PrevX + (tempPhys.Rect.Width * j)) && interceptPoint >= Math.Min(tempPhys.X + (tempPhys.Rect.Width * j), tempPhys.PrevX + (tempPhys.Rect.Width * j)))
                         {
-                            tempPhys.Y = interceptPoint - (tempPhys.Rect.Height * i);
+                            tempPhys.X = interceptPoint - (tempPhys.Rect.Width * j) + ((j == 1) ? -1 : 1);
+                            tempPhys.positionChangedManually();//may not be necessary
                             //let it know it hit a floor or ceiling
-                            breaker = true;
+                            
                         }
                         continue;
                     }
@@ -90,15 +96,15 @@ namespace UnanimousOverkillGame
                         {
                             if ((interceptPoint = FindY(tempGame.X + tempGame.Rect.Width * objWidthMod, slope, FindB(tempPhys.Y + tempPhys.Rect.Height * i, tempPhys.X + tempPhys.Rect.Width * j, slope))) >= tempGame.Y && interceptPoint <= tempGame.Y + tempGame.Rect.Height)
                             {
-                                tempPhys.X = (tempGame.X + tempGame.Rect.Width * objWidthMod) - (tempPhys.Rect.Width * j);
-                                tempPhys.Y = interceptPoint - (tempPhys.Rect.Height * i);
+                                tempPhys.X = (tempGame.X + tempGame.Rect.Width * objWidthMod) - (tempPhys.Rect.Width * j) + ((j == 1) ? -1 : 1);
+                                tempPhys.Y = interceptPoint - (tempPhys.Rect.Height * i) + ((i == 1) ? -1 : 1);
                                 //let it know it hit a wall, 
                                 breaker = true;
                             }
                             else if ((interceptPoint = FindX(tempGame.Y + tempGame.Rect.Height * objHeightMod, slope, FindB(tempPhys.Y + tempPhys.Rect.Height * i, tempPhys.X + tempPhys.Rect.Width * j, slope))) >= tempGame.X && interceptPoint <= tempGame.Y + tempGame.Rect.Height)
                             {
-                                tempPhys.X = interceptPoint + (tempGame.Rect.Height * objHeightMod) - (tempPhys.Rect.Width * j);
-                                tempPhys.Y = tempGame.Y - (tempPhys.Rect.Height * i);
+                                tempPhys.X = interceptPoint + (tempGame.Rect.Height * objHeightMod) - (tempPhys.Rect.Width * j) + ((j == 1) ? -1 : 1);
+                                tempPhys.Y = tempGame.Y - (tempPhys.Rect.Height * i) + ((i == 1) ? -1 : 1);
                                 //let it know it hit a floor or ceiling
                                 breaker = true;
                             }
@@ -124,7 +130,12 @@ namespace UnanimousOverkillGame
 
         private double FindSlope(int x1, int x2, int y1, int y2)
         {
-            return (x2 - x1 == 0) ? verticalSlope : (y2 - y1) / (x2 - x1);
+
+            if (x2 - x1 == 0)
+            {
+                throw new DivideByZeroException("vertical line");
+            }
+            return (y2 - y1) / (x2 - x1);
         }
         private int FindX(int y, double m, double b)
         {

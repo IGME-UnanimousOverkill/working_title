@@ -118,7 +118,7 @@ namespace UnanimousOverkillGame
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
 
-
+            collisionManager.CheckCollisions();
 
             base.Update(gameTime);
         }
@@ -142,6 +142,7 @@ namespace UnanimousOverkillGame
             if (kbState.IsKeyDown(Keys.Space))
             {
                 roomManager.BoundsDraw(spriteBatch);
+                player.DrawBounds(spriteBatch,roomManager.boundsTexture);//temporary, for testing
             }
 
             //calls the player draw method to actually draw the player to the screen

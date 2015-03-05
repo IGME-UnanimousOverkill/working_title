@@ -19,7 +19,8 @@ namespace UnanimousOverkillGame
         public List<ForegroundTile> foreground;
         // This will be replaced with tile sets.
         private Texture2D placeholderTexture;
-        private Texture2D boundsTexture;
+        // TODO make not public
+        public Texture2D boundsTexture; //temporarily public
 
         private const int TILE_WIDTH = 50;
         private const int TILE_HEIGHT = 50;
@@ -98,9 +99,12 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Draw(SpriteBatch batch)
         {
+            //int i = 0; test code, please ignore
             foreach (ForegroundTile tile in foreground)
             {
+             //   if(i!=22)
                 tile.Draw(batch);
+             //   i++;
             }
         }
 

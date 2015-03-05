@@ -52,6 +52,12 @@ namespace UnanimousOverkillGame
             this.texture = texture;
         }
 
+        public void positionChangedManually()
+        {
+            prevX = X;
+            prevY = Y;
+        }
+
         /// <summary>
         /// Draws the texture, if there is one.
         /// </summary>
