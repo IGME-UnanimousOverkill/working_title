@@ -18,12 +18,13 @@ namespace UnanimousOverkillGame
         {
 
         }
-        public void Update()
+        
+        public override void Update()
         {
             //how close is the dudeski?
-                //>if the player is close enough attack that mofo
+                //>if the player is close enough, chase 
                 //>otherwise just take a stroll
-            //Have I run into anything, because I am apparently blind
+            //Have I run into anything
                 //>if it isn't the dude then just collide with it(turn around?)
                 //>otherwise(it is the dude) hurt him, badly
         }
