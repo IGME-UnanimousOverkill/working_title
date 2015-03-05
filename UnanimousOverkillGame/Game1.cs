@@ -18,7 +18,9 @@ namespace UnanimousOverkillGame
         FaceLeft,
         WalkLeft,
         FaceRight,
-        WalkRight
+        WalkRight,
+        Jumping,
+        Falling
     }
     /// <summary>
     /// This is the main type for your game
@@ -51,9 +53,6 @@ namespace UnanimousOverkillGame
         {
             // TODO: Add your initialization logic here
             roomManager = new RoomManager();
-            roomManager.LoadRoom(Content.RootDirectory + "/Rooms/TestRoom.txt");
-
-            
 
             var screen = System.Windows.Forms.Screen.PrimaryScreen;
             Window.IsBorderless = true;
@@ -75,11 +74,7 @@ namespace UnanimousOverkillGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            System.IO.Stream tileStream = TitleContainer.OpenStream("Content/placeholder.png");
-            System.IO.Stream boundStream = TitleContainer.OpenStream("Content/boundsTest.png");
-            roomManager.SetTileTexture(Texture2D.FromStream(GraphicsDevice, tileStream), Texture2D.FromStream(GraphicsDevice, boundStream));
-            tileStream.Close();
-            boundStream.Close();
+            roomManager.LoadContent(GraphicsDevice);
 
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
             System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
@@ -87,9 +82,7 @@ namespace UnanimousOverkillGame
             player = new Player(50, 230, 25, 50, spriteSheet);
             imageStream.Close();
 
-            roomManager.SpawnRoom();
-
-            collisionManager = new CollisionManager(roomManager.foreground.ToArray(), player);
+            collisionManager = new CollisionManager(roomManager.getColliders().ToArray(), player);
 
         }
 
@@ -114,6 +107,7 @@ namespace UnanimousOverkillGame
 
             //calls the player update method to get the logic for movement
             player.Update(gameTime);
+            roomManager.Update(gameTime);
 
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();

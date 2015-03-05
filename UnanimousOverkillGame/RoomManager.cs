@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,109 +12,92 @@ namespace UnanimousOverkillGame
 {
     class RoomManager
     {
-        // 2D array for level
-        private char[,] level;
-        public List<ForegroundTile> foreground;
+        private Room head;
+        private Room current;
         // This will be replaced with tile sets.
         private Texture2D placeholderTexture;
-        // TODO make not public
-        public Texture2D boundsTexture; //temporarily public
+        private Texture2D boundsTexture;
+        public const string ROOM_DIR = "Content/Rooms/";
+        private static Random rand = new Random();
 
-        private const int TILE_WIDTH = 50;
-        private const int TILE_HEIGHT = 50;
-
-        /// <summary>
-        /// Default constructor for RoomManager
-        /// </summary>
         public RoomManager()
         {
-            foreground = new List<ForegroundTile>();
+            head = RandomRoom(null);
+            current = head;
         }
 
         /// <summary>
-        /// Sets the tile texture. This will be editted to include texture packs.
+        /// Changes the current room.
         /// </summary>
-        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds)
+        public void ChangeRoom(Room room)
         {
-            placeholderTexture = tileTexture;
-            boundsTexture = bounds;
+            current = room;
+            // Placeholder tile assignment because no tilesets yet.
+            room.SetTileTexture(placeholderTexture, boundsTexture);
+            room.SpawnRoom();
         }
 
         /// <summary>
-        /// Loads a room based off a text file.
+        /// Update Method in case rooms need updating.
         /// </summary>
-        /// <param name="path">The path to the text file.</param>
-        public void LoadRoom(string path)
+        /// <param name="time"></param>
+        public void Update(GameTime time)
         {
-            
-            StreamReader levelReader = new StreamReader(path);
-            string readerLine = levelReader.ReadLine();
-            List<string> levels = new List<string>();
-            while (readerLine != "//")
-            {
-                levels.Add(readerLine);
-                readerLine = levelReader.ReadLine();
-            }
-            levelReader.Close();
-            level = new char[levels[0].Length, levels.Count];
-            int x = 0;
-            int y = 0;
-            foreach (string line in levels)
-            {
-                foreach (char tile in line)
-                {
-                    level[x, y] = tile;
-                    x++;
-                }
-                y++;
-                x = 0;
-            }
+            current.Update(time);
         }
 
         /// <summary>
-        /// Creates the actual tile objects in the world.
+        /// Returns a list of collidable objects in the current room.
         /// </summary>
-        public void SpawnRoom()
+        public List<PhysicsEntity> getColliders()
         {
-            foreground.Clear();
-            for (int y = level.GetLength(1) - 1; y >= 0; y--)
-            {
-                for (int x = 0; x < level.GetLength(0); x++)
-                {
-                    switch(level[x,y])
-                    {
-                        case ('*'):
-                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * 1.33), (int)(TILE_HEIGHT * 1.33), placeholderTexture, boundsTexture);
-                            foreground.Add(tile);
-                            break;
-                    }
-                }
-            }
+            return current.GetColliders();
         }
 
         /// <summary>
-        /// Draws everything in the level.
+        /// Loads content, such as tile sets and other room graphics.
+        /// </summary>
+        public void LoadContent(GraphicsDevice graphics)
+        {
+            System.IO.Stream tileStream = TitleContainer.OpenStream("Content/placeholder.png");
+            System.IO.Stream boundStream = TitleContainer.OpenStream("Content/boundsTest.png");
+            placeholderTexture = Texture2D.FromStream(graphics, tileStream);
+            boundsTexture = Texture2D.FromStream(graphics, boundStream);
+            tileStream.Close();
+            boundStream.Close();
+
+            current.SetTileTexture(placeholderTexture, boundsTexture);
+
+            current.SpawnRoom();
+        }
+
+        /// <summary>
+        /// Draws the current room.
         /// </summary>
         public void Draw(SpriteBatch batch)
         {
-            //int i = 0; test code, please ignore
-            foreach (ForegroundTile tile in foreground)
-            {
-             //   if(i!=22)
-                tile.Draw(batch);
-             //   i++;
-            }
+            current.Draw(batch);
         }
 
         /// <summary>
-        /// Show the physics bounding boxes for all tiles, for debugging.
+        /// Draws the current room's collision bounds, for debugging.
         /// </summary>
         public void BoundsDraw(SpriteBatch batch)
         {
-            foreach (ForegroundTile tile in foreground)
-            {
-                tile.DrawBounds(batch);
-            }
+            current.BoundsDraw(batch);
+        }
+
+        /// <summary>
+        /// Creates a random room from a random file and returns it.
+        /// </summary>
+        public Room RandomRoom(Room previous)
+        {
+            Room room = new Room(this, previous);
+            
+            string[] files = Directory.GetFiles(ROOM_DIR);
+            room.LoadRoom(files[rand.Next(files.Length)]);
+
+            return room;
         }
     }
 }

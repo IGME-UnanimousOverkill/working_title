@@ -27,6 +27,11 @@ namespace UnanimousOverkillGame
 
         }
 
+        public virtual void OnCollide(PhysicsEntity other)
+        {
+            // Manage collision with other entities
+        }
+
         /// <summary>
         /// Entity rises a certain height into the air.
         /// Relies on Fall method to fall.
