@@ -58,7 +58,7 @@ namespace UnanimousOverkillGame
             Window.IsBorderless = true;
             Window.Position = new Point(screen.Bounds.X, screen.Bounds.Y);
             graphics.PreferredBackBufferWidth = screen.Bounds.Width;
-            graphics.PreferredBackBufferHeight = screen.Bounds.Height - 400;
+            graphics.PreferredBackBufferHeight = screen.Bounds.Height;
             graphics.ApplyChanges();
 
             base.Initialize();
@@ -79,7 +79,7 @@ namespace UnanimousOverkillGame
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
             System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
-            player = new Player(200, 230, 25, 50, spriteSheet);
+            player = new Player(50, 228, 44, 70, spriteSheet);
             imageStream.Close();
 
             collisionManager = new CollisionManager(roomManager.getColliders().ToArray(), player);
@@ -102,7 +102,7 @@ namespace UnanimousOverkillGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             //calls the player update method to get the logic for movement
@@ -112,8 +112,7 @@ namespace UnanimousOverkillGame
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
 
-            collisionManager.DetectCollisions();
-            collisionManager.HandleCollisions();
+            collisionManager.CheckCollisions();
 
             base.Update(gameTime);
         }
@@ -142,6 +141,7 @@ namespace UnanimousOverkillGame
 
             //calls the player draw method to actually draw the player to the screen
             player.Draw(spriteBatch);
+
 
             spriteBatch.End();
 

@@ -12,72 +12,13 @@ namespace UnanimousOverkillGame
     {
 
         private List<GameObject> objects;//list of all objects in to check collisions against
-        private List<PhysicsEntity> entities;//objects who collisions we care about
-
-        PhysicsEntity physEntity; //current physics object that we're checking for collisions
-        GameObject gameObject; //current object we're checking against
-
-        int count =0; //debugging
-
-        public void DetectCollisions()
-        {
-
-            for (int i = 0; i < entities.Count; i++)
-            {
-                physEntity = entities[i];
-
-                for (int j = 0; j < objects.Count; j++)
-                {
-                    gameObject = objects[j];
-
-                    if (physEntity.Rect.Intersects(gameObject.Rect))
-                    {
-                        //TOP
-                        if (physEntity.Y < gameObject.Y && physEntity.Y + physEntity.Rect.Height > gameObject.Y)
-                        { physEntity.colliderArray[0] = true; }
-                        else
-                        { physEntity.colliderArray[0] = false; }
-
-                        //RIGHT
-                        if (physEntity.X < gameObject.X && (physEntity.X + physEntity.Rect.Width > gameObject.X)) 
-                        { physEntity.colliderArray[1] = true; }
-                        else
-                        { physEntity.colliderArray[1] = false; }
-
-                        //BOTTOM
-                        if (physEntity.Y < gameObject.Y && physEntity.Y + physEntity.Rect.Height > gameObject.Y) 
-                        { physEntity.colliderArray[2] = true; }
-                        else
-                        { physEntity.colliderArray[2] = false; }
-
-                        //LEFT
-                        if (physEntity.X < gameObject.X + gameObject.Rect.Width && physEntity.X > gameObject.X) 
-                        { physEntity.colliderArray[3] = true; }
-                        else
-                        { physEntity.colliderArray[3] = false; }
-                    }
-                }
-            }
-        }
-
-        public void HandleCollisions()
-        {
-            for (int i = 0; i < entities.Count; i++)
-            {
-                physEntity = entities[i];
-                //TOP
-                if (physEntity.colliderArray[0]) { physEntity.Y = physEntity.Y + 5; }
-                //RIGHT
-                if (physEntity.colliderArray[1]) { physEntity.X = physEntity.X - 5; }
-                //BOTTOM
-                if (physEntity.colliderArray[2]) { physEntity.Y = physEntity.Y - 5; }
-                //LEFT
-                if (physEntity.colliderArray[3]) { physEntity.X = physEntity.X + 5; }
-            }
-        }
+        private List<PhysicsEntity> collisioCheckObjects;//objects who collisions we care about
+        
 
 
-        /*
+
+
+
         public void CheckCollisions()
         {
 
@@ -205,15 +146,12 @@ namespace UnanimousOverkillGame
         {
             return (int)(((m * x) + b));
         }
-        
-        */
+
         public CollisionManager(GameObject[] allGameObjects, params PhysicsEntity[] objectsToBeChecked)
         {
             objects = new List<GameObject>(allGameObjects);
-            entities = new List<PhysicsEntity>(objectsToBeChecked);
+            collisioCheckObjects = new List<PhysicsEntity>(objectsToBeChecked);
         }
-
-
 
     }
 }
