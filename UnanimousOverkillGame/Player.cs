@@ -141,18 +141,18 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.FaceRight;
-                        }/*
+                        }
                         if (kbState.IsKeyDown(Keys.Space))
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            this.Jump();
+                            this.Jump(new Vector2());
                         }
-                        if(player no longer colliding(on bottom))
+                        else if(colliderArray[2] == false)
                         {
                             prevState = pState;
                             pState = PlayerState.Falling;
-                        }*/
+                        }
                         break;
                     }
                 case PlayerState.WalkLeft:
@@ -167,37 +167,39 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.FaceLeft;
-                        }/*
+                        }
                         if(kbState.IsKeyDown(Keys.Space))
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            this.Jump();
+                            this.Jump(new Vector2());
                         }
-                        if(player no longer colliding(on bottom))
+                        else if(colliderArray[2] == false)
                         {
                             prevState = pState;
                             pState = PlayerState.Falling;
                         }
                           
-                        */
+                        
                         break;
-                    }/*
-                case PlayerState.Jumping
+                    }
+                case PlayerState.Jumping:
                     {
-                        if(on collision(above player))
+                        if(colliderArray[0] == true)
                         {
                             pState = PlayerState.Falling;   //don't want a prevState = pState; here because we don't need to know if you jumped if you are currently falling, we need what state you were in before you jumped.
                         }
                         break;
                     }
-                case PlayerState.Falling
+                case PlayerState.Falling:
                     {
-                        if(on collision(on bottom))
+                        if(colliderArray[2] == true)
                         {
                             pState = prevState;
                             
-                      */
+                        }
+                        break;
+                    }
             }
             
         }

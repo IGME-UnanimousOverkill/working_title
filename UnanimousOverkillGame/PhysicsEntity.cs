@@ -20,7 +20,7 @@ namespace UnanimousOverkillGame
         protected Vector2 velocity;//velocity vector
         protected Vector2 acceleration;//acceleration vector
 
-
+        public bool[] ColliderArray { get { return colliderArray; } }
 
         /// <summary>
         /// Instantiates a basic PhysicsEntity.  Nothing special here.
@@ -43,7 +43,6 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Jump(Vector2 force)
         {
-
             Fall();
         }
 
