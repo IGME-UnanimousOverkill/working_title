@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.csprojResolveAssemblyReference.cache
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.exe
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.pdb
@@ -112,35 +111,11 @@ C:\Users\refferee\Desktop\RIT\Unanimous Overkill\Game\UnanimousOverkillGame\obj\
 C:\Users\refferee\Desktop\RIT\Unanimous Overkill\Game\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.exe
 =======
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Mario.png
-=======
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\boundsTest.png
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Mario.png
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\placeholder.png
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom.txt
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.exe
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.pdb
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\MonoGame.Framework.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.MediaFoundation.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XAudio2.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D11.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.DXGI.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct2D1.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Lidgren.Network.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XInput.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.RawInput.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D9.dll
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.MediaFoundation.xml
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.xml
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XAudio2.xml
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D11.xml
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.DXGI.xml
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct2D1.xml
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XInput.xml
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.RawInput.xml
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D9.xml
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.exe
-C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.pdb
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom3.txt
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom2.txt
->>>>>>> 5ac66449fda89afb3b611c47e4d9508d35276b0a
+C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\boundsTest.png
+C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Mario.png
+C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\placeholder.png
+C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom.txt
+C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom3.txt
+C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom2.txt

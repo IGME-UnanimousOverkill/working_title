@@ -16,7 +16,7 @@ namespace UnanimousOverkillGame
     /// </summary>
     abstract class PhysicsEntity : GameObject
     {
-        protected bool[] colliderArray = new bool[4];//indicates the direction that the entity is colliding with something, [top, right, bottom, left]
+        public bool[] colliderArray = new bool[4];//indicates the direction that the entity is colliding with something, [top, right, bottom, left]
         protected Vector2 velocity;//velocity vector
         protected Vector2 acceleration;//acceleration vector
 
