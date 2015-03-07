@@ -16,6 +16,10 @@ namespace UnanimousOverkillGame
     /// </summary>
     abstract class PhysicsEntity : GameObject
     {
+        protected bool[] colliderArray = new bool[4];
+        protected Vector2 velocity;
+        protected Vector2 acceleration;
+
 
 
         /// <summary>
@@ -24,7 +28,7 @@ namespace UnanimousOverkillGame
         public PhysicsEntity(int x, int y, int width, int height, Texture2D texture)
             : base(x, y, width, height, texture)
         {
-
+            
         }
 
         public virtual void OnCollide(PhysicsEntity other)
