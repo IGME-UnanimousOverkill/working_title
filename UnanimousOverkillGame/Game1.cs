@@ -32,6 +32,7 @@ namespace UnanimousOverkillGame
         RoomManager roomManager;
         CollisionManager collisionManager;
         KeyboardState kbState;
+        SpriteFont font;
 
         //player
         Player player;
@@ -81,6 +82,9 @@ namespace UnanimousOverkillGame
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
             player = new Player(50, 228, 44, 70, spriteSheet);
             imageStream.Close();
+
+            //Loads the spriteFont
+            font = Content.Load<SpriteFont>("TimesNewRoman12");
 
             collisionManager = new CollisionManager(roomManager.getColliders().ToArray(), player);
 
@@ -143,6 +147,7 @@ namespace UnanimousOverkillGame
             //calls the player draw method to actually draw the player to the screen
             player.Draw(spriteBatch);
 
+            spriteBatch.DrawString(font, "Top: "+player.colliderArray[0]+"\nRight: "+player.colliderArray[1]+"\nBottom: "+player.colliderArray[2]+"\nLeft: "+player.colliderArray[3], new Vector2(20, 400), Color.Yellow);
 
             spriteBatch.End();
 

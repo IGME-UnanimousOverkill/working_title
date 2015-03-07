@@ -51,7 +51,7 @@ namespace UnanimousOverkillGame
                         { physEntity.colliderArray[2] = false; }
 
                         //LEFT
-                        if (physEntity.X < gameObject.X + gameObject.Rect.Width && physEntity.X > gameObject.X)
+                        if (physEntity.X > gameObject.X && physEntity.X < gameObject.X + gameObject.Rect.Width)
                         { physEntity.colliderArray[3] = true; }
                         else
                         { physEntity.colliderArray[3] = false; }
