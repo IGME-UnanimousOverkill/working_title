@@ -20,7 +20,7 @@ namespace UnanimousOverkillGame
         protected Vector2 velocity;//velocity vector
         protected Vector2 acceleration;//acceleration vector
 
-        public bool[] ColliderArray { get { return colliderArray; } }
+        public bool[] ColliderArray { get { return colliderArray; } set { colliderArray = value; } }
 
         /// <summary>
         /// Instantiates a basic PhysicsEntity.  Nothing special here.
