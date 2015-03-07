@@ -28,7 +28,8 @@ namespace UnanimousOverkillGame
         public PhysicsEntity(int x, int y, int width, int height, Texture2D texture)
             : base(x, y, width, height, texture)
         {
-            
+            velocity = new Vector2();
+            acceleration = new Vector2();
         }
 
         public virtual void OnCollide(PhysicsEntity other)
