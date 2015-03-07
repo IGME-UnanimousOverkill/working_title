@@ -102,7 +102,7 @@ namespace UnanimousOverkillGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             //calls the player update method to get the logic for movement
@@ -112,7 +112,8 @@ namespace UnanimousOverkillGame
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
 
-            collisionManager.CheckCollisions();
+            collisionManager.DetectCollisions();
+            collisionManager.HandleCollisions();
 
             base.Update(gameTime);
         }
