@@ -66,13 +66,13 @@ namespace UnanimousOverkillGame
             {
                 physEntity = entities[i];
                 //TOP
-                if (physEntity.colliderArray[0]) { physEntity.Y = physEntity.Y + 5; }
+                if (physEntity.colliderArray[0]) { physEntity.Y = physEntity.Y + 5; physEntity.colliderArray[0] = false; }
                 //RIGHT
-                if (physEntity.colliderArray[1]) { physEntity.X = physEntity.X - 5; }
+                if (physEntity.colliderArray[1]) { physEntity.X = physEntity.X - 5; physEntity.colliderArray[1] = false; }
                 //BOTTOM
-                if (physEntity.colliderArray[2]) { physEntity.Y = physEntity.Y - 5; }
+                if (physEntity.colliderArray[2]) { physEntity.Y = physEntity.Y - 5; physEntity.colliderArray[2] = false; }
                 //LEFT
-                if (physEntity.colliderArray[3]) { physEntity.X = physEntity.X + 5; }
+                if (physEntity.colliderArray[3]) { physEntity.X = physEntity.X + 5; physEntity.colliderArray[3] = false; }
             }
         }
 

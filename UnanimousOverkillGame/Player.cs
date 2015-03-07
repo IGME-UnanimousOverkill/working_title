@@ -91,15 +91,23 @@ namespace UnanimousOverkillGame
             {
                 case PlayerState.FaceLeft:
                     {
-                        if (kbState.IsKeyDown(Keys.A))
+
+                        if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
-                            prevState = pState;
-                            pState = PlayerState.WalkLeft;
+
                         }
-                        if (kbState.IsKeyDown(Keys.D))
+                        else
                         {
-                            prevState = pState;
-                            pState = PlayerState.WalkRight;
+                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                            {
+                                prevState = pState;
+                                pState = PlayerState.WalkLeft;
+                            }
+                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+                            {
+                                prevState = pState;
+                                pState = PlayerState.WalkRight;
+                            }
                         }
                         //if (kbState.IsKeyDown(Keys.Space))
                         //{
@@ -111,15 +119,22 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.FaceRight:
                     {
-                        if (kbState.IsKeyDown(Keys.A))
+                        if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
-                            prevState = pState;
-                            pState = PlayerState.WalkLeft;
+
                         }
-                        if (kbState.IsKeyDown(Keys.D))
+                        else
                         {
-                            prevState = pState;
-                            pState = PlayerState.WalkRight;
+                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                            {
+                                prevState = pState;
+                                pState = PlayerState.WalkLeft;
+                            }
+                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+                            {
+                                prevState = pState;
+                                pState = PlayerState.WalkRight;
+                            }
                         }
                         //if (kbState.IsKeyDown(Keys.Space))
                         //{
@@ -132,15 +147,23 @@ namespace UnanimousOverkillGame
                 case PlayerState.WalkRight:
                     {
                         X += 5;
-                        if (kbState.IsKeyDown(Keys.A))
-                        {
-                            prevState = pState;
-                            pState = PlayerState.WalkLeft;
-                        }
-                        if (kbState.IsKeyUp(Keys.D))
+                        if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
                             prevState = pState;
                             pState = PlayerState.FaceRight;
+                        }
+                        else
+                        {
+                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                            {
+                                prevState = pState;
+                                pState = PlayerState.WalkLeft;
+                            }
+                            if (kbState.IsKeyUp(Keys.D) && kbState.IsKeyUp(Keys.Right))
+                            {
+                                prevState = pState;
+                                pState = PlayerState.FaceRight;
+                            }
                         }
                         //if (kbState.IsKeyDown(Keys.Space))
                         //{
@@ -158,15 +181,23 @@ namespace UnanimousOverkillGame
                 case PlayerState.WalkLeft:
                     {
                         X -= 5;
-                        if (kbState.IsKeyDown(Keys.A))
-                        {
-                            prevState = pState;
-                            pState = PlayerState.WalkLeft;
-                        }
-                        if (kbState.IsKeyUp(Keys.A))
+                        if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
                             prevState = pState;
                             pState = PlayerState.FaceLeft;
+                        }
+                        else
+                        {
+                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                            {
+                                prevState = pState;
+                                pState = PlayerState.WalkLeft;
+                            }
+                            if (kbState.IsKeyUp(Keys.A) && kbState.IsKeyUp(Keys.Left))
+                            {
+                                prevState = pState;
+                                pState = PlayerState.FaceLeft;
+                            }
                         }
                         //if(kbState.IsKeyDown(Keys.Space))
                         //{
@@ -179,13 +210,13 @@ namespace UnanimousOverkillGame
                         //    prevState = pState;
                         //    pState = PlayerState.Falling;
                         //}
-                          
-                        
+
+
                         break;
                     }
                 case PlayerState.Jumping:
                     {
-                        if(colliderArray[0] == true)
+                        if (colliderArray[0] == true)
                         {
                             pState = PlayerState.Falling;   //don't want a prevState = pState; here because we don't need to know if you jumped if you are currently falling, we need what state you were in before you jumped.
                         }
@@ -193,10 +224,10 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.Falling:
                     {
-                        if(colliderArray[2] == true)
+                        if (colliderArray[2] == true)
                         {
                             pState = prevState;
-                            
+
                         }
                         break;
                     }
