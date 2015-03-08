@@ -80,7 +80,7 @@ namespace UnanimousOverkillGame
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
             System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
-            player = new Player(50, 228, 44, 70, spriteSheet);
+            player = new Player(100, 228, 44, 70, spriteSheet);
             imageStream.Close();
 
             //Loads the spriteFont
@@ -115,6 +115,9 @@ namespace UnanimousOverkillGame
 
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
+
+            if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 5; }
+            if (kbState.IsKeyDown(Keys.Down)) { player.Y += 5; }
 
             collisionManager.DetectCollisions();
             collisionManager.HandleCollisions();
