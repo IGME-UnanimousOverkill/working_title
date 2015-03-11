@@ -32,6 +32,7 @@ namespace UnanimousOverkillGame
         RoomManager roomManager;
         CollisionManager collisionManager;
         KeyboardState kbState;
+        SpriteFont font;
 
         //player
         Player player;
@@ -79,8 +80,11 @@ namespace UnanimousOverkillGame
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
             System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
-            player = new Player(50, 230, 25, 50, spriteSheet);
+            player = new Player(100, 228, 44, 70, spriteSheet);
             imageStream.Close();
+
+            //Loads the spriteFont
+            font = Content.Load<SpriteFont>("TimesNewRoman12");
 
             collisionManager = new CollisionManager(roomManager.getColliders().ToArray(), player);
 
@@ -102,7 +106,7 @@ namespace UnanimousOverkillGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             //calls the player update method to get the logic for movement
@@ -112,7 +116,11 @@ namespace UnanimousOverkillGame
             // TODO: Add your update logic here
             kbState = Keyboard.GetState();
 
-            collisionManager.CheckCollisions();
+            if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 5; }
+            if (kbState.IsKeyDown(Keys.Down)) { player.Y += 5; }
+
+            collisionManager.DetectCollisions();
+            collisionManager.HandleCollisions();
 
             base.Update(gameTime);
         }
@@ -142,6 +150,7 @@ namespace UnanimousOverkillGame
             //calls the player draw method to actually draw the player to the screen
             player.Draw(spriteBatch);
 
+            spriteBatch.DrawString(font, "Top: "+player.colliderArray[0]+"\nRight: "+player.colliderArray[1]+"\nBottom: "+player.colliderArray[2]+"\nLeft: "+player.colliderArray[3], new Vector2(20, 400), Color.Yellow);
 
             spriteBatch.End();
 
