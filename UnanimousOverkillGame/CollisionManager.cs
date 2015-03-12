@@ -11,11 +11,11 @@ namespace UnanimousOverkillGame
     class CollisionManager
     {
 
-        private List<GameObject> objects;//list of all objects in to check collisions against
+        private List<PhysicsEntity> objects;//list of all objects in to check collisions against
         private List<PhysicsEntity> entities;//objects who collisions we care about
 
         PhysicsEntity physEntity; //current physics object that we're checking for collisions
-        GameObject gameObject; //current object we're checking against
+        PhysicsEntity gameObject; //current object we're checking against
 
         int count = 0; //debugging
 
@@ -25,40 +25,51 @@ namespace UnanimousOverkillGame
             for (int i = 0; i < entities.Count; i++)
             {
                 physEntity = entities[i];
+                // Reset collision array
                 physEntity.colliderArray[0] = false;
                 physEntity.colliderArray[1] = false;
                 physEntity.colliderArray[2] = false;
                 physEntity.colliderArray[3] = false;
 
+                // Calculate the bottom and right side locations for the physEntity
+                float entBottom = physEntity.Y + physEntity.Rect.Height;
+                float entRight = physEntity.X + physEntity.Rect.Width;
+
                 for (int j = 0; j < objects.Count; j++)
                 {
                     gameObject = objects[j];
 
+                    // Calculate the bottom and right side locations for the gameObject
+                    float objBottom = gameObject.Y + gameObject.Rect.Height;
+                    float objRight = gameObject.X + gameObject.Rect.Width;
+
+                    // Check distances between the sides of the objects.
+                    float tDistance = objBottom - physEntity.Y;
+                    float bDistance = entBottom - gameObject.Y;
+                    float rDistance = entRight - gameObject.X;
+                    float lDistance = objRight - physEntity.X;
+
+                    // Whichever side is closest is the side they are colliding on.
                     if (physEntity.Rect.Intersects(gameObject.Rect))
                     {
+
+                        gameObject.OnCollide(physEntity);
+
                         //TOP
-                        if (physEntity.Y < gameObject.Y + gameObject.Rect.Height && physEntity.Y + physEntity.Rect.Height > gameObject.Y)
+                        if (tDistance < bDistance && tDistance < lDistance && tDistance < rDistance)
                         { physEntity.colliderArray[0] = true; }
-                        else
-                        { physEntity.colliderArray[0] = false; }
 
                         //RIGHT
-                        if (physEntity.X < gameObject.X && (physEntity.X + physEntity.Rect.Width > gameObject.X))
+                        else if (rDistance < bDistance && rDistance < lDistance && rDistance < tDistance)
                         { physEntity.colliderArray[1] = true; }
-                        else
-                        { physEntity.colliderArray[1] = false; }
 
                         //BOTTOM
-                        if (physEntity.Y < gameObject.Y && physEntity.Y + physEntity.Rect.Height > gameObject.Y)
+                        else if (bDistance < tDistance && bDistance < lDistance && bDistance < rDistance)
                         { physEntity.colliderArray[2] = true; }
-                        else
-                        { physEntity.colliderArray[2] = false; }
 
                         //LEFT
-                        if (physEntity.X > gameObject.X && physEntity.X < gameObject.X + gameObject.Rect.Width)
+                        else if (lDistance < bDistance && lDistance < tDistance && lDistance < rDistance)
                         { physEntity.colliderArray[3] = true; }
-                        else
-                        { physEntity.colliderArray[3] = false; }
                     }
                 }
             }
@@ -211,9 +222,9 @@ namespace UnanimousOverkillGame
         }
         
         */
-        public CollisionManager(GameObject[] allGameObjects, params PhysicsEntity[] objectsToBeChecked)
+        public CollisionManager(PhysicsEntity[] allEntities, params PhysicsEntity[] objectsToBeChecked)
         {
-            objects = new List<GameObject>(allGameObjects);
+            objects = new List<PhysicsEntity>(allEntities);
             entities = new List<PhysicsEntity>(objectsToBeChecked);
         }
 
