@@ -25,6 +25,10 @@ namespace UnanimousOverkillGame
             for (int i = 0; i < entities.Count; i++)
             {
                 physEntity = entities[i];
+                physEntity.colliderArray[0] = false;
+                physEntity.colliderArray[1] = false;
+                physEntity.colliderArray[2] = false;
+                physEntity.colliderArray[3] = false;
 
                 for (int j = 0; j < objects.Count; j++)
                 {
@@ -66,13 +70,13 @@ namespace UnanimousOverkillGame
             {
                 physEntity = entities[i];
                 //TOP
-                if (physEntity.colliderArray[0]) { physEntity.Y = physEntity.Y + 5; physEntity.colliderArray[0] = false; }
+                if (physEntity.colliderArray[0]) { physEntity.Y = physEntity.Y + 5;}
                 //RIGHT
-                if (physEntity.colliderArray[1]) { physEntity.X = physEntity.X - 5; physEntity.colliderArray[1] = false; }
+                if (physEntity.colliderArray[1]) { physEntity.X = physEntity.X - 5;}
                 //BOTTOM
-                if (physEntity.colliderArray[2]) { physEntity.Y = physEntity.Y - 5; physEntity.colliderArray[2] = false; }
+                if (physEntity.colliderArray[2]) { physEntity.Y = physEntity.Y - 5;}
                 //LEFT
-                if (physEntity.colliderArray[3]) { physEntity.X = physEntity.X + 5; physEntity.colliderArray[3] = false; }
+                if (physEntity.colliderArray[3]) { physEntity.X = physEntity.X + 5;}
             }
         }
 
