@@ -133,8 +133,11 @@ namespace UnanimousOverkillGame
                             colliders.Add(nextDoor);
                             break;
                         case ('<'):
-                            Door previousDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, previousRoom, manager);
-                            colliders.Add(previousDoor);
+                            if (previousRoom != null)
+                            {
+                                Door previousDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, previousRoom, manager);
+                                colliders.Add(previousDoor);
+                            }
                             break;
                     }
                 }
