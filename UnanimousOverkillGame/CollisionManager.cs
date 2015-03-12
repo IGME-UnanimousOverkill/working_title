@@ -37,7 +37,7 @@ namespace UnanimousOverkillGame
                     if (physEntity.Rect.Intersects(gameObject.Rect))
                     {
                         //TOP
-                        if (physEntity.Y < gameObject.Y + gameObject.Rect.Height && physEntity.Y + physEntity.Rect.Height > gameObject.Y)
+                        if (physEntity.Y < gameObject.Y + gameObject.Rect.Height && physEntity.Y + physEntity.Rect.Height > gameObject.Y+gameObject.Rect.Height)
                         { physEntity.colliderArray[0] = true; }
                         else
                         { physEntity.colliderArray[0] = false; }
