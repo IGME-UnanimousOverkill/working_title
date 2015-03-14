@@ -23,16 +23,19 @@ namespace UnanimousOverkillGame
         PlayerState prevState;
         //SpriteBatch spriteBatch;
 
+        SpriteBatch playerSpriteBatch;
 
         Vector2 playerLoc; //holds the players position in the form
         Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
+
+        const int jumpHeight = 30;
 
         //movement animation stuff
         int frame; // The current animation frame
         double timeCounter; // The amount of time that has passed  
         double fps; // The speed of the animation                  
         double timePerFrame; // The amount of time (in fractional seconds) per frame                  
-       
+
         //spritesheet animation stuff
         const int WALK_FRAME_COUNT = 3; // The number of frames in the animation                 
         const int MARIO_RECT_Y_OFFSET = 116; // How far down in the image are the frames?                 
@@ -61,6 +64,7 @@ namespace UnanimousOverkillGame
             this.prevX = x;
             this.prevY = y;
             spriteSheet = texture; //takes the sprite sheet in here so you can "animate" in the draw method
+            activateGravity = false;
         }
 
         /// <summary>
@@ -109,11 +113,15 @@ namespace UnanimousOverkillGame
                                 pState = PlayerState.WalkRight;
                             }
                         }
-                        //if (kbState.IsKeyDown(Keys.Space))
+                        if (kbState.IsKeyDown(Keys.Space))
+                        {
+                            prevState = pState;
+                            pState = PlayerState.Jumping;
+                        }
+                        //if (colliderArray[2] == false&&)
                         //{
                         //    prevState = pState;
-                        //    pState = PlayerState.Jumping;
-                        //    this.Jump(new Vector2(0.0f,2.0f));
+                        //    pState = PlayerState.Falling;
                         //}
                         break;
                     }
@@ -136,11 +144,15 @@ namespace UnanimousOverkillGame
                                 pState = PlayerState.WalkRight;
                             }
                         }
-                        //if (kbState.IsKeyDown(Keys.Space))
+                        if (kbState.IsKeyDown(Keys.Space))
+                        {
+                            prevState = pState;
+                            pState = PlayerState.Jumping;
+                        }
+                        //if (colliderArray[2] == false)
                         //{
                         //    prevState = pState;
-                        //    pState = PlayerState.Jumping;
-                        //    this.Jump(new Vector2(0.0f,2.0f));
+                        //    pState = PlayerState.Falling;
                         //}
                         break;
                     }
@@ -165,13 +177,12 @@ namespace UnanimousOverkillGame
                                 pState = PlayerState.FaceRight;
                             }
                         }
-                        //if (kbState.IsKeyDown(Keys.Space))
-                        //{
-                        //    prevState = pState;
-                        //    pState = PlayerState.Jumping;
-                        //    this.Jump(new Vector2(2.0f,2.0f));
-                        //}
-                        //else if(colliderArray[2] == false)
+                        if (kbState.IsKeyDown(Keys.Space))
+                        {
+                            prevState = pState;
+                            pState = PlayerState.Jumping;
+                        }
+                        //if (colliderArray[2] == false)
                         //{
                         //    prevState = pState;
                         //    pState = PlayerState.Falling;
@@ -188,10 +199,10 @@ namespace UnanimousOverkillGame
                         }
                         else
                         {
-                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                             {
                                 prevState = pState;
-                                pState = PlayerState.WalkLeft;
+                                pState = PlayerState.WalkRight;
                             }
                             if (kbState.IsKeyUp(Keys.A) && kbState.IsKeyUp(Keys.Left))
                             {
@@ -199,13 +210,12 @@ namespace UnanimousOverkillGame
                                 pState = PlayerState.FaceLeft;
                             }
                         }
-                        //if(kbState.IsKeyDown(Keys.Space))
-                        //{
-                        //    prevState = pState;
-                        //    pState = PlayerState.Jumping;
-                        //    this.Jump(new Vector2(-2.0f,2.0f));
-                        //}
-                        //else if(colliderArray[2] == false)
+                        if (kbState.IsKeyDown(Keys.Space))
+                        {
+                            prevState = pState;
+                            pState = PlayerState.Jumping;
+                        }
+                        //if (colliderArray[2] == false)
                         //{
                         //    prevState = pState;
                         //    pState = PlayerState.Falling;
@@ -216,25 +226,42 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.Jumping:
                     {
-                        if (colliderArray[0] == true)
+                        Jump(Y-jumpHeight);
+                        if (colliderArray[0] || Y<= Y-jumpHeight)
                         {
-                            pState = PlayerState.Falling;   //don't want a prevState = pState; here because we don't need to know if you jumped if you are currently falling, we need what state you were in before you jumped.
+                            pState = PlayerState.Falling;
+                        }
+                        if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                        {
+                            X -= 2;
+                        }
+                        if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+                        {
+                            X += 2;
                         }
                         break;
+
                     }
                 case PlayerState.Falling:
                     {
+                        Fall();
                         if (colliderArray[2] == true)
                         {
                             pState = prevState;
-
+                        }
+                        if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                        {
+                            X -= 2;
+                        }
+                        if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+                        {
+                            X += 2;
                         }
                         break;
                     }
-            }
-            
-        }
 
+            }
+        }
         public void DrawBounds(SpriteBatch spriteBatch, Texture2D bound)//temporary for testing
         {
             if (bound != null)
@@ -247,6 +274,7 @@ namespace UnanimousOverkillGame
         /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch)
         {
+            playerSpriteBatch = spriteBatch;
             playerLoc.X = X;
             playerLoc.Y = Y;
             //switch case for player state again to determine which way to turn the texture and to determine where in the spritesheet to take the texture from 
@@ -283,7 +311,7 @@ namespace UnanimousOverkillGame
                                          Vector2.Zero,
                                          1.0f,
                                          SpriteEffects.FlipHorizontally,
-                                         0);                        
+                                         0);
                         break;
                     }
                 case PlayerState.FaceRight:
