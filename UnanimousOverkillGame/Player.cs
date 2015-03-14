@@ -28,8 +28,8 @@ namespace UnanimousOverkillGame
         Vector2 playerLoc; //holds the players position in the form
         Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
 
-        const int jumpHeight = 3;
-
+        const int jumpHeight = 80;
+        int finalHeight=0;
         //movement animation stuff
         int frame; // The current animation frame
         double timeCounter; // The amount of time that has passed  
@@ -117,6 +117,8 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
+                            finalHeight = Y - jumpHeight;
+
                         }
                         //if (colliderArray[2] == false&&)
                         //{
@@ -148,6 +150,8 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
+                            finalHeight = Y - jumpHeight;
+
                         }
                         //if (colliderArray[2] == false)
                         //{
@@ -181,6 +185,8 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
+                            finalHeight = Y - jumpHeight;
+
                         }
                         //if (colliderArray[2] == false)
                         //{
@@ -214,6 +220,7 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
+                            finalHeight = Y - jumpHeight;
                         }
                         //if (colliderArray[2] == false)
                         //{
@@ -226,18 +233,19 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.Jumping:
                     {
-                        Jump(Y - jumpHeight);
-                        if (colliderArray[0] || Y <= Y - jumpHeight)
+                        
+                        Jump(finalHeight);
+                        if (colliderArray[0] || Y <= finalHeight)
                         {
                             pState = PlayerState.Falling;
                         }
                         if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
                         {
-                            X -= 2;
+                            X -= 5;
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
-                            X += 2;
+                            X += 5;
                         }
                         break;
 
@@ -251,11 +259,11 @@ namespace UnanimousOverkillGame
                         }
                         if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
                         {
-                            X -= 2;
+                            X -= 5;
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
-                            X += 2;
+                            X += 5;
                         }
                         break;
                     }
