@@ -25,7 +25,7 @@ namespace UnanimousOverkillGame
         protected Vector2 acceleration;//acceleration vector
 
         protected bool activateGravity;
-        /// <summary>
+        /// <summary> 
         /// Instantiates a basic PhysicsEntity.  Nothing special here.
         /// </summary>
         public PhysicsEntity(int x, int y, int width, int height, Texture2D texture)

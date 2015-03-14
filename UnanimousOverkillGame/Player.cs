@@ -28,7 +28,7 @@ namespace UnanimousOverkillGame
         Vector2 playerLoc; //holds the players position in the form
         Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
 
-        const int jumpHeight = 30;
+        const int jumpHeight = 3;
 
         //movement animation stuff
         int frame; // The current animation frame
@@ -226,8 +226,8 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.Jumping:
                     {
-                        Jump(Y-jumpHeight);
-                        if (colliderArray[0] || Y<= Y-jumpHeight)
+                        Jump(Y - jumpHeight);
+                        if (colliderArray[0] || Y <= Y - jumpHeight)
                         {
                             pState = PlayerState.Falling;
                         }
@@ -346,6 +346,22 @@ namespace UnanimousOverkillGame
                                         1.0f,
                                         SpriteEffects.FlipHorizontally,
                                         0);
+                        break;
+                    }
+                case PlayerState.Jumping:
+                    {
+                        if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5*MARIO_RECT_WIDTH)-4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH-2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0);
+                        else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5*MARIO_RECT_WIDTH)-4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH-2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
+                        break;
+                    }
+                case PlayerState.Falling:
+                    {
+                        if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((4 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0);
+                        else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((4 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
                         break;
                     }
 
