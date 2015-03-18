@@ -58,6 +58,7 @@
             0,
             0});
             this.widthNumericUpDown.ValueChanged += new System.EventHandler(this.widthNumericUpDown_ValueChanged);
+            this.widthNumericUpDown.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.disableMousewheel);
             // 
             // WidthLabel
             // 
@@ -89,6 +90,7 @@
             0,
             0});
             this.heightNumericUpDown.ValueChanged += new System.EventHandler(this.heightNumericUpDown_ValueChanged);
+            this.heightNumericUpDown.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.disableMousewheel);
             // 
             // MapTool
             // 
