@@ -53,8 +53,6 @@ namespace UnanimousOverkillGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            roomManager = new RoomManager();
-
             var screen = System.Windows.Forms.Screen.PrimaryScreen;
             Window.IsBorderless = true;
             Window.Position = new Point(screen.Bounds.X, screen.Bounds.Y);
@@ -75,18 +73,19 @@ namespace UnanimousOverkillGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            roomManager.LoadContent(GraphicsDevice);
-
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
             System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
             player = new Player(100, 228, 44, 70, spriteSheet);
             imageStream.Close();
 
+            collisionManager = new CollisionManager(player);
+
+            roomManager = new RoomManager(player, collisionManager);
+            roomManager.LoadContent(GraphicsDevice);
+
             //Loads the spriteFont
             font = Content.Load<SpriteFont>("TimesNewRoman12");
-
-            collisionManager = new CollisionManager(roomManager.getColliders().ToArray(), player);
 
         }
 
