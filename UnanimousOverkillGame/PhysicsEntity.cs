@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
+using System.Linq;
+using System.Text;
 #endregion
 
 namespace UnanimousOverkillGame
@@ -16,15 +20,19 @@ namespace UnanimousOverkillGame
     /// </summary>
     abstract class PhysicsEntity : GameObject
     {
+        public bool[] colliderArray = new bool[4];//indicates the direction that the entity is colliding with something, [top, right, bottom, left]
+        protected Vector2 velocity;//velocity vector
+        protected Vector2 acceleration;//acceleration vector
 
-
-        /// <summary>
+        protected bool activateGravity;
+        /// <summary> 
         /// Instantiates a basic PhysicsEntity.  Nothing special here.
         /// </summary>
         public PhysicsEntity(int x, int y, int width, int height, Texture2D texture)
             : base(x, y, width, height, texture)
         {
-
+            velocity = new Vector2();
+            acceleration = new Vector2(0.0f,1.0f);
         }
 
         public virtual void OnCollide(PhysicsEntity other)
@@ -36,10 +44,12 @@ namespace UnanimousOverkillGame
         /// Entity rises a certain height into the air.
         /// Relies on Fall method to fall.
         /// </summary>
-        public void Jump(Vector2 force)
+        public void Jump(int finishHeight)
         {
-
-            Fall();
+            if(colliderArray[0] == false && Y>finishHeight)
+            {
+                Y -= 5;
+            }
         }
 
         /// <summary>
@@ -47,7 +57,10 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Fall()
         {
-
+            if (colliderArray[2] == false)
+            {
+                Y += 5;
+            }
         }
     }
 }

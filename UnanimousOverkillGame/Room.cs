@@ -111,7 +111,7 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Creates the actual tile objects in the world.
         /// </summary>
-        public void SpawnRoom()
+        public void SpawnRoom(Player player, bool forward)
         {
             foreground.Clear();
             for (int y = level.GetLength(1) - 1; y >= 0; y--)
@@ -127,14 +127,29 @@ namespace UnanimousOverkillGame
                             break;
                             // Cases for entrances and exits.
                         case ('>'):
+                            if (!forward)
+                            {
+                                player.X = (x - 1) * TILE_WIDTH;
+                                player.Y = y * TILE_HEIGHT;
+                                player.positionChangedManually();
+                            }
                             Room room = manager.RandomRoom(this);
                             Door nextDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, room, manager);
                             nextRooms.Add(room);
                             colliders.Add(nextDoor);
                             break;
                         case ('<'):
-                            Door previousDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, previousRoom, manager);
-                            colliders.Add(previousDoor);
+                            if (forward)
+                            {
+                                player.X = (x + 1) * TILE_WIDTH;
+                                player.Y = y * TILE_HEIGHT;
+                                player.positionChangedManually();
+                            }
+                            if (previousRoom != null)
+                            {
+                                Door previousDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, previousRoom, manager);
+                                colliders.Add(previousDoor);
+                            }
                             break;
                     }
                 }

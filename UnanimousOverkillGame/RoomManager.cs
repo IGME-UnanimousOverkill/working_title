@@ -12,6 +12,8 @@ namespace UnanimousOverkillGame
 {
     class RoomManager
     {
+        private Player player;
+        private CollisionManager collisionManager;
         private Room head;
         private Room current;
         // This will be replaced with tile sets.
@@ -20,10 +22,11 @@ namespace UnanimousOverkillGame
         public const string ROOM_DIR = "Content/Rooms/";
         private static Random rand = new Random();
 
-        public RoomManager()
+        public RoomManager(Player play, CollisionManager manager)
         {
-            head = RandomRoom(null);
-            current = head;
+            player = play;
+            collisionManager = manager;
+            head = current;
         }
 
         /// <summary>
@@ -31,10 +34,24 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void ChangeRoom(Room room)
         {
-            current = room;
-            // Placeholder tile assignment because no tilesets yet.
-            room.SetTileTexture(placeholderTexture, boundsTexture);
-            room.SpawnRoom();
+            if (current != null && current.PreviousRoom == room)
+            {
+                current = room;
+                // Placeholder tile assignment because no tilesets yet.
+                room.SetTileTexture(placeholderTexture, boundsTexture);
+
+                room.SpawnRoom(player, false);
+                collisionManager.UpdateObjects(getColliders());
+            }
+            else
+            {
+                current = room;
+                // Placeholder tile assignment because no tilesets yet.
+                room.SetTileTexture(placeholderTexture, boundsTexture);
+
+                room.SpawnRoom(player, true);
+                collisionManager.UpdateObjects(getColliders());
+            }
         }
 
         /// <summary>
@@ -66,9 +83,7 @@ namespace UnanimousOverkillGame
             tileStream.Close();
             boundStream.Close();
 
-            current.SetTileTexture(placeholderTexture, boundsTexture);
-
-            current.SpawnRoom();
+            ChangeRoom(RandomRoom(null));
         }
 
         /// <summary>
