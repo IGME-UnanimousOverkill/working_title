@@ -96,6 +96,8 @@ namespace UnanimousOverkillGame
             imageStream.Close();
 
             collisionManager = new CollisionManager(player);
+            player.CollisionManagerGet(collisionManager);
+
 
             roomManager = new RoomManager(player, collisionManager);
             roomManager.LoadContent(GraphicsDevice);
