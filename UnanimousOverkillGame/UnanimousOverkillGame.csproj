@@ -53,6 +53,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="RoomManager.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="WallCrawler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
