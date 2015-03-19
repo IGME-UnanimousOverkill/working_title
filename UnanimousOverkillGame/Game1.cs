@@ -1,4 +1,6 @@
-﻿#region Using Statements
+﻿// Worked on by: Sean Coffey
+
+#region Using Statements
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;

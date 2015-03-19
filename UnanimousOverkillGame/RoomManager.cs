@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Worked on by: Sean Coffey
+
+using System;
 using System.IO;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
