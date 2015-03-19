@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Worked on by: Sean Coffey
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -94,14 +96,26 @@ namespace UnanimousOverkillGame
             {
                 physEntity = entities[i];
                 //TOP
-                if (physEntity.colliderArray[0]) { physEntity.Y = physEntity.Y + 5;}
+                if (physEntity.colliderArray[0]) { physEntity.Y = physEntity.Y + 5; }
                 //RIGHT
-                if (physEntity.colliderArray[1]) { physEntity.X = physEntity.X - 5;}
+                if (physEntity.colliderArray[1]) { physEntity.X = physEntity.X - 5; }
                 //BOTTOM
-                if (physEntity.colliderArray[2]) { physEntity.Y = physEntity.Y - 5;}
+                if (physEntity.colliderArray[2]) { physEntity.Y = physEntity.Y - 5; }
                 //LEFT
-                if (physEntity.colliderArray[3]) { physEntity.X = physEntity.X + 5;}
+                if (physEntity.colliderArray[3]) { physEntity.X = physEntity.X + 5; }
             }
+
+        }
+        public bool OnGround(PhysicsEntity p)
+        {
+            float pBottom = (p.X + p.Rect.Height) + 10;
+            for (int i = 0; i < objects.Count; i++)
+            {
+
+                if ((pBottom) >= objects[i].Y && (pBottom) < (objects[i].Rect.Height + objects[i].Y))
+                    return true;
+            }
+            return false;
         }
     }
 }

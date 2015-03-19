@@ -53,6 +53,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="RoomManager.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="WallCrawler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -74,6 +75,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Rooms\TestRoom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Rooms\TestRoom4.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Rooms\TestRoom3.txt">

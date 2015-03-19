@@ -27,7 +27,7 @@ namespace UnanimousOverkillGame
 
         Vector2 playerLoc; //holds the players position in the form
         Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
-
+        CollisionManager col;
         const int jumpHeight = 80;
         int finalHeight=0;
         //movement animation stuff
@@ -65,6 +65,11 @@ namespace UnanimousOverkillGame
             this.prevY = y;
             spriteSheet = texture; //takes the sprite sheet in here so you can "animate" in the draw method
             activateGravity = false;
+        }
+
+        public void CollisionManagerGet(CollisionManager col)
+        {
+            this.col = col;
         }
 
         /// <summary>
@@ -181,7 +186,12 @@ namespace UnanimousOverkillGame
                                 pState = PlayerState.FaceRight;
                             }
                         }
-                        if (kbState.IsKeyDown(Keys.Space))
+                        if (!col.OnGround(this))
+                        {
+                            prevState = pState;
+                            pState = PlayerState.Falling;
+                        }
+                        else if (kbState.IsKeyDown(Keys.Space))
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
@@ -216,7 +226,12 @@ namespace UnanimousOverkillGame
                                 pState = PlayerState.FaceLeft;
                             }
                         }
-                        if (kbState.IsKeyDown(Keys.Space))
+                        if (!col.OnGround(this))
+                        {
+                            prevState = pState;
+                            pState = PlayerState.Falling;
+                        }
+                        else if (kbState.IsKeyDown(Keys.Space))
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
@@ -241,11 +256,11 @@ namespace UnanimousOverkillGame
                         }
                         if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
                         {
-                            X -= 5;
+                            X -= 4;
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
-                            X += 5;
+                            X += 4;
                         }
                         break;
 
@@ -259,11 +274,11 @@ namespace UnanimousOverkillGame
                         }
                         if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
                         {
-                            X -= 5;
+                            X -= 4;
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
-                            X += 5;
+                            X += 4;
                         }
                         break;
                     }

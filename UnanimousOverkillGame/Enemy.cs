@@ -13,6 +13,12 @@ namespace UnanimousOverkillGame
 {
     abstract class Enemy : PhysicsEntity
     {
+        protected enum MoveState { moveUp, moveRight, moveDown, moveLeft,
+                                 stillUp, stillRight, stillDown, stillLeft}
+
+        //Fields
+        protected MoveState moveState;
+
         public Enemy(int x, int y, int width, int height, Texture2D texture)
             : base(x, y, width, height, texture)
         {
