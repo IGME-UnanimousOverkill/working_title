@@ -251,7 +251,7 @@ namespace UnanimousOverkillGame
                     //calls the player draw method to actually draw the player to the screen
                     player.Draw(spriteBatch);
 
-                    spriteBatch.DrawString(font, "Top: " +/*player.colliderArray[0]*/kbState.IsKeyDown(Keys.Space)
+                    spriteBatch.DrawString(font, "Top: " +player.colliderArray[0]
                         + "\nRight: " + player.colliderArray[1]
                         + "\nBottom: " + player.colliderArray[2]
                         + "\nLeft: " + player.colliderArray[3]
