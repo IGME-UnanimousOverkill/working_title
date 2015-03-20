@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 
+//worked on by Gavin Keirstead
 namespace UnanimousOverkillGame
 {
     class MovingItem : PhysicsEntity

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 //Worked on by: Jeannette Forbes
+//Worked on by Gaving Keirstead
 
 namespace UnanimousOverkillGame
 {
@@ -30,8 +31,8 @@ namespace UnanimousOverkillGame
         Vector2 playerLoc; //holds the players position in the form
         Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
         CollisionManager col;
-        const int jumpHeight = 80;
-        int finalHeight=0;
+        const int jumpHeight = 110;
+        int finalHeight = 0;
         //movement animation stuff
         int frame; // The current animation frame
         double timeCounter; // The amount of time that has passed  
@@ -169,7 +170,11 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.WalkRight:
                     {
-                        X += 5;
+                        if (!colliderArray[1])
+                        {
+                            X += 5;
+                        }
+
                         if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
                             prevState = pState;
@@ -188,7 +193,7 @@ namespace UnanimousOverkillGame
                                 pState = PlayerState.FaceRight;
                             }
                         }
-                        if (!col.OnGround(this))
+                        if (!colliderArray[2])
                         {
                             prevState = pState;
                             pState = PlayerState.Falling;
@@ -209,7 +214,10 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.WalkLeft:
                     {
-                        X -= 5;
+                        if (!colliderArray[3])
+                        {
+                            X -= 5;
+                        }
                         if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
                             prevState = pState;
@@ -228,7 +236,7 @@ namespace UnanimousOverkillGame
                                 pState = PlayerState.FaceLeft;
                             }
                         }
-                        if (!col.OnGround(this))
+                        if (!colliderArray[2])
                         {
                             prevState = pState;
                             pState = PlayerState.Falling;
@@ -250,7 +258,7 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.Jumping:
                     {
-                        
+
                         Jump(finalHeight);
                         if (colliderArray[0] || Y <= finalHeight)
                         {
@@ -258,11 +266,17 @@ namespace UnanimousOverkillGame
                         }
                         if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
                         {
-                            X -= 4;
+                            if (!colliderArray[3])
+                            {
+                                X -= 4;
+                            }
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
-                            X += 4;
+                            if (!colliderArray[1])
+                            {
+                                X += 4;
+                            }
                         }
                         break;
 
@@ -276,11 +290,17 @@ namespace UnanimousOverkillGame
                         }
                         if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
                         {
-                            X -= 4;
+                            if (!colliderArray[3])
+                            {
+                                X -= 4;
+                            }
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
-                            X += 4;
+                            if (!colliderArray[1])
+                            {
+                                X += 4;
+                            }
                         }
                         break;
                     }
@@ -376,9 +396,9 @@ namespace UnanimousOverkillGame
                 case PlayerState.Jumping:
                     {
                         if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
-                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5*MARIO_RECT_WIDTH)-4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH-2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0);
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0);
                         else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
-                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5*MARIO_RECT_WIDTH)-4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH-2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
                         break;
                     }
                 case PlayerState.Falling:
