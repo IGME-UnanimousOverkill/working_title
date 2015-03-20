@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 //Worked on by: Jeannette Forbes
-//Worked on by: Gaving Keirstead
+//Worked on by Gaving Keirstead
 
 namespace UnanimousOverkillGame
 {

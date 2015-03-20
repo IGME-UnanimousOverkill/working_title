@@ -1,5 +1,6 @@
 ﻿// Worked on by: Sean Coffey
 //Worked on by: Jeannette Forbes
+//Worked on by Gavin Keirstead
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace UnanimousOverkillGame
 {
 //Keegan: I worked on the original version of this, which ended up being super buggy, and was eventually thrown out for this current version
-    //Worked on by Gavin Keirstead
     class CollisionManager
     {
 

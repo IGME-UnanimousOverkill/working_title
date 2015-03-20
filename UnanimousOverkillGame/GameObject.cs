@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 #endregion
 
 //Worked on by: Jeannette Forbes
-
+//Worked on by Gavin Keirstead
 namespace UnanimousOverkillGame
 {
     /// <summary>
