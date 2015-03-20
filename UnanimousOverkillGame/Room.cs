@@ -133,7 +133,7 @@ namespace UnanimousOverkillGame
                             if (!forward)
                             {
                                 player.X = (x - 1) * TILE_WIDTH;
-                                player.Y = y * TILE_HEIGHT;
+                                player.Y = y * TILE_HEIGHT-20;
                                 player.positionChangedManually();
                             }
                             Room room = manager.RandomRoom(this);
@@ -145,7 +145,7 @@ namespace UnanimousOverkillGame
                             if (forward)
                             {
                                 player.X = (x + 1) * TILE_WIDTH;
-                                player.Y = y * TILE_HEIGHT;
+                                player.Y = y * TILE_HEIGHT-20;
                                 player.positionChangedManually();
                             }
                             if (previousRoom != null)
