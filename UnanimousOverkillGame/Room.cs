@@ -35,12 +35,13 @@ namespace UnanimousOverkillGame
         private Room previousRoom;
         private List<Room> nextRooms;
         // This will be replaced with tile sets.
-        private Texture2D placeholderTexture;
+        private Texture2D tileSet;
         private Texture2D boundsTexture;
         private RoomManager manager;
+        private static Random rand = new Random();
 
-        private const int TILE_WIDTH = 50;
-        private const int TILE_HEIGHT = 50;
+        public const int TILE_WIDTH = 50;
+        public const int TILE_HEIGHT = 50;
 
         /// <summary>
         /// Default constructor for RoomManager
@@ -67,7 +68,7 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void SetTileTexture(Texture2D tileTexture, Texture2D bounds)
         {
-            placeholderTexture = tileTexture;
+            tileSet = tileTexture;
             boundsTexture = bounds;
         }
 
@@ -123,7 +124,7 @@ namespace UnanimousOverkillGame
                     switch(level[x,y])
                     {
                         case ('*'):
-                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * 1.33), (int)(TILE_HEIGHT * 1.33), placeholderTexture, boundsTexture);
+                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * 1.33), (int)(TILE_HEIGHT * 1.33), tileSet, boundsTexture, rand.Next(3));
                             foreground.Add(tile);
                             colliders.Add(tile);
                             break;
