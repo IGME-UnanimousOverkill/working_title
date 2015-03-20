@@ -31,7 +31,7 @@ namespace UnanimousOverkillGame
         Vector2 playerLoc; //holds the players position in the form
         Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
         CollisionManager col;
-        const int jumpHeight = 80;
+        const int jumpHeight = 110;
         int finalHeight = 0;
         //movement animation stuff
         int frame; // The current animation frame
