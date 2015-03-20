@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
+//Worked on by: Jeannette Forbes
+
 namespace UnanimousOverkillGame
 {
     class Player : PhysicsEntity

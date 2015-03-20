@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
+//Worked on by: Jeannette Forbes
+
 namespace UnanimousOverkillGame
 {
 

@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
+//Worked on by: Jeannette Forbes
+
 namespace UnanimousOverkillGame
 {
     /// <summary>
