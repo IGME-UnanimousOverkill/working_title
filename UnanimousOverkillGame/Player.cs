@@ -327,6 +327,7 @@ namespace UnanimousOverkillGame
             {
                 case PlayerState.WalkRight:
                     {
+                        if (!colliderArray[1])
                         spriteBatch.Draw(spriteSheet,
                                         playerLoc,
                                         new Rectangle(
@@ -340,23 +341,52 @@ namespace UnanimousOverkillGame
                                         1.0f,
                                         SpriteEffects.None,
                                         0);
+                        else
+                            spriteBatch.Draw(spriteSheet,
+                                        playerLoc,
+                                        new Rectangle(
+                                            0,
+                                            MARIO_RECT_Y_OFFSET,
+                                            MARIO_RECT_WIDTH,
+                                            MARIO_RECT_HEIGHT),
+                                        Color.White,
+                                        0,
+                                        Vector2.Zero,
+                                        1.0f,
+                                        SpriteEffects.None,
+                                        0);
                         break;
                     }
                 case PlayerState.WalkLeft:
                     {
-                        spriteBatch.Draw(spriteSheet,
-                                         playerLoc,
-                                         new Rectangle(
-                                             frame * MARIO_RECT_WIDTH,
-                                             MARIO_RECT_Y_OFFSET,
-                                             MARIO_RECT_WIDTH,
-                                             MARIO_RECT_HEIGHT),
-                                         Color.White,
-                                         0,
-                                         Vector2.Zero,
-                                         1.0f,
-                                         SpriteEffects.FlipHorizontally,
-                                         0);
+                        if (!colliderArray[3])
+                            spriteBatch.Draw(spriteSheet,
+                                             playerLoc,
+                                             new Rectangle(
+                                                 frame * MARIO_RECT_WIDTH,
+                                                 MARIO_RECT_Y_OFFSET,
+                                                 MARIO_RECT_WIDTH,
+                                                 MARIO_RECT_HEIGHT),
+                                             Color.White,
+                                             0,
+                                             Vector2.Zero,
+                                             1.0f,
+                                             SpriteEffects.FlipHorizontally,
+                                             0);
+                        else
+                            spriteBatch.Draw(spriteSheet,
+                                        playerLoc,
+                                        new Rectangle(
+                                            0,
+                                            MARIO_RECT_Y_OFFSET,
+                                            MARIO_RECT_WIDTH,
+                                            MARIO_RECT_HEIGHT),
+                                        Color.White,
+                                        0,
+                                        Vector2.Zero,
+                                        1.0f,
+                                        SpriteEffects.FlipHorizontally,
+                                        0);
                         break;
                     }
                 case PlayerState.FaceRight:

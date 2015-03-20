@@ -32,3 +32,37 @@ C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.csprojResolveAssemblyReference.cache
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.exe
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.pdb
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\boundsTest.png
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\gametiles.png
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Mario.png
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\TimesNewRoman12.xnb
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\placeholder.png
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom.txt
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom4.txt
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom3.txt
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom2.txt
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.exe
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.pdb
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\MonoGame.Framework.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.MediaFoundation.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XAudio2.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D11.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.DXGI.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct2D1.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\Lidgren.Network.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XInput.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.RawInput.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D9.dll
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.MediaFoundation.xml
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.xml
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XAudio2.xml
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D11.xml
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.DXGI.xml
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct2D1.xml
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.XInput.xml
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.RawInput.xml
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D9.xml
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.csprojResolveAssemblyReference.cache
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.exe
+C:\IGME 106 Game Git\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.pdb
