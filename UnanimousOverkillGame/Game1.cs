@@ -1,4 +1,6 @@
 ﻿// Worked on by: Sean Coffey
+//Worked on by: Jeannette Forbes
+//worked on by Gavin Keirstead
 
 #region Using Statements
 using System;
@@ -51,7 +53,7 @@ namespace UnanimousOverkillGame
 
         //player
         Player player;
-        
+
         public Game1()
             : base()
         {
@@ -140,7 +142,10 @@ namespace UnanimousOverkillGame
                     if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                     {
                         currentKey = Keys.Enter;
-                        if(prevKey != currentKey){
+                        if (prevKey != currentKey)
+                        {
+                            Initialize();
+                            LoadContent();
                             gameState = GameState.Game;
                         }
                     }
@@ -159,7 +164,8 @@ namespace UnanimousOverkillGame
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     {
                         currentKey = Keys.Escape;
-                        if (prevKey != currentKey){
+                        if (prevKey != currentKey)
+                        {
                             prevKeyCount = 10; //the amount of time that has to pass before Paused --> Menu
                             gameState = GameState.Paused;
                         }
@@ -176,7 +182,7 @@ namespace UnanimousOverkillGame
                     if (kbState.IsKeyDown(Keys.Down)) { player.Y += 5; }
 
                     collisionManager.DetectCollisions();
-                    collisionManager.HandleCollisions();
+                    //collisionManager.HandleCollisions();
 
                     base.Update(gameTime);
 
@@ -192,7 +198,8 @@ namespace UnanimousOverkillGame
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                     {
                         currentKey = Keys.Escape;
-                        if (prevKey != currentKey){
+                        if (prevKey != currentKey)
+                        {
                             prevKeyCount = 10;
                             gameState = GameState.Menu;
                         }
@@ -200,7 +207,8 @@ namespace UnanimousOverkillGame
                     else if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                     {
                         currentKey = Keys.Enter;
-                        if (prevKey != currentKey){
+                        if (prevKey != currentKey)
+                        {
                             gameState = GameState.Game;
                         }
                     }
@@ -234,19 +242,19 @@ namespace UnanimousOverkillGame
 
                     kbState = Keyboard.GetState();
                     // Hold down space to should tile physics boundaries.
-                    if (kbState.IsKeyDown(Keys.Space))
+                    if (kbState.IsKeyDown(Keys.OemPeriod))
                     {
                         roomManager.BoundsDraw(spriteBatch);
-                        player.DrawBounds(spriteBatch,roomManager.boundsTexture);//temporary, for testing
+                        player.DrawBounds(spriteBatch, roomManager.boundsTexture);//temporary, for testing
                     }
 
                     //calls the player draw method to actually draw the player to the screen
                     player.Draw(spriteBatch);
 
-                    spriteBatch.DrawString(font, "Top: "+/*player.colliderArray[0]*/kbState.IsKeyDown(Keys.Space)
-                        +"\nRight: "+player.colliderArray[1]
-                        +"\nBottom: "+player.colliderArray[2]
-                        +"\nLeft: "+player.colliderArray[3]
+                    spriteBatch.DrawString(font, "Top: " +/*player.colliderArray[0]*/kbState.IsKeyDown(Keys.Space)
+                        + "\nRight: " + player.colliderArray[1]
+                        + "\nBottom: " + player.colliderArray[2]
+                        + "\nLeft: " + player.colliderArray[3]
                         , new Vector2(20, 400), Color.Yellow);
 
                     break;
@@ -267,3 +275,4 @@ namespace UnanimousOverkillGame
         }
     }
 }
+

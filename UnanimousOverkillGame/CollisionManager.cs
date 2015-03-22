@@ -1,4 +1,6 @@
 ﻿// Worked on by: Sean Coffey
+//Worked on by: Jeannette Forbes
+//Worked on by Gavin Keirstead
 
 using System;
 using System.Collections.Generic;
@@ -46,7 +48,7 @@ namespace UnanimousOverkillGame
                     physEntity.colliderArray[3] = false;
 
                     // Calculate the bottom and right side locations for the physEntity
-                    float entBottom = physEntity.Y + physEntity.Rect.Height;
+                    float entBottom = physEntity.Y + physEntity.Rect.Height - 5;
                     float entRight = physEntity.X + physEntity.Rect.Width;
 
                     for (int j = 0; j < objects.Count; j++)
@@ -108,7 +110,7 @@ namespace UnanimousOverkillGame
         }
         public bool OnGround(PhysicsEntity p)
         {
-            float pBottom = (p.X + p.Rect.Height) + 10;
+            float pBottom = (p.Y + p.Rect.Height) + 5;
             for (int i = 0; i < objects.Count; i++)
             {
 

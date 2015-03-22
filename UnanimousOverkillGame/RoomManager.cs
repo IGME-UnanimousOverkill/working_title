@@ -78,7 +78,7 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void LoadContent(GraphicsDevice graphics)
         {
-            System.IO.Stream tileStream = TitleContainer.OpenStream("Content/placeholder.png");
+            System.IO.Stream tileStream = TitleContainer.OpenStream("Content/gameTiles.png");
             System.IO.Stream boundStream = TitleContainer.OpenStream("Content/boundsTest.png");
             placeholderTexture = Texture2D.FromStream(graphics, tileStream);
             boundsTexture = Texture2D.FromStream(graphics, boundStream);
