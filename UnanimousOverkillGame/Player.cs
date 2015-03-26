@@ -39,6 +39,8 @@ namespace UnanimousOverkillGame
         double fps; // The speed of the animation                  
         double timePerFrame; // The amount of time (in fractional seconds) per frame                  
 
+        Vector2 scale;
+
         //spritesheet animation stuff
         const int WALK_FRAME_COUNT = 3; // The number of frames in the animation                 
         const int MARIO_RECT_Y_OFFSET = 116; // How far down in the image are the frames?                 
@@ -68,6 +70,8 @@ namespace UnanimousOverkillGame
             this.prevY = y;
             spriteSheet = texture; //takes the sprite sheet in here so you can "animate" in the draw method
             activateGravity = false;
+
+            scale = new Vector2(((float)width / (float)MARIO_RECT_WIDTH), ((float)height / (float)MARIO_RECT_HEIGHT));//the scale of the image to fit given width/height
         }
 
         public void CollisionManagerGet(CollisionManager col)
@@ -338,7 +342,7 @@ namespace UnanimousOverkillGame
                                         Color.White,
                                         0,
                                         Vector2.Zero,
-                                        1.0f,
+                                        scale,
                                         SpriteEffects.None,
                                         0);
                         else
@@ -352,7 +356,7 @@ namespace UnanimousOverkillGame
                                         Color.White,
                                         0,
                                         Vector2.Zero,
-                                        1.0f,
+                                        scale,
                                         SpriteEffects.None,
                                         0);
                         break;
@@ -370,7 +374,7 @@ namespace UnanimousOverkillGame
                                              Color.White,
                                              0,
                                              Vector2.Zero,
-                                             1.0f,
+                                             scale,
                                              SpriteEffects.FlipHorizontally,
                                              0);
                         else
@@ -384,7 +388,7 @@ namespace UnanimousOverkillGame
                                         Color.White,
                                         0,
                                         Vector2.Zero,
-                                        1.0f,
+                                        scale,
                                         SpriteEffects.FlipHorizontally,
                                         0);
                         break;
@@ -401,7 +405,7 @@ namespace UnanimousOverkillGame
                                         Color.White,
                                         0,
                                         Vector2.Zero,
-                                        1.0f,
+                                        scale,
                                         SpriteEffects.None,
                                         0);
                         break;
@@ -418,7 +422,7 @@ namespace UnanimousOverkillGame
                                         Color.White,
                                         0,
                                         Vector2.Zero,
-                                        1.0f,
+                                        scale,
                                         SpriteEffects.FlipHorizontally,
                                         0);
                         break;
@@ -426,17 +430,17 @@ namespace UnanimousOverkillGame
                 case PlayerState.Jumping:
                     {
                         if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
-                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0);
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, scale, SpriteEffects.FlipHorizontally, 0);
                         else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
-                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((5 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
                         break;
                     }
                 case PlayerState.Falling:
                     {
                         if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
-                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((4 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.FlipHorizontally, 0);
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((4 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, scale, SpriteEffects.FlipHorizontally, 0);
                         else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
-                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((4 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(spriteSheet, playerLoc, new Rectangle((4 * MARIO_RECT_WIDTH) - 4, MARIO_RECT_Y_OFFSET, MARIO_RECT_WIDTH - 2, MARIO_RECT_HEIGHT), Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
                         break;
                     }
 
