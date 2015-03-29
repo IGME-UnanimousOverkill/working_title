@@ -41,6 +41,8 @@ namespace UnanimousOverkillGame
 
         Vector2 scale;
 
+        private bool jumped;
+
         //spritesheet animation stuff
         const int WALK_FRAME_COUNT = 3; // The number of frames in the animation                 
         const int MARIO_RECT_Y_OFFSET = 116; // How far down in the image are the frames?                 
@@ -71,6 +73,7 @@ namespace UnanimousOverkillGame
             spriteSheet = texture; //takes the sprite sheet in here so you can "animate" in the draw method
             activateGravity = false;
 
+            jumped = false;
             scale = new Vector2(((float)width / (float)MARIO_RECT_WIDTH), ((float)height / (float)MARIO_RECT_HEIGHT));//the scale of the image to fit given width/height
         }
 
@@ -101,7 +104,10 @@ namespace UnanimousOverkillGame
 
                 timeCounter -= timePerFrame; // Remove the time we "used"
             }
+            if(!colliderArray[0] && !colliderArray[1] && !colliderArray[2] && !colliderArray[3] && pState != PlayerState.Jumping){
+                pState = PlayerState.Falling;
 
+            }
             //switch case for the player state to determine if the player is facing/walking a certain way and then changing to the next state when a key is pressed, or lifted up.
             switch (pState)
             {
@@ -176,7 +182,7 @@ namespace UnanimousOverkillGame
                     {
                         if (!colliderArray[1])
                         {
-                            X += 5;
+                            AddForce(new Vector2(5, 0));
                         }
 
                         if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
@@ -220,7 +226,7 @@ namespace UnanimousOverkillGame
                     {
                         if (!colliderArray[3])
                         {
-                            X -= 5;
+                            AddForce(new Vector2(-5, 0));
                         }
                         if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
@@ -262,8 +268,17 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.Jumping:
                     {
-
-                        Jump(finalHeight);
+                        if (!activateGravity)
+                        {
+                            activateGravity = true;
+                        }
+                        //Jump(finalHeight);
+                        if (!jumped)
+                        {
+                            AddForce(new Vector2(0, -15));
+                            activateGravity = true;
+                            jumped = true;
+                        }
                         if (colliderArray[0] || Y <= finalHeight)
                         {
                             pState = PlayerState.Falling;
@@ -272,14 +287,14 @@ namespace UnanimousOverkillGame
                         {
                             if (!colliderArray[3])
                             {
-                                X -= 4;
+                                AddForce(new Vector2(-3, 0));
                             }
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
                             if (!colliderArray[1])
                             {
-                                X += 4;
+                                AddForce(new Vector2(3, 0));
                             }
                         }
                         break;
@@ -287,10 +302,16 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.Falling:
                     {
-                        Fall();
+                        if (!activateGravity)
+                        {
+                            activateGravity = true;
+                        }
+                        //Fall();
                         if (colliderArray[2] == true)
                         {
                             pState = prevState;
+                            jumped = false;
+                            activateGravity = false;
                         }
                         if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
                         {
@@ -310,6 +331,7 @@ namespace UnanimousOverkillGame
                     }
 
             }
+            Updates();
         }
         public void DrawBounds(SpriteBatch spriteBatch, Texture2D bound)//temporary for testing
         {

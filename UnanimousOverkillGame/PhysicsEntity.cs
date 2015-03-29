@@ -25,10 +25,13 @@ namespace UnanimousOverkillGame
     abstract class PhysicsEntity : GameObject
     {
         public bool[] colliderArray = new bool[4];//indicates the direction that the entity is colliding with something, [top, right, bottom, left]
-        protected Vector2 velocity;//velocity vector
+        public Vector2 velocity;//velocity vector
         protected Vector2 acceleration;//acceleration vector
 
-        protected bool activateGravity;
+        private float maxXVelocity = 5;
+        private float maxYVelocity = 1000;
+
+        public bool activateGravity;
         /// <summary> 
         /// Instantiates a basic PhysicsEntity.  Nothing special here.
         /// </summary>
@@ -36,7 +39,8 @@ namespace UnanimousOverkillGame
             : base(x, y, width, height, texture)
         {
             velocity = new Vector2();
-            acceleration = new Vector2(0.0f,1.0f);
+            acceleration = new Vector2(0.0f,0.0f);
+            activateGravity = false;
         }
 
         public virtual void OnCollide(PhysicsEntity other)
@@ -44,6 +48,70 @@ namespace UnanimousOverkillGame
             // Manage collision with other entities
         }
 
+
+        public void AddForce(Vector2 forceVector)
+        {
+            acceleration.X += forceVector.X;
+            acceleration.Y += forceVector.Y;
+        }
+
+
+        public void UpdateVelocity()
+        {
+            velocity.X += acceleration.X;
+
+            if (Math.Abs(velocity.X) > maxXVelocity)
+            {
+                velocity.X = (velocity.X > 0) ? maxXVelocity : -maxXVelocity;
+            }
+
+            velocity.Y += acceleration.Y;
+
+            if (Math.Abs(velocity.Y) > maxYVelocity)
+            {
+                velocity.Y = (velocity.Y > 0) ? maxYVelocity : -maxYVelocity;
+            }
+            //horizontal drag
+            if (acceleration.X == 0 && velocity.X != 0)
+            {
+                velocity.X = .5f * velocity.X;
+                if (velocity.X < .5)
+                    velocity.X = 0;
+            }
+            else
+            {
+                acceleration.X = 0;
+            }
+            //vertical drag, idk why
+            if (acceleration.Y == 0 && velocity.Y != 0)
+            {
+                velocity.Y = .5f * velocity.Y;
+                if (velocity.Y < .5)
+                    velocity.Y = 0;
+            }
+            else
+            {
+                acceleration.Y = 0;
+            }
+
+            if (activateGravity)
+            {
+                acceleration.Y = 1.0f;
+            }
+        }
+
+        public void UpdatePosition()
+        {
+            X = (int)(X + velocity.X);
+            Y = (int)(Y + velocity.Y);
+        }
+
+        public void Updates()
+        {
+            UpdateVelocity();
+            UpdatePosition();
+
+        }
         /// <summary>
         /// Entity rises a certain height into the air.
         /// Relies on Fall method to fall.

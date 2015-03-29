@@ -182,7 +182,7 @@ namespace UnanimousOverkillGame
                     if (kbState.IsKeyDown(Keys.Down)) { player.Y += 5; }
 
                     collisionManager.DetectCollisions();
-                    //collisionManager.HandleCollisions();
+                    collisionManager.HandleCollisions();
 
                     base.Update(gameTime);
 

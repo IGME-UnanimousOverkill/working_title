@@ -19,6 +19,8 @@ namespace UnanimousOverkillGame
         private List<PhysicsEntity> objects = null;//list of all objects in to check collisions against
         private List<PhysicsEntity> entities;//objects who collisions we care about
 
+        private List<Collision> collisions;
+
         PhysicsEntity physEntity; //current physics object that we're checking for collisions
         PhysicsEntity gameObject; //current object we're checking against
 
@@ -27,6 +29,7 @@ namespace UnanimousOverkillGame
         public CollisionManager(params PhysicsEntity[] objectsToBeChecked)
         {
             entities = new List<PhysicsEntity>(objectsToBeChecked);
+            collisions = new List<Collision>();
         }
 
         public void UpdateObjects(List<PhysicsEntity> newObjects)
@@ -70,22 +73,24 @@ namespace UnanimousOverkillGame
                         {
 
                             gameObject.OnCollide(physEntity);
-
+                            if (gameObject is Door)//stops nast problems from happening during room spawn, should  be changed in case of like locked doors or something
+                                return;
+                            //below, sets collide array and creates new collision object
                             //TOP
                             if (tDistance < bDistance && tDistance < lDistance && tDistance < rDistance)
-                            { physEntity.colliderArray[0] = true; }
+                            { physEntity.colliderArray[0] = true; collisions.Add(new Collision(physEntity,gameObject,CollisionSide.top));}
 
                             //RIGHT
                             else if (rDistance < bDistance && rDistance < lDistance && rDistance < tDistance)
-                            { physEntity.colliderArray[1] = true; }
+                            { physEntity.colliderArray[1] = true; collisions.Add(new Collision(physEntity, gameObject, CollisionSide.right)); }
 
                             //BOTTOM
                             else if (bDistance < tDistance && bDistance < lDistance && bDistance < rDistance)
-                            { physEntity.colliderArray[2] = true; }
+                            { physEntity.colliderArray[2] = true; collisions.Add(new Collision(physEntity, gameObject, CollisionSide.bottom)); }
 
                             //LEFT
                             else if (lDistance < bDistance && lDistance < tDistance && lDistance < rDistance)
-                            { physEntity.colliderArray[3] = true; }
+                            { physEntity.colliderArray[3] = true; collisions.Add(new Collision(physEntity, gameObject, CollisionSide.left)); }
                         }
                     }
                 }
@@ -94,6 +99,7 @@ namespace UnanimousOverkillGame
 
         public void HandleCollisions()
         {
+            /*
             for (int i = 0; i < entities.Count; i++)
             {
                 physEntity = entities[i];
@@ -106,6 +112,49 @@ namespace UnanimousOverkillGame
                 //LEFT
                 if (physEntity.colliderArray[3]) { physEntity.X = physEntity.X + 5; }
             }
+             * */
+            GameObject gObject;
+            PhysicsEntity entity;
+            for (int i = 0; i < collisions.Count; i++)//deals with all collisions 1 by 1, currently a little broken because always runs, even if still on floor..
+            {
+                gObject = collisions[i].GameObject;
+                entity = collisions[i].Entity;
+                if (collisions[i].collideArray[0])
+                {
+                    entity.Y = gObject.Y + gObject.Rect.Height -1;
+                    if (entity.velocity.Y < 0)
+                    {
+                        entity.velocity.Y = 0;
+                    }
+                }
+                if (collisions[i].collideArray[1])
+                {
+                    entity.X = gObject.X - entity.Rect.Width +1;
+                    if (entity.velocity.X > 0)
+                    {
+                        entity.velocity.X = 0;
+                    }
+                }
+                if (collisions[i].collideArray[2])
+                {
+                    entity.Y = gObject.Y - entity.Rect.Height +1;
+                    entity.activateGravity = false;//dont want to keep falling lol
+                    if (entity.velocity.Y > 0)
+                    {
+                        entity.velocity.Y = 0;
+                    }
+                }
+                if (collisions[i].collideArray[3])
+                {
+                    entity.X = gObject.X + gObject.Rect.Width - 1;
+                    if (entity.velocity.X < 0)
+                    {
+                        entity.velocity.X = 0;
+                    }
+                }
+                gObject.positionChangedManually();
+            }
+            collisions = new List<Collision>();
 
         }
         public bool OnGround(PhysicsEntity p)
