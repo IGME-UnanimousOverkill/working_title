@@ -19,27 +19,27 @@ namespace UnanimousOverkillGame
     class Player : PhysicsEntity
     {
         //fields
-        int intox; //will represent the amount of goo drunk, initialized to 0
-        int health; //will show the amount of health the player currently has, initialized to 50 for now
-        bool holding; //will show whether the player is holding an object or not, initilized to false
-        PlayerState pState; //will hold the movement state the player is currently in, inside of the Game1 file
-        PlayerState prevState;
+        private int intox; //will represent the amount of goo drunk, initialized to 0
+        private int health; //will show the amount of health the player currently has, initialized to 50 for now
+        private bool holding; //will show whether the player is holding an object or not, initilized to false
+        private PlayerState pState; //will hold the movement state the player is currently in, inside of the Game1 file
+        private PlayerState prevState;
         //SpriteBatch spriteBatch;
 
-        SpriteBatch playerSpriteBatch;
+        private SpriteBatch playerSpriteBatch;
 
-        Vector2 playerLoc; //holds the players position in the form
-        Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
-        CollisionManager col;
-        const int jumpHeight = 110;
-        int finalHeight = 0;
+        private Vector2 playerLoc; //holds the players position in the form
+        private Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
+        private CollisionManager col;
+        private const int jumpHeight = 110;
+        private int finalHeight = 0;
         //movement animation stuff
-        int frame; // The current animation frame
-        double timeCounter; // The amount of time that has passed  
-        double fps; // The speed of the animation                  
-        double timePerFrame; // The amount of time (in fractional seconds) per frame                  
+        private int frame; // The current animation frame
+        private double timeCounter; // The amount of time that has passed  
+        private double fps; // The speed of the animation                  
+        private double timePerFrame; // The amount of time (in fractional seconds) per frame                  
 
-        Vector2 scale;
+        private Vector2 scale;
 
         private bool jumped;
 

@@ -28,6 +28,8 @@ namespace UnanimousOverkillGame
             }
         }
 
+        public int ID;
+
         // 2D array for level
         private char[,] level;
         private List<ForegroundTile> foreground;
@@ -52,6 +54,7 @@ namespace UnanimousOverkillGame
             foreground = new List<ForegroundTile>();
             colliders = new List<PhysicsEntity>();
             nextRooms = new List<Room>();
+            ID = manager.MakeID();
         }
 
         public Room(RoomManager roomManager, Room previous)
@@ -61,6 +64,7 @@ namespace UnanimousOverkillGame
             foreground = new List<ForegroundTile>();
             colliders = new List<PhysicsEntity>();
             nextRooms = new List<Room>();
+            ID = manager.MakeID();
         }
 
         /// <summary>
@@ -114,9 +118,10 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Creates the actual tile objects in the world.
         /// </summary>
-        public void SpawnRoom(Player player, bool forward)
+        public void SpawnRoom(Player player, Room lastRoom)
         {
             foreground.Clear();
+            int exitNum = 0;
             for (int y = level.GetLength(1) - 1; y >= 0; y--)
             {
                 for (int x = 0; x < level.GetLength(0); x++)
@@ -130,26 +135,42 @@ namespace UnanimousOverkillGame
                             break;
                             // Cases for entrances and exits.
                         case ('>'):
-                            if (!forward)
+                            if (nextRooms.Contains(lastRoom))
                             {
-                                player.X = (x - 1) * TILE_WIDTH;
-                                player.Y = y * TILE_HEIGHT - (player.Rect.Height-TILE_HEIGHT-1);//made this a little more generic
-                                player.positionChangedManually();
+                                Door nextDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, nextRooms[exitNum], manager);
+
+                                if (nextRooms[exitNum] == lastRoom)
+                                {
+                                    player.pState = PlayerState.FaceLeft;
+                                    player.prevState = PlayerState.FaceLeft;
+                                    player.X = (x - 1) * TILE_WIDTH;
+                                    player.Y = ((y + 1) * TILE_HEIGHT) - player.Rect.Height;//made this a little more generic
+                                    player.positionChangedManually();
+                                    player.velocity = Vector2.Zero;
+                                }
+                                
+                                exitNum++;
                             }
-                            Room room = manager.RandomRoom(this);
-                            Door nextDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, room, manager);
-                            nextRooms.Add(room);
-                            colliders.Add(nextDoor);
+                            else
+                            {
+                                Room room = manager.RandomRoom(this);
+                                Door nextDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, room, manager);
+                                nextRooms.Add(room);
+                                colliders.Add(nextDoor);
+                            }
                             break;
                         case ('<'):
-                            if (forward)
-                            {
-                                player.X = (x + 1) * TILE_WIDTH;
-                                player.Y = y * TILE_HEIGHT - (player.Rect.Height - TILE_HEIGHT - 1);//made this a little more generic
-                                player.positionChangedManually();
-                            }
                             if (previousRoom != null)
                             {
+                                if (previousRoom == lastRoom)
+                                {
+                                    player.pState = PlayerState.FaceRight;
+                                    player.prevState = PlayerState.FaceRight;
+                                    player.X = (x + 1) * TILE_WIDTH;
+                                    player.Y = ((y + 1) * TILE_HEIGHT) - player.Rect.Height;//made this a little more generic
+                                    player.positionChangedManually();
+                                    player.velocity = Vector2.Zero;
+                                }
                                 Door previousDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, previousRoom, manager);
                                 colliders.Add(previousDoor);
                             }

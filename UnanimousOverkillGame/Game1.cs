@@ -178,8 +178,8 @@ namespace UnanimousOverkillGame
 
                     kbState = Keyboard.GetState();
 
-                    if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 5; }
-                    if (kbState.IsKeyDown(Keys.Down)) { player.Y += 5; }
+                    if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 10; }
+                    if (kbState.IsKeyDown(Keys.Down)) { player.Y += 10; }
 
                     collisionManager.DetectCollisions();
                     collisionManager.HandleCollisions();
@@ -254,7 +254,10 @@ namespace UnanimousOverkillGame
                     spriteBatch.DrawString(font, "Top: " + player.colliderArray[0]
                         + "\nRight: " + player.colliderArray[1]
                         + "\nBottom: " + player.colliderArray[2]
-                        + "\nLeft: " + player.colliderArray[3]
+                        + "\nLeft: " + player.colliderArray[3] 
+                        + "\nRoom: " + roomManager.Current.ID.ToString()
+                        + "\nPlayer X: " + player.X
+                        + "\nPlayer Y: " + player.Y
                         , new Vector2(20, 400), Color.Yellow);
 
                     break;

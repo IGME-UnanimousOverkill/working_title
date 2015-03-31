@@ -14,6 +14,14 @@ namespace UnanimousOverkillGame
 {
     class RoomManager
     {
+        public Room Current
+        {
+            get
+            {
+                return current;
+            }
+        }
+        
         private Player player;
         private CollisionManager collisionManager;
         private Room head;
@@ -23,6 +31,7 @@ namespace UnanimousOverkillGame
         public Texture2D boundsTexture;
         public const string ROOM_DIR = "Content/Rooms/";
         private static Random rand = new Random();
+        private int currentID = 0;
 
         public RoomManager(Player play, CollisionManager manager)
         {
@@ -36,24 +45,20 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void ChangeRoom(Room room)
         {
-            if (current != null && current.PreviousRoom == room)
-            {
-                current = room;
-                // Placeholder tile assignment because no tilesets yet.
-                room.SetTileTexture(placeholderTexture, boundsTexture);
+            // Placeholder tile assignment because no tilesets yet.
+            room.SetTileTexture(placeholderTexture, boundsTexture);
+            collisionManager.ClearCollisions();
+            collisionManager.UpdateObjects(getColliders(room));
 
-                room.SpawnRoom(player, false);
-                collisionManager.UpdateObjects(getColliders());
-            }
-            else
-            {
-                current = room;
-                // Placeholder tile assignment because no tilesets yet.
-                room.SetTileTexture(placeholderTexture, boundsTexture);
+            room.SpawnRoom(player, current);
 
-                room.SpawnRoom(player, true);
-                collisionManager.UpdateObjects(getColliders());
-            }
+            current = room;
+        }
+
+        public int MakeID()
+        {
+            currentID += 1;
+            return currentID;
         }
 
         /// <summary>
@@ -68,9 +73,9 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Returns a list of collidable objects in the current room.
         /// </summary>
-        public List<PhysicsEntity> getColliders()
+        public List<PhysicsEntity> getColliders(Room room)
         {
-            return current.GetColliders();
+            return room.GetColliders();
         }
 
         /// <summary>

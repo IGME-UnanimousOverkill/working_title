@@ -37,6 +37,11 @@ namespace UnanimousOverkillGame
             objects = newObjects;
         }
 
+        public void ClearCollisions()
+        {
+            collisions.Clear();
+        }
+
         public void DetectCollisions()
         {
             if (objects != null)
