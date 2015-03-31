@@ -49,6 +49,10 @@ namespace UnanimousOverkillGame
         const int MARIO_RECT_HEIGHT = 72; // The height of a single frame
         const int MARIO_RECT_WIDTH = 44; // The width of a single frame
 
+
+        public PlayerState PState { get { return pState; } set { pState = value; } }
+        public PlayerState PrevState { get { return prevState; } set {  prevState = value; } }
+
         /// <summary>
         /// initializes a player, sets the intoxication level to 0, health value to 50 and holding to false
         /// </summary>
@@ -135,7 +139,7 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            finalHeight = Y - jumpHeight;
+                            //finalHeight = Y - jumpHeight;
 
                         }
                         //if (colliderArray[2] == false&&)
@@ -168,7 +172,7 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            finalHeight = Y - jumpHeight;
+                            //finalHeight = Y - jumpHeight;
 
                         }
                         //if (colliderArray[2] == false)
@@ -212,7 +216,7 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            finalHeight = Y - jumpHeight;
+                            //finalHeight = Y - jumpHeight;
 
                         }
                         //if (colliderArray[2] == false)
@@ -255,7 +259,7 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            finalHeight = Y - jumpHeight;
+                            //finalHeight = Y - jumpHeight;
                         }
                         //if (colliderArray[2] == false)
                         //{

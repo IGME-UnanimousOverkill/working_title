@@ -141,8 +141,8 @@ namespace UnanimousOverkillGame
 
                                 if (nextRooms[exitNum] == lastRoom)
                                 {
-                                    player.pState = PlayerState.FaceLeft;
-                                    player.prevState = PlayerState.FaceLeft;
+                                    player.PState = PlayerState.FaceLeft;
+                                    player.PrevState = PlayerState.FaceLeft;
                                     player.X = (x - 1) * TILE_WIDTH;
                                     player.Y = ((y + 1) * TILE_HEIGHT) - player.Rect.Height;//made this a little more generic
                                     player.positionChangedManually();
@@ -164,8 +164,8 @@ namespace UnanimousOverkillGame
                             {
                                 if (previousRoom == lastRoom)
                                 {
-                                    player.pState = PlayerState.FaceRight;
-                                    player.prevState = PlayerState.FaceRight;
+                                    player.PState = PlayerState.FaceRight;
+                                    player.PrevState = PlayerState.FaceRight;
                                     player.X = (x + 1) * TILE_WIDTH;
                                     player.Y = ((y + 1) * TILE_HEIGHT) - player.Rect.Height;//made this a little more generic
                                     player.positionChangedManually();
