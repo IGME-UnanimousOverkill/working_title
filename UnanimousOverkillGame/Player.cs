@@ -22,7 +22,7 @@ namespace UnanimousOverkillGame
         int intox; //will represent the amount of goo drunk, initialized to 0
         int health; //will show the amount of health the player currently has, initialized to 50 for now
         bool holding; //will show whether the player is holding an object or not, initilized to false
-        PlayerState pState; //will hold the movement state the player is currently in, inside of the Game1 file
+       PlayerState pState; //will hold the movement state the player is currently in, inside of the Game1 file
         PlayerState prevState;
         //SpriteBatch spriteBatch;
 
@@ -182,7 +182,7 @@ namespace UnanimousOverkillGame
                     {
                         if (!colliderArray[1])
                         {
-                            AddForce(new Vector2(5, 0));
+                            AddForce(new Vector2(10, 0));
                         }
 
                         if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
@@ -226,7 +226,7 @@ namespace UnanimousOverkillGame
                     {
                         if (!colliderArray[3])
                         {
-                            AddForce(new Vector2(-5, 0));
+                            AddForce(new Vector2(-10, 0));
                         }
                         if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
@@ -275,9 +275,10 @@ namespace UnanimousOverkillGame
                         //Jump(finalHeight);
                         if (!jumped)
                         {
-                            AddForce(new Vector2(0, -15));
+                            AddForce(new Vector2(0, -350));
                             activateGravity = true;
                             jumped = true;
+                            pState = PlayerState.Falling;
                         }
                         if (colliderArray[0] || Y <= finalHeight)
                         {
@@ -287,14 +288,14 @@ namespace UnanimousOverkillGame
                         {
                             if (!colliderArray[3])
                             {
-                                AddForce(new Vector2(-3, 0));
+                                AddForce(new Vector2(-6, 0));
                             }
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
                             if (!colliderArray[1])
                             {
-                                AddForce(new Vector2(3, 0));
+                                AddForce(new Vector2(6, 0));
                             }
                         }
                         break;
@@ -317,21 +318,21 @@ namespace UnanimousOverkillGame
                         {
                             if (!colliderArray[3])
                             {
-                                X -= 4;
+                                AddForce(new Vector2(-6, 0));
                             }
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
                             if (!colliderArray[1])
                             {
-                                X += 4;
+                                AddForce(new Vector2(6, 0));
                             }
                         }
                         break;
                     }
 
             }
-            Updates();
+            Updates(gameTime);
         }
         public void DrawBounds(SpriteBatch spriteBatch, Texture2D bound)//temporary for testing
         {

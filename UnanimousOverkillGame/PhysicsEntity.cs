@@ -28,7 +28,7 @@ namespace UnanimousOverkillGame
         public Vector2 velocity;//velocity vector
         protected Vector2 acceleration;//acceleration vector
 
-        private float maxXVelocity = 5;
+        private float maxXVelocity = 10;
         private float maxYVelocity = 1000;
 
         public bool activateGravity;
@@ -56,26 +56,26 @@ namespace UnanimousOverkillGame
         }
 
 
-        public void UpdateVelocity()
+        public void UpdateVelocity(GameTime gameTime)
         {
-            velocity.X += acceleration.X;
+            velocity.X += acceleration.X*gameTime.ElapsedGameTime.Milliseconds/1000;
 
             if (Math.Abs(velocity.X) > maxXVelocity)
             {
                 velocity.X = (velocity.X > 0) ? maxXVelocity : -maxXVelocity;
             }
 
-            velocity.Y += acceleration.Y;
+            velocity.Y += acceleration.Y *gameTime.ElapsedGameTime.Milliseconds / 1000;
 
             if (Math.Abs(velocity.Y) > maxYVelocity)
             {
                 velocity.Y = (velocity.Y > 0) ? maxYVelocity : -maxYVelocity;
             }
             //horizontal drag
-            if (acceleration.X == 0 && velocity.X != 0)
+            if (Math.Abs(acceleration.X) == 0 && velocity.X != 0)
             {
                 velocity.X = .5f * velocity.X;
-                if (velocity.X < .5)
+                if (Math.Abs(velocity.X) < .5)
                     velocity.X = 0;
             }
             else
@@ -83,10 +83,10 @@ namespace UnanimousOverkillGame
                 acceleration.X = 0;
             }
             //vertical drag, idk why
-            if (acceleration.Y == 0 && velocity.Y != 0)
+            if (Math.Abs(acceleration.Y) ==0 && velocity.Y != 0)
             {
                 velocity.Y = .5f * velocity.Y;
-                if (velocity.Y < .5)
+                if (Math.Abs(velocity.Y) < .5)
                     velocity.Y = 0;
             }
             else
@@ -94,9 +94,10 @@ namespace UnanimousOverkillGame
                 acceleration.Y = 0;
             }
 
+
             if (activateGravity)
             {
-                acceleration.Y = 1.0f;
+                acceleration.Y = 19.8f;
             }
         }
 
@@ -106,9 +107,9 @@ namespace UnanimousOverkillGame
             Y = (int)(Y + velocity.Y);
         }
 
-        public void Updates()
+        public void Updates(GameTime gameTime)
         {
-            UpdateVelocity();
+            UpdateVelocity(gameTime);
             UpdatePosition();
 
         }
