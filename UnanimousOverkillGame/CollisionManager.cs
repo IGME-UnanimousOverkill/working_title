@@ -48,7 +48,11 @@ namespace UnanimousOverkillGame
             {
                 for (int i = 0; i < entities.Count; i++)
                 {
-                    physEntity = entities[i];
+                    physEntity = entities[i];//if it hasn't move, it won't have new collisions, if somehting hits it, that entity will take care of collision
+                    if (physEntity.X == physEntity.PrevX && physEntity.Y == physEntity.PrevY)
+                    {
+                        continue;
+                    }
                     // Reset collision array
                     physEntity.colliderArray[0] = false;
                     physEntity.colliderArray[1] = false;
@@ -83,19 +87,35 @@ namespace UnanimousOverkillGame
                             //below, sets collide array and creates new collision object
                             //TOP
                             if (tDistance < bDistance && tDistance < lDistance && tDistance < rDistance)
-                            { physEntity.colliderArray[0] = true; collisions.Add(new Collision(physEntity,gameObject,CollisionSide.top));}
+                            {
+                                physEntity.colliderArray[0] = true;
+                                if (physEntity.Y != physEntity.PrevY)
+                                collisions.Add(new Collision(physEntity,gameObject,CollisionSide.top));
+                            }
 
                             //RIGHT
                             else if (rDistance < bDistance && rDistance < lDistance && rDistance < tDistance)
-                            { physEntity.colliderArray[1] = true; collisions.Add(new Collision(physEntity, gameObject, CollisionSide.right)); }
+                            { 
+                                physEntity.colliderArray[1] = true;
+                                if (physEntity.X != physEntity.PrevX)
+                                collisions.Add(new Collision(physEntity, gameObject, CollisionSide.right)); 
+                            }
 
                             //BOTTOM
                             else if (bDistance < tDistance && bDistance < lDistance && bDistance < rDistance)
-                            { physEntity.colliderArray[2] = true; collisions.Add(new Collision(physEntity, gameObject, CollisionSide.bottom)); }
+                            {
+                                physEntity.colliderArray[2] = true;
+                                if (physEntity.Y != physEntity.PrevY)
+                                collisions.Add(new Collision(physEntity, gameObject, CollisionSide.bottom)); 
+                            }
 
                             //LEFT
                             else if (lDistance < bDistance && lDistance < tDistance && lDistance < rDistance)
-                            { physEntity.colliderArray[3] = true; collisions.Add(new Collision(physEntity, gameObject, CollisionSide.left)); }
+                            { 
+                                physEntity.colliderArray[3] = true; 
+                                if(physEntity.X != physEntity.PrevX)
+                                collisions.Add(new Collision(physEntity, gameObject, CollisionSide.left)); 
+                            }
                         }
                     }
                 }
