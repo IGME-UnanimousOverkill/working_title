@@ -64,10 +64,10 @@ namespace UnanimousOverkillGame
         /// Draws the texture, if there is one.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, int x, int y)
         {
             if (texture != null)
-            { spriteBatch.Draw(texture, rectangle, Color.White); }
+            { spriteBatch.Draw(texture, new Rectangle(x, y, rectangle.Width, rectangle.Height), Color.White); }
         }
     }
 }

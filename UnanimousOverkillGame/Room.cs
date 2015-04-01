@@ -191,7 +191,8 @@ namespace UnanimousOverkillGame
         {
             foreach (ForegroundTile tile in foreground)
             {
-                tile.Draw(batch);
+                Vector2 drawLocation = manager.WorldToScreen(tile.X, tile.Y);
+                tile.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
             }
         }
 
