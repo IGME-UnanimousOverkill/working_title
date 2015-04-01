@@ -31,6 +31,8 @@ namespace UnanimousOverkillGame
         private float maxXVelocity = 10;
         private float maxYVelocity = 1000;
 
+
+
         public bool activateGravity;
         /// <summary> 
         /// Instantiates a basic PhysicsEntity.  Nothing special here.
