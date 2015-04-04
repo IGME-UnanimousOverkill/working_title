@@ -256,11 +256,11 @@ namespace UnanimousOverkillGame
                         player.DrawBounds(spriteBatch, roomManager.boundsTexture);//temporary, for testing
                     }
 
-                    spriteBatch.DrawString(font, "Top: " + player.colliderArray[0] + enemy.X  + " " + enemy.Y
-                        + "\nRight: " + player.colliderArray[1] + enemy.distanceToPlayer
-                        + "\nBottom: " + player.colliderArray[2] + (player.Y - enemy.Y)
-                        + "\nLeft: " + player.colliderArray[3] + enemy.targetingPlayer
-                        + "\nRoom: " + roomManager.Current.ID.ToString() + enemy.activateGravity
+                    spriteBatch.DrawString(font, "Top: " + player.colliderArray[0] 
+                        + "\nRight: " + player.colliderArray[1] 
+                        + "\nBottom: " + player.colliderArray[2]
+                        + "\nLeft: " + player.colliderArray[3] 
+                        + "\nRoom: " + roomManager.Current.ID.ToString()
                         + "\nPlayer X: " + player.X
                         + "\nPlayer Y: " + player.Y
                         , new Vector2(20, 400), Color.Yellow);
