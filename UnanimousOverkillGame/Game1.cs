@@ -178,8 +178,8 @@ namespace UnanimousOverkillGame
 
                     kbState = Keyboard.GetState();
 
-                    if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 10; }
-                    if (kbState.IsKeyDown(Keys.Down)) { player.Y += 10; }
+                    if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 10; player.velocity.Y = 0; }
+                    if (kbState.IsKeyDown(Keys.Down)) { player.Y += 10; player.velocity.Y = 0; }
 
                     collisionManager.DetectCollisions();
                     collisionManager.HandleCollisions();

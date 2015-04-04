@@ -130,6 +130,12 @@ namespace UnanimousOverkillGame
                     {
                         case ('*'):
                             ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * 1.33), (int)(TILE_HEIGHT * 1.33), tileSet, boundsTexture, rand.Next(3));
+                            
+                            int percent = rand.Next(100);
+                            if (percent > 80)
+                            {
+                                tile.activateGravity = true;
+                            }
                             foreground.Add(tile);
                             colliders.Add(tile);
                             break;
@@ -181,7 +187,10 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Update(GameTime time)
         {
-
+            foreach (ForegroundTile tile in foreground)
+            {
+                tile.Updates(time);
+            }
         }
 
         /// <summary>

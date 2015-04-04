@@ -28,7 +28,7 @@ namespace UnanimousOverkillGame
         public Vector2 velocity;//velocity vector
         protected Vector2 acceleration;//acceleration vector
 
-        private float maxXVelocity = 10;
+        private float maxXVelocity = 5;
         private float maxYVelocity = 1000;
 
 

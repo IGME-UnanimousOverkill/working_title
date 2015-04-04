@@ -18,6 +18,8 @@ namespace UnanimousOverkillGame
         Rectangle isoRectangle;
         Texture2D boundsTexture;
         int tile;
+        static Random rand = new Random();
+        Color color;
 
         /// <summary>
         /// Instantiates a tile that physicsobjects can collide with. This will need to be editted to allow for pseudo-isometric view.
@@ -28,13 +30,15 @@ namespace UnanimousOverkillGame
             isoRectangle = new Rectangle(x - ((isoWidth - width) / 2), y - ((isoHeight - height) / 2), isoWidth, isoHeight);
             boundsTexture = bounds;
             tile = tileNum;
+            color = new Color(120 + rand.Next(30), 120 + rand.Next(30), 120 + rand.Next(30));
         }
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y)
         {
             if (texture != null)
-            { 
-                spriteBatch.Draw(texture, new Rectangle(x - ((isoRectangle.Width - rectangle.Width) / 2), y - ((isoRectangle.Height - rectangle.Height) / 2), isoRectangle.Width, isoRectangle.Height), new Rectangle(tile * 100, 0, 100, 100), Color.White); 
+            {
+                //Color c = new Color(120 + rand.Next(30), 120 + rand.Next(30), 120 + rand.Next(30));
+                spriteBatch.Draw(texture, new Rectangle(x - ((isoRectangle.Width - rectangle.Width) / 2), y - ((isoRectangle.Height - rectangle.Height) / 2), isoRectangle.Width, isoRectangle.Height), new Rectangle(tile * 100, 0, 100, 100), color); 
             }
         }
 
