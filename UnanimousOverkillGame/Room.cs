@@ -171,6 +171,11 @@ namespace UnanimousOverkillGame
                                 colliders.Add(previousDoor);
                             }
                             break;
+                        case ('┴'):
+                            Fan fan = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x,y]);
+                            colliders.Add(fan);
+                            colliders.AddRange(fan.getEffects());
+                            break;
                     }
                 }
             }

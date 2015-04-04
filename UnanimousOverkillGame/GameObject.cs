@@ -21,8 +21,11 @@ namespace UnanimousOverkillGame
         protected Texture2D texture;
         protected Rectangle rectangle;
 
+
         protected int prevX;
         protected int prevY;
+
+        protected bool isCollidable;
 
         //Properties
 
@@ -44,6 +47,8 @@ namespace UnanimousOverkillGame
             get { return texture; }
         }
 
+        public Boolean IsCollidable { get { return isCollidable; } }
+
         /// <summary>
         /// Instantiates a game object with a rectangle based upon its x, y, width and height.
         /// Does NOT require a texture.
@@ -52,6 +57,14 @@ namespace UnanimousOverkillGame
         {
             this.rectangle = new Rectangle(x, y, width, height);
             this.texture = texture;
+            isCollidable = true;
+        }
+
+        protected GameObject(int x, int y, int width, int height, Boolean Collidable, Texture2D texture = null)
+        {
+            this.rectangle = new Rectangle(x, y, width, height);
+            this.texture = texture;
+            isCollidable = Collidable;
         }
 
         public void positionChangedManually()

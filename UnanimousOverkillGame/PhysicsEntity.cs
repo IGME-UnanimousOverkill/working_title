@@ -45,6 +45,14 @@ namespace UnanimousOverkillGame
             activateGravity = false;
         }
 
+        public PhysicsEntity(int x, int y, int width, int height, Texture2D texture, bool collidable)
+            : base(x, y, width, height,collidable, texture)
+        {
+            velocity = new Vector2();
+            acceleration = new Vector2(0.0f, 0.0f);
+            activateGravity = false;
+        }
+
         public virtual void OnCollide(PhysicsEntity other)
         {
             // Manage collision with other entities
@@ -99,7 +107,7 @@ namespace UnanimousOverkillGame
 
             if (activateGravity)
             {
-                acceleration.Y = 19.8f;
+                acceleration.Y += 19.8f;
             }
         }
 

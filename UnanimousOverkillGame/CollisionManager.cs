@@ -84,6 +84,8 @@ namespace UnanimousOverkillGame
                             gameObject.OnCollide(physEntity);
                             if (gameObject is Door)//stops nast problems from happening during room spawn, should  be changed in case of like locked doors or something
                                 return;
+                            if (!gameObject.IsCollidable)
+                                return;
                             //below, sets collide array and creates new collision object
                             //TOP
                             if (tDistance < bDistance && tDistance < lDistance && tDistance < rDistance)
