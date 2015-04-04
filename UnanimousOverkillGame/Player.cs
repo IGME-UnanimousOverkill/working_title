@@ -276,6 +276,12 @@ namespace UnanimousOverkillGame
                         {
                             activateGravity = true;
                         }
+                        if (colliderArray[2] == true)
+                        {
+                            pState = prevState;
+                            jumped = false;
+                            activateGravity = false;
+                        }
                         //Jump(finalHeight);
                         if (!jumped)
                         {
