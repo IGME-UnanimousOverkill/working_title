@@ -45,6 +45,8 @@ namespace UnanimousOverkillGame
         KeyboardState kbState;
         SpriteFont font;
 
+        HoppingEnemy enemy;
+
         //Handling switching between GameStates
         GameState gameState;
         Keys currentKey;
@@ -99,7 +101,11 @@ namespace UnanimousOverkillGame
             player = new Player(100, 228, 44, 70, spriteSheet);
             imageStream.Close();
 
-            collisionManager = new CollisionManager(player);
+            System.IO.Stream imageStream1 = TitleContainer.OpenStream("Content/gametiles.png");
+            Texture2D enemyimage = Texture2D.FromStream(GraphicsDevice, imageStream1);
+            enemy = new HoppingEnemy(100, 275, 25, 25, enemyimage, player);
+
+            collisionManager = new CollisionManager(player, enemy);
             player.CollisionManagerGet(collisionManager);
 
 
@@ -175,11 +181,12 @@ namespace UnanimousOverkillGame
                     player.Update(gameTime);
                     roomManager.Update(gameTime);
 
+                    enemy.Update(gameTime);
 
                     kbState = Keyboard.GetState();
 
-                    if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 10; }
-                    if (kbState.IsKeyDown(Keys.Down)) { player.Y += 10; }
+                    if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 10; player.velocity.Y = 0; }
+                    if (kbState.IsKeyDown(Keys.Down)) { player.Y += 10; player.velocity.Y = 0; }
 
                     collisionManager.DetectCollisions();
                     collisionManager.HandleCollisions();
@@ -239,6 +246,7 @@ namespace UnanimousOverkillGame
                 case GameState.Game:
 
                     roomManager.Draw(spriteBatch);
+                    enemy.Draw(spriteBatch, enemy.X, enemy.Y);
 
                     kbState = Keyboard.GetState();
                     // Hold down space to should tile physics boundaries.
@@ -248,11 +256,11 @@ namespace UnanimousOverkillGame
                         player.DrawBounds(spriteBatch, roomManager.boundsTexture);//temporary, for testing
                     }
 
-                    spriteBatch.DrawString(font, "Top: " + player.colliderArray[0]
-                        + "\nRight: " + player.colliderArray[1]
-                        + "\nBottom: " + player.colliderArray[2]
-                        + "\nLeft: " + player.colliderArray[3] 
-                        + "\nRoom: " + roomManager.Current.ID.ToString()
+                    spriteBatch.DrawString(font, "Top: " + player.colliderArray[0] + enemy.X  + " " + enemy.Y
+                        + "\nRight: " + player.colliderArray[1] + enemy.distanceToPlayer
+                        + "\nBottom: " + player.colliderArray[2] + (player.Y - enemy.Y)
+                        + "\nLeft: " + player.colliderArray[3] + enemy.targetingPlayer
+                        + "\nRoom: " + roomManager.Current.ID.ToString() + enemy.activateGravity
                         + "\nPlayer X: " + player.X
                         + "\nPlayer Y: " + player.Y
                         , new Vector2(20, 400), Color.Yellow);

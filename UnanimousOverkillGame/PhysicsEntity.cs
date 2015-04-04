@@ -28,9 +28,10 @@ namespace UnanimousOverkillGame
         public Vector2 velocity;//velocity vector
         protected Vector2 acceleration;//acceleration vector
 
-        private float maxXVelocity = 10;
+        private float maxXVelocity = 5;
         private float maxYVelocity = 1000;
 
+        public float MaxXV { set { maxXVelocity = value; } }
 
 
         public bool activateGravity;
@@ -124,6 +125,7 @@ namespace UnanimousOverkillGame
 
         }
         /// <summary>
+        /// obsolete
         /// Entity rises a certain height into the air.
         /// Relies on Fall method to fall.
         /// </summary>
@@ -136,7 +138,8 @@ namespace UnanimousOverkillGame
         }
 
         /// <summary>
-        /// Causes the entity to be affected by gravity.
+        /// obsolete
+        /// Causes the entity to be affected by "gravity".
         /// </summary>
         public void Fall()
         {
