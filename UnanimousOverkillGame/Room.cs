@@ -141,8 +141,6 @@ namespace UnanimousOverkillGame
 
                                 if (nextRooms[exitNum] == lastRoom)
                                 {
-                                    player.PState = PlayerState.FaceLeft;
-                                    player.PrevState = PlayerState.FaceLeft;
                                     player.X = (x - 1) * TILE_WIDTH;
                                     player.Y = ((y + 1) * TILE_HEIGHT) - player.Rect.Height;//made this a little more generic
                                     player.positionChangedManually();
@@ -164,8 +162,6 @@ namespace UnanimousOverkillGame
                             {
                                 if (previousRoom == lastRoom)
                                 {
-                                    player.PState = PlayerState.FaceRight;
-                                    player.PrevState = PlayerState.FaceRight;
                                     player.X = (x + 1) * TILE_WIDTH;
                                     player.Y = ((y + 1) * TILE_HEIGHT) - player.Rect.Height;//made this a little more generic
                                     player.positionChangedManually();
@@ -195,7 +191,8 @@ namespace UnanimousOverkillGame
         {
             foreach (ForegroundTile tile in foreground)
             {
-                tile.Draw(batch);
+                Vector2 drawLocation = manager.WorldToScreen(tile.X, tile.Y);
+                tile.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
             }
         }
 

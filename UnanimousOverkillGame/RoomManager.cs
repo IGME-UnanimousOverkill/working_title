@@ -32,12 +32,18 @@ namespace UnanimousOverkillGame
         public const string ROOM_DIR = "Content/Rooms/";
         private static Random rand = new Random();
         private int currentID = 0;
+        private Vector2 cameraLocation;
+        private int screenWidth;
+        private int screenHeight;
 
         public RoomManager(Player play, CollisionManager manager)
         {
             player = play;
             collisionManager = manager;
             head = current;
+            var screen = System.Windows.Forms.Screen.PrimaryScreen;
+            screenWidth = screen.Bounds.Width;
+            screenHeight = screen.Bounds.Height;
         }
 
         /// <summary>
@@ -68,6 +74,7 @@ namespace UnanimousOverkillGame
         public void Update(GameTime time)
         {
             current.Update(time);
+            cameraLocation = new Vector2(player.X, player.Y);
         }
 
         /// <summary>
@@ -99,6 +106,8 @@ namespace UnanimousOverkillGame
         public void Draw(SpriteBatch batch)
         {
             current.Draw(batch);
+            Vector2 drawLoc = WorldToScreen(player.X, player.Y);
+            player.Draw(batch, (int)drawLoc.X, (int)drawLoc.Y);
         }
 
         /// <summary>
@@ -120,6 +129,55 @@ namespace UnanimousOverkillGame
             room.LoadRoom(files[rand.Next(files.Length)]);
 
             return room;
+        }
+
+
+        /// <summary>
+        /// Methods for converting from World Coordinates to Screen Coordinates. Mainly for drawing with a scrolling screen.
+        /// </summary>
+
+        public Vector2 WorldToScreen(Vector2 worldLoc)
+        {
+            int top = (int)cameraLocation.Y - (screenHeight / 2);
+            int left = (int)cameraLocation.X - (screenWidth / 2);
+
+            int screenX = (int)worldLoc.X - left;
+            int screenY = (int)worldLoc.Y - top;
+
+            return new Vector2(screenX, screenY);
+        }
+
+        public Vector2 WorldToScreen(int worldX, int worldY)
+        {
+            int top = (int)cameraLocation.Y - (screenHeight / 2);
+            int left = (int)cameraLocation.X - (screenWidth / 2);
+
+            int screenX = (int)worldX - left;
+            int screenY = (int)worldY - top;
+
+            return new Vector2(screenX, screenY);
+        }
+
+        public Vector2 ScreenToWorld(Vector2 screenLoc)
+        {
+            int top = (int)cameraLocation.Y - (screenHeight / 2);
+            int left = (int)cameraLocation.X - (screenWidth / 2);
+
+            int worldX = left + (int)screenLoc.X;
+            int worldY = top + (int)screenLoc.Y;
+
+            return new Vector2(worldX, worldY);
+        }
+
+        public Vector2 ScreenToWorld(int screenX, int screenY)
+        {
+            int top = (int)cameraLocation.Y - (screenHeight / 2);
+            int left = (int)cameraLocation.X - (screenWidth / 2);
+
+            int worldX = left + (int)screenX;
+            int worldY = top + (int)screenY;
+
+            return new Vector2(worldX, worldY);
         }
     }
 }

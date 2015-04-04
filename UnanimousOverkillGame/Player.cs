@@ -354,11 +354,11 @@ namespace UnanimousOverkillGame
         /// will draw the player with the given spritebatch, intended to be called from Game1's draw
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, int x, int y)
         {
             playerSpriteBatch = spriteBatch;
-            playerLoc.X = X;
-            playerLoc.Y = Y;
+            playerLoc.X = x;
+            playerLoc.Y = y;
             //switch case for player state again to determine which way to turn the texture and to determine where in the spritesheet to take the texture from 
             switch (pState)
             {
