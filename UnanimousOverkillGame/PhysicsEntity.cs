@@ -26,7 +26,7 @@ namespace UnanimousOverkillGame
     {
         public bool[] colliderArray = new bool[4];//indicates the direction that the entity is colliding with something, [top, right, bottom, left]
         public Vector2 velocity;//velocity vector
-        protected Vector2 acceleration;//acceleration vector
+        public Vector2 acceleration;//acceleration vector
 
         private float maxXVelocity = 5;
         private float maxYVelocity = 1000;
@@ -69,6 +69,13 @@ namespace UnanimousOverkillGame
 
         public void UpdateVelocity(GameTime gameTime)
         {
+
+            if (activateGravity)
+            {
+                acceleration.Y += 19.8f;
+            }
+
+
             velocity.X += acceleration.X*gameTime.ElapsedGameTime.Milliseconds/1000;
 
             if (Math.Abs(velocity.X) > maxXVelocity)
@@ -106,10 +113,7 @@ namespace UnanimousOverkillGame
             }
 
 
-            if (activateGravity)
-            {
-                acceleration.Y += 19.8f;
-            }
+
         }
 
         public void UpdatePosition()

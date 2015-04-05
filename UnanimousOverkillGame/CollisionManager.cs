@@ -44,14 +44,18 @@ namespace UnanimousOverkillGame
 
         public void DetectCollisions()
         {
+
+            bool newCollision;
             if (objects != null)
             {
                 for (int i = 0; i < entities.Count; i++)
                 {
+                    newCollision = true;
+
                     physEntity = entities[i];//if it hasn't move, it won't have new collisions, if somehting hits it, that entity will take care of collision
                     if (physEntity.X == physEntity.PrevX && physEntity.Y == physEntity.PrevY)
                     {
-                        continue;
+                        newCollision = false;
                     }
                     // Reset collision array
                     physEntity.colliderArray[0] = false;
@@ -83,15 +87,15 @@ namespace UnanimousOverkillGame
 
                             gameObject.OnCollide(physEntity);
                             if (gameObject is Door)//stops nast problems from happening during room spawn, should  be changed in case of like locked doors or something
-                                return;
+                                continue;
                             if (!gameObject.IsCollidable)
-                                return;
+                                continue;
                             //below, sets collide array and creates new collision object
                             //TOP
                             if (tDistance < bDistance && tDistance < lDistance && tDistance < rDistance)
                             {
                                 physEntity.colliderArray[0] = true;
-                                if (physEntity.Y != physEntity.PrevY)
+                                if (physEntity.Y != physEntity.PrevY && newCollision)
                                 collisions.Add(new Collision(physEntity,gameObject,CollisionSide.top));
                             }
 
@@ -99,7 +103,7 @@ namespace UnanimousOverkillGame
                             else if (rDistance < bDistance && rDistance < lDistance && rDistance < tDistance)
                             { 
                                 physEntity.colliderArray[1] = true;
-                                if (physEntity.X != physEntity.PrevX)
+                                if (physEntity.X != physEntity.PrevX && newCollision)
                                 collisions.Add(new Collision(physEntity, gameObject, CollisionSide.right)); 
                             }
 
@@ -107,7 +111,7 @@ namespace UnanimousOverkillGame
                             else if (bDistance < tDistance && bDistance < lDistance && bDistance < rDistance)
                             {
                                 physEntity.colliderArray[2] = true;
-                                if (physEntity.Y != physEntity.PrevY)
+                                if (physEntity.Y != physEntity.PrevY && newCollision)
                                 collisions.Add(new Collision(physEntity, gameObject, CollisionSide.bottom)); 
                             }
 
@@ -115,7 +119,7 @@ namespace UnanimousOverkillGame
                             else if (lDistance < bDistance && lDistance < tDistance && lDistance < rDistance)
                             { 
                                 physEntity.colliderArray[3] = true; 
-                                if(physEntity.X != physEntity.PrevX)
+                                if(physEntity.X != physEntity.PrevX && newCollision)
                                 collisions.Add(new Collision(physEntity, gameObject, CollisionSide.left)); 
                             }
                         }

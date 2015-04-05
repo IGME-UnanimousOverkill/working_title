@@ -263,6 +263,10 @@ namespace UnanimousOverkillGame
                         + "\nRoom: " + roomManager.Current.ID.ToString()
                         + "\nPlayer X: " + player.X
                         + "\nPlayer Y: " + player.Y
+                        + "\nPlayer Xveloc: " + player.velocity.X
+                        + "\nPlayer Yveloc: " + player.velocity.Y
+                        + "\nPlayer Xaccel: " + player.acceleration.Y
+                        + "\nPlayer Yaccel: " + player.acceleration.Y
                         , new Vector2(20, 400), Color.Yellow);
 
                     break;
