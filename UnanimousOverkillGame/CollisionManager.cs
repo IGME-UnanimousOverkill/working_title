@@ -26,6 +26,11 @@ namespace UnanimousOverkillGame
 
         int count = 0; //debugging
 
+        public List<PhysicsEntity> Objects
+        {
+            get { return objects; }
+        }
+
         public CollisionManager(params PhysicsEntity[] objectsToBeChecked)
         {
             entities = new List<PhysicsEntity>(objectsToBeChecked);
