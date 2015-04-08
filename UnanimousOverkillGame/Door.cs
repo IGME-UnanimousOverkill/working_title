@@ -15,7 +15,7 @@ namespace UnanimousOverkillGame
 {
     class Door : Enemy
     {
-        private Room destination;
+        public Room destination;
         private RoomManager roomManager;
 
         public Door(int x, int y, int width, int height, Texture2D texture, Room dest, RoomManager manager) : base(x, y, width, height, texture)

@@ -22,7 +22,7 @@ namespace UnanimousOverkillGame
             }
         }
         
-        private Player player;
+        public Player player;
         private CollisionManager collisionManager;
         private Room head;
         private Room current;
@@ -54,9 +54,9 @@ namespace UnanimousOverkillGame
             // Placeholder tile assignment because no tilesets yet.
             room.SetTileTexture(placeholderTexture, boundsTexture);
             collisionManager.ClearCollisions();
-            collisionManager.UpdateObjects(getColliders(room));
-
             room.SpawnRoom(player, current);
+            collisionManager.UpdateObjects(GetColliders(room));
+            collisionManager.UpdateEntities(GetEntities(room));
 
             current = room;
         }
@@ -80,9 +80,17 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Returns a list of collidable objects in the current room.
         /// </summary>
-        public List<PhysicsEntity> getColliders(Room room)
+        public List<PhysicsEntity> GetColliders(Room room)
         {
             return room.GetColliders();
+        }
+
+        /// <summary>
+        /// Returns a list of Entities in the current room.
+        /// </summary>
+        public List<PhysicsEntity> GetEntities(Room room)
+        {
+            return room.GetEntities();
         }
 
         /// <summary>

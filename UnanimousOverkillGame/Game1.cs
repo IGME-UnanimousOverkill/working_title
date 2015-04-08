@@ -45,8 +45,6 @@ namespace UnanimousOverkillGame
         KeyboardState kbState;
         SpriteFont font;
 
-        HoppingEnemy enemy;
-
         //Handling switching between GameStates
         GameState gameState;
         Keys currentKey;
@@ -101,11 +99,7 @@ namespace UnanimousOverkillGame
             player = new Player(100, 228, 44, 70, spriteSheet);
             imageStream.Close();
 
-            System.IO.Stream imageStream1 = TitleContainer.OpenStream("Content/gametiles.png");
-            Texture2D enemyimage = Texture2D.FromStream(GraphicsDevice, imageStream1);
-            enemy = new HoppingEnemy(100, 275, 25, 25, enemyimage, player);
-
-            collisionManager = new CollisionManager(player, enemy);
+            collisionManager = new CollisionManager(player);
             player.CollisionManagerGet(collisionManager);
 
 
@@ -181,8 +175,6 @@ namespace UnanimousOverkillGame
                     player.Update(gameTime);
                     roomManager.Update(gameTime);
 
-                    enemy.Update(gameTime);
-
                     kbState = Keyboard.GetState();
 
                     if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 10; player.velocity.Y = 0; }
@@ -246,7 +238,6 @@ namespace UnanimousOverkillGame
                 case GameState.Game:
 
                     roomManager.Draw(spriteBatch);
-                    enemy.Draw(spriteBatch, enemy.X, enemy.Y);
 
                     kbState = Keyboard.GetState();
                     // Hold down space to should tile physics boundaries.

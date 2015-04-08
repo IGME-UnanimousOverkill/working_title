@@ -33,7 +33,6 @@ namespace UnanimousOverkillGame
 
         public float MaxXV { set { maxXVelocity = value; } }
 
-
         public bool activateGravity;
         /// <summary> 
         /// Instantiates a basic PhysicsEntity.  Nothing special here.
@@ -128,6 +127,13 @@ namespace UnanimousOverkillGame
             UpdatePosition();
 
         }
+
+        public virtual void DrawBounds(SpriteBatch spriteBatch, Texture2D bound)//temporary for testing
+        {
+            if (bound != null)
+            { spriteBatch.Draw(bound, rectangle, Color.White); }
+        }
+
         /// <summary>
         /// obsolete
         /// Entity rises a certain height into the air.

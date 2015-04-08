@@ -23,7 +23,7 @@ namespace UnanimousOverkillGame
     {
         private const double timeBetweenHops = 1.5;
         private EnemyState enemyState;
-        private Player p;
+        private Player player;
         private const int hopDistanceAggro = 40;
         private const int hopDistnacePassive = 20;
         Random rand = new Random();
@@ -43,17 +43,18 @@ namespace UnanimousOverkillGame
             this.MaxXV = 2;
             enemyLoc = new Vector2(x, y);
             enemyState = EnemyState.FaceRight;
-            this.p = p;
+            player = p;
             targetingPlayer = false;
             count = 0;
             activateGravity = false;
             this.acceleration = new Vector2(2.0f, 2.0f);
+            isCollidable = false;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             this.gameTime = gameTime;
-            distanceToPlayer = Math.Abs(p.X - this.X);
+            distanceToPlayer = Math.Abs(player.X - this.X);
             if (distanceToPlayer < 150)
             {
                 targetingPlayer = true;
@@ -126,7 +127,7 @@ namespace UnanimousOverkillGame
 
         public void FacePlayer()
         {
-            if (p.X + p.Rect.Width < this.X)
+            if (player.X + player.Rect.Width < this.X)
             {
                 enemyState = EnemyState.FaceLeft;
             }
@@ -158,30 +159,17 @@ namespace UnanimousOverkillGame
                 }
         }
 
-        public Vector2 WorldToScreen(int worldX, int worldY)
-        {
-            int top = (int)p.Y - (System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height / 2);
-            int left = (int)p.X - (System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width / 2);
-
-            int screenX = (int)worldX - left;
-            int screenY = (int)worldY - top;
-
-            return new Vector2(screenX, screenY);
-        }
-
         public override void Draw(SpriteBatch spriteBatch, int x, int y)
         {
-            enemyLoc.X = x;
-            enemyLoc.Y = y;
+            enemyLoc = new Vector2(x, y);
 
-            Vector2 drawLoc = WorldToScreen((int)enemyLoc.X, (int)enemyLoc.Y);
             switch (enemyState)
             {
 
                 case EnemyState.FaceRight:
                     {
                         spriteBatch.Draw(texture,
-                                        drawLoc,
+                                        enemyLoc,
                                         new Rectangle(
                                             0,
                                             0,
@@ -198,7 +186,7 @@ namespace UnanimousOverkillGame
                 case EnemyState.FaceLeft:
                     {
                         spriteBatch.Draw(texture,
-                                        drawLoc,
+                                        enemyLoc,
                                         new Rectangle(
                                             0,
                                             0,

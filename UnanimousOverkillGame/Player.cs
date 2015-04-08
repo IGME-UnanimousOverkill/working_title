@@ -344,11 +344,6 @@ namespace UnanimousOverkillGame
             }
             Updates(gameTime);
         }
-        public void DrawBounds(SpriteBatch spriteBatch, Texture2D bound)//temporary for testing
-        {
-            if (bound != null)
-            { spriteBatch.Draw(bound, rectangle, Color.White); }
-        }
 
         /// <summary>
         /// will draw the player with the given spritebatch, intended to be called from Game1's draw

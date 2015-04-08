@@ -22,7 +22,7 @@ namespace UnanimousOverkillGame
 
         }
         
-        public override void Update()
+        public override void Update(GameTime time)
         {
             //how close is the dudeski?
                 //>if the player is close enough, chase 

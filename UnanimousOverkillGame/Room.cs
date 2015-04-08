@@ -34,6 +34,8 @@ namespace UnanimousOverkillGame
         private char[,] level;
         private List<ForegroundTile> foreground;
         private List<PhysicsEntity> colliders;
+        private List<Enemy> enemies;
+        private List<Door> doors;
         private Room previousRoom;
         private List<Room> nextRooms;
         // This will be replaced with tile sets.
@@ -53,7 +55,9 @@ namespace UnanimousOverkillGame
             manager = roomManager;
             foreground = new List<ForegroundTile>();
             colliders = new List<PhysicsEntity>();
+            enemies = new List<Enemy>();
             nextRooms = new List<Room>();
+            doors = new List<Door>();
             ID = manager.MakeID();
         }
 
@@ -63,7 +67,9 @@ namespace UnanimousOverkillGame
             previousRoom = previous;
             foreground = new List<ForegroundTile>();
             colliders = new List<PhysicsEntity>();
+            enemies = new List<Enemy>();
             nextRooms = new List<Room>();
+            doors = new List<Door>();
             ID = manager.MakeID();
         }
 
@@ -82,6 +88,17 @@ namespace UnanimousOverkillGame
         public List<PhysicsEntity> GetColliders()
         {
             return colliders;
+        }
+
+        /// <summary>
+        /// Gets a list of collidable objects in the room.
+        /// </summary>
+        public List<PhysicsEntity> GetEntities()
+        {
+            List<PhysicsEntity> entities = new List<PhysicsEntity>();
+            entities.Add(manager.player);
+            entities.AddRange(enemies);
+            return entities;
         }
 
         /// <summary>
@@ -120,6 +137,27 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void SpawnRoom(Player player, Room lastRoom)
         {
+            if (colliders.Count > 0)
+            {
+                foreach (Door door in doors)
+                {
+                    if (door.destination == lastRoom && door.destination != previousRoom)
+                    {
+                        player.X = door.X - TILE_WIDTH;
+                        player.Y = door.Y + TILE_HEIGHT - player.Rect.Height;//made this a little more generic
+                        player.positionChangedManually();
+                        player.velocity = Vector2.Zero;
+                    }
+                    else if (door.destination == lastRoom)
+                    {
+                        player.X = door.X + TILE_WIDTH;
+                        player.Y = door.Y + TILE_HEIGHT - player.Rect.Height;//made this a little more generic
+                        player.positionChangedManually();
+                        player.velocity = Vector2.Zero;
+                    }
+                }
+                return;
+            }
             foreground.Clear();
             int exitNum = 0;
             for (int y = level.GetLength(1) - 1; y >= 0; y--)
@@ -143,8 +181,6 @@ namespace UnanimousOverkillGame
                         case ('>'):
                             if (nextRooms.Contains(lastRoom))
                             {
-                                Door nextDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, nextRooms[exitNum], manager);
-
                                 if (nextRooms[exitNum] == lastRoom)
                                 {
                                     player.X = (x - 1) * TILE_WIDTH;
@@ -161,6 +197,7 @@ namespace UnanimousOverkillGame
                                 Door nextDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, room, manager);
                                 nextRooms.Add(room);
                                 colliders.Add(nextDoor);
+                                doors.Add(nextDoor);
                             }
                             break;
                         case ('<'):
@@ -175,12 +212,18 @@ namespace UnanimousOverkillGame
                                 }
                                 Door previousDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, previousRoom, manager);
                                 colliders.Add(previousDoor);
+                                doors.Add(previousDoor);
                             }
                             break;
                         case ('┴'):
                             Fan fan = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x,y]);
                             colliders.Add(fan);
                             colliders.AddRange(fan.getEffects());
+                            break;
+                        case ('h'):
+                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH/2, TILE_HEIGHT/2, tileSet, player);
+                            //colliders.Add(hopEnemy);
+                            enemies.Add(hopEnemy);
                             break;
                     }
                 }
@@ -192,9 +235,20 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Update(GameTime time)
         {
-            foreach (ForegroundTile tile in foreground)
+            if (foreground.Count > 0)
             {
-                tile.Updates(time);
+                foreach (ForegroundTile tile in foreground)
+                {
+                    tile.Updates(time);
+                }
+            }
+
+            if (enemies.Count > 0)
+            {
+                foreach (Enemy enemy in enemies)
+                {
+                    enemy.Update(time);
+                }
             }
         }
 
@@ -203,10 +257,22 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Draw(SpriteBatch batch)
         {
-            foreach (ForegroundTile tile in foreground)
+            if (foreground.Count > 0)
             {
-                Vector2 drawLocation = manager.WorldToScreen(tile.X, tile.Y);
-                tile.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                foreach (ForegroundTile tile in foreground)
+                {
+                    Vector2 drawLocation = manager.WorldToScreen(tile.X, tile.Y);
+                    tile.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                }
+            }
+
+            if (enemies.Count > 0)
+            {
+                foreach (Enemy enemy in enemies)
+                {
+                    Vector2 drawLocation = manager.WorldToScreen(enemy.X, enemy.Y);
+                    enemy.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                }
             }
         }
 
@@ -215,9 +281,20 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void BoundsDraw(SpriteBatch batch)
         {
-            foreach (ForegroundTile tile in foreground)
+            if (foreground.Count > 0)
             {
-                tile.DrawBounds(batch);
+                foreach (ForegroundTile tile in foreground)
+                {
+                    tile.DrawBounds(batch);
+                }
+            }
+
+            if (enemies.Count > 0)
+            {
+                foreach (Enemy enemy in enemies)
+                {
+                    enemy.DrawBounds(batch, manager.boundsTexture);
+                }
             }
         }
     }

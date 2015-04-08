@@ -27,7 +27,7 @@ namespace UnanimousOverkillGame
 
         }
 
-        public virtual void Update()
+        public virtual void Update(GameTime time)
         {
             
         }

@@ -42,6 +42,11 @@ namespace UnanimousOverkillGame
             objects = newObjects;
         }
 
+        public void UpdateEntities(List<PhysicsEntity> newEntities)
+        {
+            entities = newEntities;
+        }
+
         public void ClearCollisions()
         {
             collisions.Clear();
