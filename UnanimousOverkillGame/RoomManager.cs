@@ -27,7 +27,7 @@ namespace UnanimousOverkillGame
         private Room head;
         private Room current;
         // This will be replaced with tile sets.
-        private Texture2D placeholderTexture;
+        public Texture2D placeholderTexture;
         public Texture2D boundsTexture;
         public const string ROOM_DIR = "Content/Rooms/";
         private static Random rand = new Random();

@@ -31,7 +31,8 @@ namespace UnanimousOverkillGame
         FaceRight,
         WalkRight,
         Jumping,
-        Falling
+        Falling,
+        Dead
     }
     /// <summary>
     /// This is the main type for your game
@@ -44,7 +45,8 @@ namespace UnanimousOverkillGame
         CollisionManager collisionManager;
         KeyboardState kbState;
         SpriteFont font;
-
+        Rectangle healthBox;
+        Rectangle health;
         //Handling switching between GameStates
         GameState gameState;
         Keys currentKey;
@@ -79,6 +81,8 @@ namespace UnanimousOverkillGame
 
             gameState = GameState.Game;
             prevKeyCount = 0;
+            health = new Rectangle(GraphicsDevice.Viewport.Width-200, 150,100 , 25);
+            healthBox = health;
 
             base.Initialize();
         }
@@ -97,6 +101,7 @@ namespace UnanimousOverkillGame
             System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
             player = new Player(100, 228, 44, 70, spriteSheet);
+
             imageStream.Close();
 
             collisionManager = new CollisionManager(player);
@@ -174,6 +179,13 @@ namespace UnanimousOverkillGame
                     //calls the player update method to get the logic for movement
                     player.Update(gameTime);
                     roomManager.Update(gameTime);
+                    
+                    health.Width = player.Health * 2;
+
+                    if(player.PState == PlayerState.Dead)
+                    {
+                        gameState = GameState.Menu;
+                    }
 
                     kbState = Keyboard.GetState();
 
@@ -229,6 +241,7 @@ namespace UnanimousOverkillGame
 
             spriteBatch.Begin();
 
+
             switch (gameState)
             {
                 case GameState.Menu:
@@ -259,6 +272,8 @@ namespace UnanimousOverkillGame
                         + "\nPlayer Xaccel: " + player.acceleration.Y
                         + "\nPlayer Yaccel: " + player.acceleration.Y
                         , new Vector2(20, 400), Color.Yellow);
+                    spriteBatch.Draw(roomManager.placeholderTexture, healthBox, Color.White);
+                    spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
 
                     break;
                 case GameState.Paused:
@@ -266,6 +281,7 @@ namespace UnanimousOverkillGame
                     spriteBatch.DrawString(font, "PAUSED", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to continue", new Vector2(250, 170), Color.White);
                     spriteBatch.DrawString(font, "Press ESC to go to Menu", new Vector2(250, 210), Color.White);
+                    player.Health = 25;
 
                     break;
             }

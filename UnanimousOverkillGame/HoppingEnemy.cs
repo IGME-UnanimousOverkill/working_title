@@ -118,6 +118,10 @@ namespace UnanimousOverkillGame
                         jumpcount++;
                     }
                 }
+                else
+                {
+                    AttackPlayer();
+                }
 
 
             }
@@ -125,9 +129,15 @@ namespace UnanimousOverkillGame
             count++;
         }
 
+        public void AttackPlayer()
+        {
+            player.Health -= 5;
+            player.AddForce(new Vector2((X < player.X) ? 200 : -200, 0));
+        }
+
         public void FacePlayer()
         {
-            if (player.X + player.Rect.Width < this.X)
+            if (player.X < this.X)
             {
                 enemyState = EnemyState.FaceLeft;
             }

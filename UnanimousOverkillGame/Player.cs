@@ -26,6 +26,7 @@ namespace UnanimousOverkillGame
         private PlayerState prevState;
         //SpriteBatch spriteBatch;
 
+        public int Health { get { return health; } set { health = value; } }
         private SpriteBatch playerSpriteBatch;
 
         private Vector2 playerLoc; //holds the players position in the form
@@ -92,7 +93,11 @@ namespace UnanimousOverkillGame
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
-
+            if(health <=0)
+            {
+                health = 0;
+                pState = PlayerState.Dead;
+            }
             KeyboardState kbState = Keyboard.GetState();
 
             // Handle animation timing
@@ -285,7 +290,7 @@ namespace UnanimousOverkillGame
                         //Jump(finalHeight);
                         if (!jumped)
                         {
-                            AddForce(new Vector2(0, -350));
+                            AddForce(new Vector2(0, -500));
                             activateGravity = true;
                             jumped = true;
                             pState = PlayerState.Falling;
@@ -340,7 +345,6 @@ namespace UnanimousOverkillGame
                         }
                         break;
                     }
-
             }
             Updates(gameTime);
         }
