@@ -220,6 +220,21 @@ namespace UnanimousOverkillGame
                             colliders.Add(fan);
                             colliders.AddRange(fan.getEffects());
                             break;
+                        case ('┤'):
+                            Fan fan1 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
+                            colliders.Add(fan1);
+                            colliders.AddRange(fan1.getEffects());
+                            break;
+                        case ('┬'):
+                            Fan fan2 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
+                            colliders.Add(fan2);
+                            colliders.AddRange(fan2.getEffects());
+                            break;
+                        case ('├'):
+                            Fan fan3 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
+                            colliders.Add(fan3);
+                            colliders.AddRange(fan3.getEffects());
+                            break;
                         case ('h'):
                             HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH/2, TILE_HEIGHT/2, tileSet, player);
                             //colliders.Add(hopEnemy);
