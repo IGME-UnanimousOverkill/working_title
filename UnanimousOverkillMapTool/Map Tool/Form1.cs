@@ -15,24 +15,36 @@ namespace Map_Tool
         public Image grid = Image.FromFile("Content/grid.png");
         public Image gridFilled = Image.FromFile("Content/gridFilled.png");
 
-        private List<PictureBox> tiles;
+        private PictureBox[,] tiles;
+        private string currentTile;
+        private Image currentImage;
+        private PictureBox selected;
 
         private const int TILE_SIZE = 25;
 
         public MapTool()
         {
             InitializeComponent();
-            tiles = new List<PictureBox>(400);
+            tiles = new PictureBox[20,20];
             populateTiles();
+            currentTile = "*";
+            selected = pictureBox2;
+            currentImage = gridFilled;
         }
 
         private void populateTiles()
         {
-            foreach (PictureBox box in tiles)
+            for (int y = 0; y < tiles.GetLength(1); y++)
             {
-                box.Dispose();
+                for (int x = 0; x < tiles.GetLength(0); x++)
+                {
+                    if (tiles[x,y] != null)
+                    {
+                        tiles[x, y].Dispose();
+                    }
+                }
             }
-            tiles.Clear();
+            tiles = new PictureBox[(int)widthNumericUpDown.Value, (int)heightNumericUpDown.Value];
             for (int y = 0; y < heightNumericUpDown.Value; y++)
             {
                 for (int x = 0; x < widthNumericUpDown.Value; x++)
@@ -45,16 +57,19 @@ namespace Map_Tool
                     tile.Image = grid;
                     tile.MouseDown += (s, e) =>
                     {
-                        if (tile.Image == gridFilled)
+                        if (tile.Image == currentImage)
                         {
                             tile.Image = grid;
+                            tile.Tag = " ";
                         }
                         else
                         {
-                            tile.Image = gridFilled;
+                            tile.Image = currentImage;
+                            tile.Tag = currentTile;
                         }
                     };
-                    tiles.Add(tile);
+                    tile.Tag = " ";
+                    tiles[x,y] = tile;
                     panel1.Controls.Add(tile);
                 }
             }
@@ -73,6 +88,41 @@ namespace Map_Tool
         private void disableMousewheel(object sender, MouseEventArgs e)
         {
             ((HandledMouseEventArgs)e).Handled = true;
+        }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            (new System.IO.FileInfo("Rooms/" + nameTextBox.Text + ".txt")).Directory.Create();
+            System.IO.StreamWriter writer = new System.IO.StreamWriter("Rooms/" + nameTextBox.Text + ".txt");
+            for (int y = 0; y < tiles.GetLength(1); y++)
+            {
+                string line = "";
+                for (int x = 0; x < tiles.GetLength(0); x++)
+                {
+                    if (tiles[x, y] != null)
+                    {
+                        line += tiles[x, y].Tag as string;
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    writer.WriteLine(line);
+                }
+            }
+            writer.WriteLine("//");
+            writer.Close();
+        }
+
+        private void pictureBox_Click(object sender, EventArgs e)
+        {
+            PictureBox box = sender as PictureBox;
+            selected.Padding = new Padding(0);
+            selected.Refresh();
+            selected = box;
+            box.Padding = new Padding(2);
+            box.Refresh();
+            currentImage = box.Image;
+            currentTile = box.Tag as string;
         }
     }
 }

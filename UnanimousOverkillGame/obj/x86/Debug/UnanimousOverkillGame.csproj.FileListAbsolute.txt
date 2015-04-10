@@ -67,3 +67,4 @@ C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Win
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\SharpDX.Direct3D9.xml
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\obj\x86\Debug\UnanimousOverkillGame.csprojResolveAssemblyReference.cache
 C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\backgroundtiles.png
+C:\Users\HyperNinjaPenguin\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\Room1.txt
