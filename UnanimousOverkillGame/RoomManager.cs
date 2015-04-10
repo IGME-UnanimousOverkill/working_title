@@ -27,7 +27,8 @@ namespace UnanimousOverkillGame
         private Room head;
         private Room current;
         // This will be replaced with tile sets.
-        public Texture2D placeholderTexture;
+        public Texture2D tileSet;
+        public Texture2D backTileSet;
         public Texture2D boundsTexture;
         public const string ROOM_DIR = "Content/Rooms/";
         private static Random rand = new Random();
@@ -52,7 +53,7 @@ namespace UnanimousOverkillGame
         public void ChangeRoom(Room room)
         {
             // Placeholder tile assignment because no tilesets yet.
-            room.SetTileTexture(placeholderTexture, boundsTexture);
+            room.SetTileTexture(tileSet, boundsTexture, backTileSet);
             collisionManager.ClearCollisions();
             room.SpawnRoom(player, current);
             collisionManager.UpdateObjects(GetColliders(room));
@@ -99,10 +100,13 @@ namespace UnanimousOverkillGame
         public void LoadContent(GraphicsDevice graphics)
         {
             System.IO.Stream tileStream = TitleContainer.OpenStream("Content/gameTiles.png");
+            System.IO.Stream backStream = TitleContainer.OpenStream("Content/backgroundTiles.png");
             System.IO.Stream boundStream = TitleContainer.OpenStream("Content/boundsTest.png");
-            placeholderTexture = Texture2D.FromStream(graphics, tileStream);
+            tileSet = Texture2D.FromStream(graphics, tileStream);
+            backTileSet = Texture2D.FromStream(graphics, backStream);
             boundsTexture = Texture2D.FromStream(graphics, boundStream);
             tileStream.Close();
+            backStream.Close();
             boundStream.Close();
 
             ChangeRoom(RandomRoom(null));

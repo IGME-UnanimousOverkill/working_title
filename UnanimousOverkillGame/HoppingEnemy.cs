@@ -48,7 +48,6 @@ namespace UnanimousOverkillGame
             count = 0;
             activateGravity = false;
             this.acceleration = new Vector2(2.0f, 2.0f);
-            isCollidable = false;
         }
 
         public override void Update(GameTime gameTime)

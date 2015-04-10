@@ -272,7 +272,7 @@ namespace UnanimousOverkillGame
                         + "\nPlayer Xaccel: " + player.acceleration.Y
                         + "\nPlayer Yaccel: " + player.acceleration.Y
                         , new Vector2(20, 400), Color.Yellow);
-                    spriteBatch.Draw(roomManager.placeholderTexture, healthBox, Color.White);
+                    spriteBatch.Draw(roomManager.tileSet, healthBox, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
 
                     break;

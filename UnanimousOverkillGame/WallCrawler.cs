@@ -108,7 +108,7 @@ namespace UnanimousOverkillGame
             //check the tempRect against other tiles, to see if WallCrawler is still hugging a wall
             for (int i = 0; i < collisionManager.Objects.Count; i++)
             {
-                if ((collisionManager.Objects[i] is Tile) && tempRect.Width > 0)
+                if ((collisionManager.Objects[i] is BackgroundTile) && tempRect.Width > 0)
                 {
                     if (!tempRect.Intersects(collisionManager.Objects[i].Rect))
                     {

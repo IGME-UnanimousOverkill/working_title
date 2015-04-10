@@ -33,13 +33,14 @@ namespace UnanimousOverkillGame
         // 2D array for level
         private char[,] level;
         private List<ForegroundTile> foreground;
+        private List<BackgroundTile> background;
         private List<PhysicsEntity> colliders;
         private List<Enemy> enemies;
         private List<Door> doors;
         private Room previousRoom;
         private List<Room> nextRooms;
-        // This will be replaced with tile sets.
         private Texture2D tileSet;
+        private Texture2D backgroundSet;
         private Texture2D boundsTexture;
         private RoomManager manager;
         private static Random rand = new Random();
@@ -54,6 +55,7 @@ namespace UnanimousOverkillGame
         {
             manager = roomManager;
             foreground = new List<ForegroundTile>();
+            background = new List<BackgroundTile>();
             colliders = new List<PhysicsEntity>();
             enemies = new List<Enemy>();
             nextRooms = new List<Room>();
@@ -66,6 +68,7 @@ namespace UnanimousOverkillGame
             manager = roomManager;
             previousRoom = previous;
             foreground = new List<ForegroundTile>();
+            background = new List<BackgroundTile>();
             colliders = new List<PhysicsEntity>();
             enemies = new List<Enemy>();
             nextRooms = new List<Room>();
@@ -76,10 +79,11 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Sets the tile texture. This will be editted to include texture packs.
         /// </summary>
-        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds)
+        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds, Texture2D backTex)
         {
             tileSet = tileTexture;
             boundsTexture = bounds;
+            backgroundSet = backTex;
         }
 
         /// <summary>
@@ -158,6 +162,7 @@ namespace UnanimousOverkillGame
                 }
                 return;
             }
+            colliders.Add(player);
             foreground.Clear();
             int exitNum = 0;
             for (int y = level.GetLength(1) - 1; y >= 0; y--)
@@ -167,13 +172,15 @@ namespace UnanimousOverkillGame
                     switch(level[x,y])
                     {
                         case ('*'):
-                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * 1.33), (int)(TILE_HEIGHT * 1.33), tileSet, boundsTexture, rand.Next(3));
-                            
+                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * 1.33), (int)(TILE_HEIGHT * 1.33), tileSet, boundsTexture, rand.Next(7));
+                            /*
                             int percent = rand.Next(100);
                             if (percent > 80)
                             {
                                 tile.activateGravity = true;
                             }
+                            enemies.Add(tile);
+                            */
                             foreground.Add(tile);
                             colliders.Add(tile);
                             break;
@@ -237,10 +244,12 @@ namespace UnanimousOverkillGame
                             break;
                         case ('h'):
                             HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH/2, TILE_HEIGHT/2, tileSet, player);
-                            //colliders.Add(hopEnemy);
+                            colliders.Add(hopEnemy);
                             enemies.Add(hopEnemy);
                             break;
                     }
+                    BackgroundTile back = new BackgroundTile((x * TILE_WIDTH) + 8, (y * TILE_HEIGHT) - 8, TILE_WIDTH, TILE_HEIGHT, backgroundSet, rand.Next(7));
+                    background.Add(back);
                 }
             }
         }
@@ -272,6 +281,15 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Draw(SpriteBatch batch)
         {
+            if (background.Count > 0)
+            {
+                foreach (BackgroundTile tile in background)
+                {
+                    Vector2 drawLocation = manager.WorldToScreen(tile.X, tile.Y);
+                    tile.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                }
+            }
+
             if (foreground.Count > 0)
             {
                 foreach (ForegroundTile tile in foreground)
