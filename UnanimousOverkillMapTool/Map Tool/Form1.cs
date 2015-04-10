@@ -14,6 +14,7 @@ namespace Map_Tool
     {
         public Image grid = Image.FromFile("Content/grid.png");
         public Image gridFilled = Image.FromFile("Content/gridFilled.png");
+        public Image background = Image.FromFile("Content/background.png");
 
         private PictureBox[,] tiles;
         private string currentTile;
@@ -123,6 +124,54 @@ namespace Map_Tool
             box.Refresh();
             currentImage = box.Image;
             currentTile = box.Tag as string;
+        }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            int entranceX = 0;
+            int entranceY = 0;
+            bool foundEntrance = false;
+            for (int y = 0; y < tiles.GetLength(1); y++)
+            {
+                for (int x = 0; x < tiles.GetLength(0); x++)
+                {
+                    if (tiles[x, y] != null)
+                    {
+                        foundEntrance = tiles[x, y].Tag == "<";
+                    }
+                    if (foundEntrance)
+                    {
+                        entranceX = x;
+                        entranceY = y;
+                        break;
+                    }
+                }
+                if (foundEntrance)
+                {
+                    break;
+                }
+            }
+            if (foundEntrance != false)
+            {
+                FillBackground(entranceX, entranceY);
+            }
+        }
+
+        private void FillBackground(int x, int y)
+        {
+            PictureBox tile = tiles[x,y];
+            if (tile.Tag as string != "*" && tile.Tag as string != "-")
+            {
+                if (tile.Tag as string == " ")
+                {
+                    tile.Tag = "-";
+                    tile.Image = background;
+                }
+                FillBackground(x + 1, y);
+                FillBackground(x - 1, y);
+                FillBackground(x, y + 1);
+                FillBackground(x, y - 1);
+            }
         }
     }
 }

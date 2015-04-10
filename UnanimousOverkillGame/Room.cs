@@ -248,8 +248,11 @@ namespace UnanimousOverkillGame
                             enemies.Add(hopEnemy);
                             break;
                     }
-                    BackgroundTile back = new BackgroundTile((x * TILE_WIDTH) + 8, (y * TILE_HEIGHT) - 8, TILE_WIDTH, TILE_HEIGHT, backgroundSet, rand.Next(7));
-                    background.Add(back);
+                    if (level[x,y] != ' ')
+                    {
+                        BackgroundTile back = new BackgroundTile((x * TILE_WIDTH) + 8, (y * TILE_HEIGHT) - 8, TILE_WIDTH, TILE_HEIGHT, backgroundSet, rand.Next(7));
+                        background.Add(back);
+                    }
                 }
             }
         }
