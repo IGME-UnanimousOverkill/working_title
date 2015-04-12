@@ -36,6 +36,7 @@ namespace UnanimousOverkillGame
         private char[,] level;
         private GameObject[,] levelObjects;
         private List<ForegroundTile> foreground;
+        private List<BackgroundTile> background;
         private List<PhysicsEntity> colliders;
         private List<Enemy> enemies;
         private List<Door> doors;
@@ -43,6 +44,7 @@ namespace UnanimousOverkillGame
         private List<Room> nextRooms;
         // This will be replaced with tile sets.
         private Texture2D tileSet;
+        private Texture2D backgroundSet;
         private Texture2D boundsTexture;
         private RoomManager manager;
         private static Random rand = new Random();
@@ -64,6 +66,7 @@ namespace UnanimousOverkillGame
             this.roomFont = roomFont;
             manager = roomManager;
             foreground = new List<ForegroundTile>();
+            background = new List<BackgroundTile>();
             colliders = new List<PhysicsEntity>();
             tempClickables = new List<IsClickableObject>();
             enemies = new List<Enemy>();
@@ -78,6 +81,7 @@ namespace UnanimousOverkillGame
             manager = roomManager;
             previousRoom = previous;
             foreground = new List<ForegroundTile>();
+            background = new List<BackgroundTile>();
             colliders = new List<PhysicsEntity>();
             tempClickables = new List<IsClickableObject>();
             enemies = new List<Enemy>();
@@ -89,10 +93,11 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Sets the tile texture. This will be editted to include texture packs.
         /// </summary>
-        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds)
+        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds, Texture2D backBounds)
         {
             tileSet = tileTexture;
             boundsTexture = bounds;
+            backgroundSet = backBounds;
         }
 
         /// <summary>
@@ -294,6 +299,11 @@ namespace UnanimousOverkillGame
                             break;
 
                     }
+                    if (level[x, y] != ' ')
+                    {
+                        BackgroundTile back = new BackgroundTile((x * TILE_WIDTH) + 8, (y * TILE_HEIGHT) - 8, TILE_WIDTH, TILE_HEIGHT, backgroundSet, rand.Next(7));
+                        background.Add(back);
+                    }
                 }
             }
             AddInformation();
@@ -395,6 +405,16 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Draw(SpriteBatch batch)
         {
+
+            if (background.Count > 0)
+            {
+                foreach (BackgroundTile tile in background)
+                {
+                    Vector2 drawLocation = manager.WorldToScreen(tile.X, tile.Y);
+                    tile.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                }
+            }
+
             if (foreground.Count > 0)
             {
                 foreach (ForegroundTile tile in foreground)
