@@ -25,6 +25,9 @@ namespace UnanimousOverkillGame
         public Player player;
         private CollisionManager collisionManager;
         private Room head;
+
+        SpriteFont font;
+
         private Room current;
         // This will be replaced with tile sets.
         public Texture2D placeholderTexture;
@@ -36,8 +39,9 @@ namespace UnanimousOverkillGame
         private int screenWidth;
         private int screenHeight;
 
-        public RoomManager(Player play, CollisionManager manager)
+        public RoomManager(Player play, CollisionManager manager, SpriteFont font)
         {
+            this.font = font;
             player = play;
             collisionManager = manager;
             head = current;
@@ -131,10 +135,10 @@ namespace UnanimousOverkillGame
         /// </summary>
         public Room RandomRoom(Room previous)
         {
-            Room room = new Room(this, previous);
+            Room room = new Room(this, previous, font);
             
             string[] files = Directory.GetFiles(ROOM_DIR);
-            room.LoadRoom(files[rand.Next(files.Length)]);
+            room.LoadRoom(files[0/*rand.Next(files.Length)*/]);
 
             return room;
         }

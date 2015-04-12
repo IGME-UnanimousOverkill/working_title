@@ -24,6 +24,9 @@ namespace UnanimousOverkillGame
         private bool holding; //will show whether the player is holding an object or not, initilized to false
         private PlayerState pState; //will hold the movement state the player is currently in, inside of the Game1 file
         private PlayerState prevState;
+
+        private KeyboardState prevKeyboardState;
+        private Button buttonInRange;
         //SpriteBatch spriteBatch;
 
         public int Health { get { return health; } set { health = value; } }
@@ -51,6 +54,8 @@ namespace UnanimousOverkillGame
         const int MARIO_RECT_WIDTH = 44; // The width of a single frame
 
 
+        public Button ButtonInRange { get { return buttonInRange; } set { if (value != null) buttonInRange = value; } }
+
         public PlayerState PState { get { return pState; } set { pState = value; } }
         public PlayerState PrevState { get { return prevState; } set {  prevState = value; } }
 
@@ -65,6 +70,7 @@ namespace UnanimousOverkillGame
         public Player(int x, int y, int width, int height, Texture2D texture)
             : base(x, y, width, height, texture)
         {
+            buttonInRange = null;
             intox = 0;
             health = 50;
             holding = false;
@@ -77,6 +83,8 @@ namespace UnanimousOverkillGame
             this.prevY = y;
             spriteSheet = texture; //takes the sprite sheet in here so you can "animate" in the draw method
             activateGravity = false;
+
+            prevKeyboardState = Keyboard.GetState();
 
             jumped = false;
             scale = new Vector2(((float)width / (float)MARIO_RECT_WIDTH), ((float)height / (float)MARIO_RECT_HEIGHT));//the scale of the image to fit given width/height
@@ -117,6 +125,11 @@ namespace UnanimousOverkillGame
                 pState = PlayerState.Falling;
 
             }
+            if (kbState.IsKeyDown(Keys.E) && buttonInRange != null && !prevKeyboardState.IsKeyDown(Keys.E))
+            {
+                buttonInRange.PressButton();
+            }
+
             //switch case for the player state to determine if the player is facing/walking a certain way and then changing to the next state when a key is pressed, or lifted up.
             switch (pState)
             {
@@ -346,6 +359,10 @@ namespace UnanimousOverkillGame
                         break;
                     }
             }
+
+            buttonInRange = null;
+            prevKeyboardState = kbState;
+
             Updates(gameTime);
         }
 

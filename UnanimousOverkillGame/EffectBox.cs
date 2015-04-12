@@ -17,6 +17,9 @@ namespace UnanimousOverkillGame
     {
         Vector2 accelerationChange;
 
+        private PhysicsEntity parent;
+
+        public bool HasParent { get { return parent != null; } }
         public float XAccelerationChange { get { return accelerationChange.X; } }
 
         public float YAccelerationChange { get { return accelerationChange.Y; } }
@@ -24,12 +27,23 @@ namespace UnanimousOverkillGame
         public override void OnCollide(PhysicsEntity other)
         {
             other.AddForce(accelerationChange);
+            if (HasParent)
+            {
+                parent.OnCollide(other);
+            }
         }
 
 
         public EffectBox(int x, int y, int width, int height,Vector2 accelerationChange, Texture2D texture = null) : base(x,y,width,height,texture,false)
         {
             this.accelerationChange = accelerationChange;
+        }
+
+        public EffectBox(int x, int y, int width, int height, Vector2 accelerationChange,PhysicsEntity parent, Texture2D texture = null)
+            : base(x, y, width, height, texture, false)
+        {
+            this.accelerationChange = accelerationChange;
+            this.parent = parent;
         }
 
     }

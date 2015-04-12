@@ -34,12 +34,12 @@ namespace UnanimousOverkillGame
         public int X
         { 
             get { return rectangle.X; }
-            set { prevX = rectangle.X; rectangle.X = value; }
+            set { prevX = rectangle.X; rectangle.X = value; onPositionChange(); }
         }
         public int Y
         {
             get { return rectangle.Y; }
-            set { prevY = rectangle.Y; rectangle.Y = value; }
+            set { prevY = rectangle.Y; rectangle.Y = value; onPositionChange(); }
         }
         public Rectangle Rect { get { return rectangle; } }
         public Texture2D Texture
@@ -48,6 +48,12 @@ namespace UnanimousOverkillGame
         }
 
         public Boolean IsCollidable { get { return isCollidable; } }
+
+
+        protected virtual void onPositionChange()
+        {
+
+        }
 
         /// <summary>
         /// Instantiates a game object with a rectangle based upon its x, y, width and height.

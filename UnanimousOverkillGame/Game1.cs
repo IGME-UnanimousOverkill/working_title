@@ -107,12 +107,14 @@ namespace UnanimousOverkillGame
             collisionManager = new CollisionManager(player);
             player.CollisionManagerGet(collisionManager);
 
-
-            roomManager = new RoomManager(player, collisionManager);
-            roomManager.LoadContent(GraphicsDevice);
-
             //Loads the spriteFont
             font = Content.Load<SpriteFont>("TimesNewRoman12");
+
+            roomManager = new RoomManager(player, collisionManager,font);
+            roomManager.LoadContent(GraphicsDevice);
+
+           
+            
 
         }
 

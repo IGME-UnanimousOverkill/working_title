@@ -30,8 +30,11 @@ namespace UnanimousOverkillGame
 
         public int ID;
 
+        private readonly float ISO_SCALE = 1.33f;
+
         // 2D array for level
         private char[,] level;
+        private GameObject[,] levelObjects;
         private List<ForegroundTile> foreground;
         private List<PhysicsEntity> colliders;
         private List<Enemy> enemies;
@@ -44,29 +47,39 @@ namespace UnanimousOverkillGame
         private RoomManager manager;
         private static Random rand = new Random();
 
+        List<RoomAdditionalInfo> addInfos;
+        List<string> levelsInfo;
+        private SpriteFont roomFont;
+        private Dictionary<Vector2, IsClickableObject> clickables;
+        private List<IsClickableObject> tempClickables;
+
         public const int TILE_WIDTH = 50;
         public const int TILE_HEIGHT = 50;
 
         /// <summary>
         /// Default constructor for RoomManager
         /// </summary>
-        public Room(RoomManager roomManager)
+        public Room(RoomManager roomManager, SpriteFont roomFont)
         {
+            this.roomFont = roomFont;
             manager = roomManager;
             foreground = new List<ForegroundTile>();
             colliders = new List<PhysicsEntity>();
+            tempClickables = new List<IsClickableObject>();
             enemies = new List<Enemy>();
             nextRooms = new List<Room>();
             doors = new List<Door>();
             ID = manager.MakeID();
         }
 
-        public Room(RoomManager roomManager, Room previous)
+        public Room(RoomManager roomManager, Room previous, SpriteFont roomFont)
         {
+            this.roomFont = roomFont;
             manager = roomManager;
             previousRoom = previous;
             foreground = new List<ForegroundTile>();
             colliders = new List<PhysicsEntity>();
+            tempClickables = new List<IsClickableObject>();
             enemies = new List<Enemy>();
             nextRooms = new List<Room>();
             doors = new List<Door>();
@@ -107,17 +120,25 @@ namespace UnanimousOverkillGame
         /// <param name="path">The path to the text file.</param>
         public void LoadRoom(string path)
         {
-            
+
             StreamReader levelReader = new StreamReader(path);
             string readerLine = levelReader.ReadLine();
             List<string> levels = new List<string>();
+            levelsInfo = new List<string>();
             while (readerLine != "//")
             {
                 levels.Add(readerLine);
                 readerLine = levelReader.ReadLine();
             }
+            readerLine = levelReader.ReadLine();
+            while (readerLine != null)
+            {
+                levelsInfo.Add(readerLine);
+                readerLine = levelReader.ReadLine();
+            }
             levelReader.Close();
             level = new char[levels[0].Length, levels.Count];
+            levelObjects = new GameObject[levels[0].Length, levels.Count];
             int x = 0;
             int y = 0;
             foreach (string line in levels)
@@ -137,6 +158,7 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void SpawnRoom(Player player, Room lastRoom)
         {
+            addInfos = new List<RoomAdditionalInfo>();
             if (colliders.Count > 0)
             {
                 foreach (Door door in doors)
@@ -164,11 +186,11 @@ namespace UnanimousOverkillGame
             {
                 for (int x = 0; x < level.GetLength(0); x++)
                 {
-                    switch(level[x,y])
+                    switch (level[x, y])
                     {
                         case ('*'):
-                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * 1.33), (int)(TILE_HEIGHT * 1.33), tileSet, boundsTexture, rand.Next(3));
-                            
+                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, rand.Next(3));
+
                             int percent = rand.Next(100);
                             if (percent > 80)
                             {
@@ -176,8 +198,9 @@ namespace UnanimousOverkillGame
                             }
                             foreground.Add(tile);
                             colliders.Add(tile);
+                            levelObjects[x, y] = tile;
                             break;
-                            // Cases for entrances and exits.
+                        // Cases for entrances and exits.
                         case ('>'):
                             if (nextRooms.Contains(lastRoom))
                             {
@@ -188,7 +211,7 @@ namespace UnanimousOverkillGame
                                     player.positionChangedManually();
                                     player.velocity = Vector2.Zero;
                                 }
-                                
+
                                 exitNum++;
                             }
                             else
@@ -197,6 +220,7 @@ namespace UnanimousOverkillGame
                                 Door nextDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, room, manager);
                                 nextRooms.Add(room);
                                 colliders.Add(nextDoor);
+                                levelObjects[x, y] = nextDoor;
                                 doors.Add(nextDoor);
                             }
                             break;
@@ -213,36 +237,135 @@ namespace UnanimousOverkillGame
                                 Door previousDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, previousRoom, manager);
                                 colliders.Add(previousDoor);
                                 doors.Add(previousDoor);
+
+                                levelObjects[x, y] = previousDoor;
                             }
                             break;
                         case ('┴'):
-                            Fan fan = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x,y]);
+                            Fan fan = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan);
                             colliders.AddRange(fan.getEffects());
+
+                            levelObjects[x, y] = fan;
                             break;
                         case ('┤'):
                             Fan fan1 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan1);
                             colliders.AddRange(fan1.getEffects());
+
+                            levelObjects[x, y] = fan1;
                             break;
                         case ('┬'):
                             Fan fan2 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan2);
                             colliders.AddRange(fan2.getEffects());
+
+                            levelObjects[x, y] = fan2;
                             break;
                         case ('├'):
                             Fan fan3 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan3);
                             colliders.AddRange(fan3.getEffects());
+
+                            levelObjects[x, y] = fan3;
                             break;
                         case ('h'):
-                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH/2, TILE_HEIGHT/2, tileSet, player);
+                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, tileSet, player);
                             //colliders.Add(hopEnemy);
                             enemies.Add(hopEnemy);
+
+                            levelObjects[x, y] = hopEnemy;
                             break;
+                        case ('p'):
+                            PhaseBlock block = new PhaseBlock(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, rand.Next(3), true);
+                            colliders.Add(block);
+
+                            levelObjects[x, y] = block;
+                            break;
+
+                        case ('b'):
+                            
+                            Button button = new Button(x * TILE_WIDTH + TILE_WIDTH / 3, y * TILE_HEIGHT + TILE_HEIGHT / 3, TILE_WIDTH / 3, TILE_HEIGHT / 3, boundsTexture, roomFont, null);
+
+                            addInfos.Add(new RoomAdditionalInfo(x, y, button));
+                            levelObjects[x, y] = button;
+                            colliders.Add(button);
+                            colliders.Add(button.Box);
+                            break;
+
                     }
                 }
             }
+            AddInformation();
+        }
+
+        private void AddInformation()
+        {
+            foreach (RoomAdditionalInfo addInf in addInfos)
+            {
+                if (addInf.entity is Button)
+                {
+                    List<string> temp = checkAdditionalInformation(addInf.x, addInf.y);
+                    List<Point> tempPoint = new List<Point>();
+                    int xNum, yNum;
+                    if (temp != null)
+                        for (int i = 0; i < temp.Count; i++)
+                        {
+                            if (i + 1 < temp.Count)
+                            {
+                                if (Int32.TryParse(temp[i], out xNum) && Int32.TryParse(temp[i + 1], out yNum))
+                                {
+                                    tempPoint.Add(new Point(xNum, yNum));
+                                }
+                            }
+                        }
+                    foreach (GameObject obj in getAttatchedObjects(tempPoint.ToArray()))
+                    {
+                        if (obj is IsClickableObject)
+                            (addInf.entity as Button).AddObject((IsClickableObject)obj);
+                    }
+                }
+            }
+        }
+
+        private List<GameObject> getAttatchedObjects(params Point[] locations)
+        {
+
+            List<GameObject> attatchedObjects = new List<GameObject>();
+            foreach (Point p in locations)
+            {
+                if (p.X < 0 || p.X >= levelObjects.GetLength(0) || p.Y < 0 || p.Y >= levelObjects.GetLength(1))
+                    continue;
+
+
+                if (levelObjects[p.X, p.Y] == null)
+                    continue;
+
+                attatchedObjects.Add(levelObjects[p.X, p.Y]);
+            }
+
+            return attatchedObjects;
+        }
+
+
+        private List<string> checkAdditionalInformation(int x, int y)
+        {
+
+            List<String> lineSplits;
+            lineSplits = new List<string>();
+            foreach (string line in levelsInfo)
+            {
+
+                lineSplits.Clear();
+                lineSplits.AddRange(line.Split(' '));
+
+                if (lineSplits[0].Equals("" + x) && lineSplits[1].Equals("" + y))
+                {
+                    return lineSplits.GetRange(3, lineSplits.Count - 3);
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -289,6 +412,15 @@ namespace UnanimousOverkillGame
                     enemy.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
+
+            if (colliders.Count > 0)
+            {
+                foreach (PhysicsEntity phys in colliders)
+                {
+                    Vector2 drawLocation = manager.WorldToScreen(phys.X, phys.Y);
+                    phys.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                }
+            }
         }
 
         /// <summary>
@@ -314,3 +446,5 @@ namespace UnanimousOverkillGame
         }
     }
 }
+
+
