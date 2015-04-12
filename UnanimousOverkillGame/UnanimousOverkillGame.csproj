@@ -60,7 +60,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="RoomAdditionalInfo.cs" />
     <Compile Include="RoomManager.cs" />
-    <Compile Include="Tile.cs" />
+    <Compile Include="BackgroundTile.cs" />
     <Compile Include="WallCrawler.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +73,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\backgroundtiles.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\boundsTest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -84,6 +87,9 @@
     </Content>
     <Content Include="Content\placeholder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Rooms\Room1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Rooms\TestRoom.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

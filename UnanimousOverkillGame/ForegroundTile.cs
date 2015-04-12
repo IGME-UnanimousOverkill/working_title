@@ -17,9 +17,13 @@ namespace UnanimousOverkillGame
     {
         Rectangle isoRectangle;
         Texture2D boundsTexture;
-        int tile;
+        Rectangle tileRectangle;
         static Random rand = new Random();
         Color color;
+
+        bool falling = false;
+        float fallTime = 1f;
+        float curTime = 0f;
 
         /// <summary>
         /// Instantiates a tile that physicsobjects can collide with. This will need to be editted to allow for pseudo-isometric view.
@@ -29,16 +33,24 @@ namespace UnanimousOverkillGame
         {
             isoRectangle = new Rectangle(x - ((isoWidth - width) / 2), y - ((isoHeight - height) / 2), isoWidth, isoHeight);
             boundsTexture = bounds;
-            tile = tileNum;
-            color = new Color(120 + rand.Next(30), 120 + rand.Next(30), 120 + rand.Next(30));
+            if (tileNum > 4)
+            {
+                tileRectangle = new Rectangle((tileNum-5) * 100, 100, 100, 100);
+            }
+            else
+            {
+                tileRectangle = new Rectangle(tileNum * 100, 0, 100, 100);
+            }
+            //color = new Color(120 + rand.Next(30), 120 + rand.Next(30), 120 + rand.Next(30));
+            color = Color.White;
         }
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y)
         {
             if (texture != null)
             {
-                //Color c = new Color(120 + rand.Next(30), 120 + rand.Next(30), 120 + rand.Next(30));
-                spriteBatch.Draw(texture, new Rectangle(x - ((isoRectangle.Width - rectangle.Width) / 2), y - ((isoRectangle.Height - rectangle.Height) / 2), isoRectangle.Width, isoRectangle.Height), new Rectangle(tile * 100, 0, 100, 100), color); 
+                //color = new Color(rand.Next(250), rand.Next(250), rand.Next(250));
+                spriteBatch.Draw(texture, new Rectangle(x - ((isoRectangle.Width - rectangle.Width) / 2), y - ((isoRectangle.Height - rectangle.Height) / 2), isoRectangle.Width, isoRectangle.Height), tileRectangle, color); 
             }
         }
 
@@ -49,6 +61,34 @@ namespace UnanimousOverkillGame
         {
             if (boundsTexture != null)
             { spriteBatch.Draw(boundsTexture, rectangle, Color.White); }
+        }
+
+        public override void Update(GameTime time)
+        {
+            /*
+            if (falling)
+            {
+                curTime += (float)time.ElapsedGameTime.Milliseconds / 1000f;
+                if (curTime > fallTime/2 && curTime <= fallTime)
+                {
+                    rectangle.Location = new Point(rectangle.X + rand.Next(-2, 3), rectangle.Y);
+                }
+                if (curTime > fallTime)
+                {
+                    activateGravity = true;
+                }
+            }
+            */
+        }
+
+        public override void OnCollide(PhysicsEntity other)
+        {
+            /*
+            if (other is Player)
+            {
+                falling = true;
+            }
+            */
         }
     }
 }

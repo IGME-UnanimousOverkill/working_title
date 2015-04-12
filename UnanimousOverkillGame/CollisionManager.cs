@@ -100,6 +100,8 @@ namespace UnanimousOverkillGame
                                 continue;
                             if (!gameObject.IsCollidable)
                                 continue;
+                            if (gameObject == physEntity)
+                                continue;
                             //below, sets collide array and creates new collision object
                             //TOP
                             if (tDistance < bDistance && tDistance < lDistance && tDistance < rDistance)

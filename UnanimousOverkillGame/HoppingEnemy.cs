@@ -28,8 +28,13 @@ namespace UnanimousOverkillGame
         private const int hopDistnacePassive = 20;
         Random rand = new Random();
 
+
+
         bool jumped;
         GameTime gameTime;
+        double lastAttackTime;
+        int lastAttackTime2;
+
 
         int jumpcount;
         public double distanceToPlayer;
@@ -42,15 +47,24 @@ namespace UnanimousOverkillGame
         {
             this.MaxXV = 2;
             enemyLoc = new Vector2(x, y);
-            enemyState = EnemyState.FaceRight;
+            enemyState = EnemyState.FaceLeft;
             player = p;
             targetingPlayer = false;
             count = 0;
             activateGravity = false;
             this.acceleration = new Vector2(2.0f, 2.0f);
-            isCollidable = false;
         }
-
+        public override void OnCollide(PhysicsEntity other)
+        {
+            if (other is Player)
+            {
+                if (gameTime.TotalGameTime.TotalSeconds - lastAttackTime > 1.5)
+                {
+                    AttackPlayer();
+                    lastAttackTime = gameTime.TotalGameTime.TotalSeconds;
+                }
+            }
+        }
         public override void Update(GameTime gameTime)
         {
             this.gameTime = gameTime;
@@ -68,17 +82,18 @@ namespace UnanimousOverkillGame
                 activateGravity = false;
                 jumped = false;
             }
-            if(distanceToPlayer>15)
-            Move();
+            if (distanceToPlayer > 15)
+                Move();
 
             if (colliderArray[3] || colliderArray[1])
             {
-                enemyState = (enemyState == EnemyState.FaceLeft) ? EnemyState.FaceRight : EnemyState.FaceLeft;
+                if (Math.Abs((player.X + player.Rect.Width) / 2 - (rectangle.Width + X) / 2) > (player.Rect.Width / 2 + rectangle.Width / 2 + 5))
+                        enemyState = (colliderArray[3]) ? EnemyState.FaceRight : EnemyState.FaceLeft;
                 if (enemyState == EnemyState.FaceLeft)
-                    AddForce(new Vector2(-2, 0));
+                    AddForce(new Vector2(-6, 0));
                 else
-                    AddForce(new Vector2(2, 0));
-                X += (colliderArray[3] && !(colliderArray[1] && colliderArray[3])) ? 5 : -5;
+                    AddForce(new Vector2(6, 0));
+                //X += (colliderArray[3] && !(colliderArray[1] && colliderArray[3])) ? 5 : -5;
                 jumpcount = 0;
             }
 
@@ -88,51 +103,46 @@ namespace UnanimousOverkillGame
                 count = 0;
                 if (targetingPlayer)
                     FacePlayer();
-
-                
-
-                if (distanceToPlayer > 15)
+                if (jumped == false)
                 {
-                    if (jumped == false)
+                    if (jumpcount > 6)
                     {
-                        if (jumpcount > 3)
+                        check = rand.Next(0, 2);
+                        if (Math.Abs((player.X + player.Rect.Width) / 2 - (rectangle.Width + X) / 2) > (player.Rect.Width / 2 + rectangle.Width / 2 + 5))
+                        if (check == 1  )
                         {
-                            check = rand.Next(0, 2);
-                            if (check == 1)
-                            {
-                                enemyState = EnemyState.FaceLeft;
-                                AddForce(new Vector2(-2, 0));
-                            }
-                            else
-                            {
-                                enemyState = EnemyState.FaceRight;
-                                AddForce(new Vector2(2, 0));
-                            }
-                            jumpcount = 0;
+                            enemyState = EnemyState.FaceLeft;
                         }
-                        
-                        AddForce(new Vector2(0, -350));
-                        activateGravity = true;
-                        jumped = true;
-                        
-                        jumpcount++;
+                        else if (check == 0 )
+                        {
+                            enemyState = EnemyState.FaceRight;
+                        }
+                        velocity = (new Vector2((enemyState == EnemyState.FaceRight) ? -20 : 20, 0));
+                        AddForce(new Vector2((enemyState == EnemyState.FaceRight)?-20:20, 0));
+
+                        jumpcount = 0;
                     }
-                }
-                else
-                {
-                    AttackPlayer();
-                }
+                    if (Math.Abs((player.X + player.Rect.Width )/2 - (rectangle.Width + X)/2) > (player.Rect.Width/2 + rectangle.Width/2 + 5))
+                        AddForce(new Vector2(0, -350));
+                    activateGravity = true;
+                    jumped = true;
 
-
+                    jumpcount++;
+                }
             }
+
             Updates(gameTime);
             count++;
+            lastAttackTime2++;
         }
 
         public void AttackPlayer()
         {
             player.Health -= 5;
+            player.drag = false;
             player.AddForce(new Vector2((X < player.X) ? 200 : -200, 0));
+            player.velocity = (new Vector2((X < player.X) ? 1000 : -1000, 0));
+            player.drag = true;
         }
 
         public void FacePlayer()
