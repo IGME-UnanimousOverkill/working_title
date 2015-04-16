@@ -156,7 +156,7 @@ namespace UnanimousOverkillGame
             Room room = new Room(this, previous, font);
             
             string[] files = Directory.GetFiles(ROOM_DIR);
-            room.LoadRoom(files[rand.Next(files.Length)]);
+            room.LoadRoom(files[1/*rand.Next(files.Length)*/]);
 
             return room;
         }

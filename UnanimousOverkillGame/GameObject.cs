@@ -79,6 +79,11 @@ namespace UnanimousOverkillGame
             prevY = Y;
         }
 
+        public virtual void AddInformation(List<String> infoLines, GameObject[,] objects)
+        {
+            //
+        }
+
         /// <summary>
         /// Draws the texture, if there is one.
         /// </summary>

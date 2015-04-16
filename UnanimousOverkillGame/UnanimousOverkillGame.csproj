@@ -58,7 +58,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />
-    <Compile Include="RoomAdditionalInfo.cs" />
     <Compile Include="RoomManager.cs" />
     <Compile Include="BackgroundTile.cs" />
     <Compile Include="WallCrawler.cs" />

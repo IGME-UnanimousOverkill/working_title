@@ -34,6 +34,47 @@ namespace UnanimousOverkillGame
                 click();
         }
 
+        public override void AddInformation(List<String> infoLines, GameObject[,] objects)
+        {
+            List<Point> tempPoint = new List<Point>();
+            int xNum, yNum;
+            if (infoLines != null)
+                for (int i = 0; i < infoLines.Count; i++)
+                {
+                    if (i + 1 < infoLines.Count)
+                    {
+                        if (Int32.TryParse(infoLines[i], out xNum) && Int32.TryParse(infoLines[i + 1], out yNum))
+                        {
+                            tempPoint.Add(new Point(xNum, yNum));
+                        }
+                    }
+                }
+            foreach (GameObject obj in getAttatchedObjects(objects,tempPoint.ToArray()))
+            {
+                if (obj is IsClickableObject)
+                    AddObject((IsClickableObject)obj);
+            }
+        }
+
+        private List<GameObject> getAttatchedObjects(GameObject[,] levelObjects, params Point[] locations)
+        {
+
+            List<GameObject> attatchedObjects = new List<GameObject>();
+            foreach (Point p in locations)
+            {
+                if (p.X < 0 || p.X >= levelObjects.GetLength(0) || p.Y < 0 || p.Y >= levelObjects.GetLength(1))
+                    continue;
+
+
+                if (levelObjects[p.X, p.Y] == null)
+                    continue;
+
+                attatchedObjects.Add(levelObjects[p.X, p.Y]);
+            }
+
+            return attatchedObjects;
+        }
+
         public void AddObject(IsClickableObject obj)
         {
             click += obj.onClick;
