@@ -100,7 +100,7 @@ namespace UnanimousOverkillGame
 
             // TODO: use this.Content to load your game content here
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
-            System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
+            System.IO.Stream imageStream = TitleContainer.OpenStream("Content/player_spritesheet.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
             player = new Player(100, 228, 44, 70, spriteSheet);
 
@@ -264,6 +264,7 @@ namespace UnanimousOverkillGame
                         player.DrawBounds(spriteBatch, roomManager.boundsTexture);//temporary, for testing
                     }
 
+                    /*
                     spriteBatch.DrawString(font, "Top: " + player.colliderArray[0] 
                         + "\nRight: " + player.colliderArray[1] 
                         + "\nBottom: " + player.colliderArray[2]
@@ -279,7 +280,7 @@ namespace UnanimousOverkillGame
                     spriteBatch.Draw(roomManager.tileSet, healthBox, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
-
+                    */
                     break;
                 case GameState.Paused:
 

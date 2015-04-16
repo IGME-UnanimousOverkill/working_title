@@ -28,7 +28,8 @@ namespace UnanimousOverkillGame
         private const int hopDistnacePassive = 20;
         Random rand = new Random();
 
-
+        private const int ENEMY_WIDTH = 114;
+        private const int ENEMY_HEIGHT = 88;
 
         bool jumped;
         GameTime gameTime;
@@ -192,13 +193,13 @@ namespace UnanimousOverkillGame
                                         new Rectangle(
                                             0,
                                             0,
-                                            25,
-                                            25),
+                                            ENEMY_WIDTH,
+                                            ENEMY_HEIGHT),
                                         Color.White,
                                         0,
                                         Vector2.Zero,
                                         1,
-                                        SpriteEffects.None,
+                                        SpriteEffects.FlipHorizontally,
                                         0);
                         break;
                     }
@@ -209,13 +210,13 @@ namespace UnanimousOverkillGame
                                         new Rectangle(
                                             0,
                                             0,
-                                            25,
-                                            25),
+                                            ENEMY_WIDTH,
+                                            ENEMY_HEIGHT),
                                         Color.White,
                                         0,
                                         Vector2.Zero,
                                         1,
-                                        SpriteEffects.FlipHorizontally,
+                                        SpriteEffects.None,
                                         0);
                         break;
                     }

@@ -46,6 +46,9 @@ namespace UnanimousOverkillGame
         private Texture2D tileSet;
         private Texture2D backgroundSet;
         private Texture2D boundsTexture;
+        private Texture2D doorTexture;
+        private Texture2D bottleTexture;
+        private Texture2D hopEnemyTexture;
         private RoomManager manager;
         private static Random rand = new Random();
 
@@ -93,11 +96,14 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Sets the tile texture. This will be editted to include texture packs.
         /// </summary>
-        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds, Texture2D backBounds)
+        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds, Texture2D backBounds, Texture2D doorTexture, Texture2D bottleTexture, Texture2D hopEnemyTexture)
         {
             tileSet = tileTexture;
             boundsTexture = bounds;
             backgroundSet = backBounds;
+            this.doorTexture = doorTexture;
+            this.bottleTexture = bottleTexture;
+            this.hopEnemyTexture = hopEnemyTexture;
         }
 
         /// <summary>
@@ -223,7 +229,7 @@ namespace UnanimousOverkillGame
                             else
                             {
                                 Room room = manager.RandomRoom(this);
-                                Door nextDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, room, manager);
+                                Door nextDoor = new Door(x * TILE_WIDTH +5, y * TILE_HEIGHT -6, TILE_WIDTH, TILE_HEIGHT, doorTexture, room, manager);
                                 nextRooms.Add(room);
                                 colliders.Add(nextDoor);
                                 levelObjects[x, y] = nextDoor;
@@ -240,7 +246,7 @@ namespace UnanimousOverkillGame
                                     player.positionChangedManually();
                                     player.velocity = Vector2.Zero;
                                 }
-                                Door previousDoor = new Door(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, null, previousRoom, manager);
+                                Door previousDoor = new Door(x * TILE_WIDTH +3, y * TILE_HEIGHT -6, TILE_WIDTH, TILE_HEIGHT, doorTexture, previousRoom, manager);
                                 colliders.Add(previousDoor);
                                 doors.Add(previousDoor);
 
@@ -276,7 +282,7 @@ namespace UnanimousOverkillGame
                             levelObjects[x, y] = fan3;
                             break;
                         case ('h'):
-                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, tileSet, player);
+                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, hopEnemyTexture, player);
                             colliders.Add(hopEnemy);
                             enemies.Add(hopEnemy);
 
@@ -299,9 +305,9 @@ namespace UnanimousOverkillGame
                             colliders.Add(button.Box);
                             break;
                         case('B'):
-                            Bottle bottl = new Bottle(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, boundsTexture, player);
-                            colliders.Add(bottl);
-                            levelObjects[x, y] = bottl;
+                            Bottle bottle = new Bottle(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, bottleTexture, player);
+                            colliders.Add(bottle);
+                            levelObjects[x, y] = bottle;
                             break;
                     }
                     if (level[x, y] != ' ')

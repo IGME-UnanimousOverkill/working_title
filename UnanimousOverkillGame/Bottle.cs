@@ -40,7 +40,7 @@ namespace UnanimousOverkillGame
         public override void Draw(SpriteBatch spriteBatch, int x, int y)
         {
             if(draw)
-                spriteBatch.Draw(texture, new Vector2(x, y+count/5), new Rectangle(0, 0, 25, 25), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, new Vector2(x, y+count/5), new Rectangle(0, 0, 33, 51), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             if (count < -50)
                 bounce = true;
             if (count > 50)
