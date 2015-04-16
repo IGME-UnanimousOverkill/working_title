@@ -54,7 +54,7 @@ namespace UnanimousOverkillGame
         int prevKeyCount; //makes sure pause menu isn't skipped
 
         //player
-        Player player;
+        static Player player;
 
         public Game1()
             : base()

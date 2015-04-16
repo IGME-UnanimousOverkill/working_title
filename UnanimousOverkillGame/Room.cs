@@ -49,7 +49,6 @@ namespace UnanimousOverkillGame
         private RoomManager manager;
         private static Random rand = new Random();
 
-        List<RoomAdditionalInfo> addInfos;
         List<string> levelsInfo;
         private SpriteFont roomFont;
         private Dictionary<Vector2, IsClickableObject> clickables;
@@ -163,7 +162,6 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void SpawnRoom(Player player, Room lastRoom)
         {
-            addInfos = new List<RoomAdditionalInfo>();
             if (colliders.Count > 0)
             {
                 foreach (Door door in doors)
@@ -293,7 +291,6 @@ namespace UnanimousOverkillGame
                             
                             Button button = new Button(x * TILE_WIDTH + TILE_WIDTH / 3, y * TILE_HEIGHT + TILE_HEIGHT / 3, TILE_WIDTH / 3, TILE_HEIGHT / 3, boundsTexture, roomFont, null);
 
-                            addInfos.Add(new RoomAdditionalInfo(x, y, button));
                             levelObjects[x, y] = button;
                             colliders.Add(button);
                             colliders.Add(button.Box);
@@ -307,76 +304,28 @@ namespace UnanimousOverkillGame
                     }
                 }
             }
-            AddInformation();
-        }
-
-        private void AddInformation()
-        {
-            foreach (RoomAdditionalInfo addInf in addInfos)
-            {
-                if (addInf.entity is Button)
-                {
-                    List<string> temp = checkAdditionalInformation(addInf.x, addInf.y);
-                    List<Point> tempPoint = new List<Point>();
-                    int xNum, yNum;
-                    if (temp != null)
-                        for (int i = 0; i < temp.Count; i++)
-                        {
-                            if (i + 1 < temp.Count)
-                            {
-                                if (Int32.TryParse(temp[i], out xNum) && Int32.TryParse(temp[i + 1], out yNum))
-                                {
-                                    tempPoint.Add(new Point(xNum, yNum));
-                                }
-                            }
-                        }
-                    foreach (GameObject obj in getAttatchedObjects(tempPoint.ToArray()))
-                    {
-                        if (obj is IsClickableObject)
-                            (addInf.entity as Button).AddObject((IsClickableObject)obj);
-                    }
-                }
-            }
-        }
-
-        private List<GameObject> getAttatchedObjects(params Point[] locations)
-        {
-
-            List<GameObject> attatchedObjects = new List<GameObject>();
-            foreach (Point p in locations)
-            {
-                if (p.X < 0 || p.X >= levelObjects.GetLength(0) || p.Y < 0 || p.Y >= levelObjects.GetLength(1))
-                    continue;
+            checkAdditionalInformation();
+        }      
 
 
-                if (levelObjects[p.X, p.Y] == null)
-                    continue;
-
-                attatchedObjects.Add(levelObjects[p.X, p.Y]);
-            }
-
-            return attatchedObjects;
-        }
-
-
-        private List<string> checkAdditionalInformation(int x, int y)
+        private void checkAdditionalInformation()
         {
 
             List<String> lineSplits;
             lineSplits = new List<string>();
+            int xNum,yNum;
             foreach (string line in levelsInfo)
             {
 
                 lineSplits.Clear();
                 lineSplits.AddRange(line.Split(' '));
 
-                if (lineSplits[0].Equals("" + x) && lineSplits[1].Equals("" + y))
+                if (Int32.TryParse(lineSplits[0], out xNum) && Int32.TryParse(lineSplits[1], out yNum))
                 {
-                    return lineSplits.GetRange(3, lineSplits.Count - 3);
+                    levelObjects[xNum, yNum].AddInformation(lineSplits.GetRange(3, lineSplits.Count - 3), levelObjects);
                 }
-            }
 
-            return null;
+            }
         }
 
         /// <summary>
