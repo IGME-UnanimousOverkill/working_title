@@ -277,7 +277,7 @@ namespace UnanimousOverkillGame
                             break;
                         case ('h'):
                             HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, tileSet, player);
-                            //colliders.Add(hopEnemy);
+                            colliders.Add(hopEnemy);
                             enemies.Add(hopEnemy);
 
                             levelObjects[x, y] = hopEnemy;
@@ -298,7 +298,11 @@ namespace UnanimousOverkillGame
                             colliders.Add(button);
                             colliders.Add(button.Box);
                             break;
-
+                        case('B'):
+                            Bottle bottl = new Bottle(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, boundsTexture, player);
+                            colliders.Add(bottl);
+                            levelObjects[x, y] = bottl;
+                            break;
                     }
                     if (level[x, y] != ' ')
                     {

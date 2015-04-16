@@ -69,7 +69,7 @@ namespace UnanimousOverkillGame
         public override void Update(GameTime gameTime)
         {
             this.gameTime = gameTime;
-            distanceToPlayer = Math.Abs((player.X +player.Rect.Width) - (this.X + rectangle.Width));
+            distanceToPlayer = Math.Abs((player.X +player.Rect.Width)/2 - (this.X + rectangle.Width)/2);
             if (distanceToPlayer < 150)
             {
                 targetingPlayer = true;
@@ -83,7 +83,7 @@ namespace UnanimousOverkillGame
                 activateGravity = false;
                 jumped = false;
             }
-            if (distanceToPlayer > 25 )
+            if (distanceToPlayer > 10 )
                 Move();
 
             if (colliderArray[3] || colliderArray[1])
