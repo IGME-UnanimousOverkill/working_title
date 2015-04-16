@@ -54,15 +54,6 @@ namespace UnanimousOverkillGame
             }
         }
 
-        /// <summary>
-        /// Temporary debug method to see tile boundaries.
-        /// </summary>
-        public void DrawBounds(SpriteBatch spriteBatch)
-        {
-            if (boundsTexture != null)
-            { spriteBatch.Draw(boundsTexture, rectangle, Color.White); }
-        }
-
         public override void Update(GameTime time)
         {
             /*

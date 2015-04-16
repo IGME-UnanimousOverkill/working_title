@@ -129,10 +129,10 @@ namespace UnanimousOverkillGame
 
         }
 
-        public virtual void DrawBounds(SpriteBatch spriteBatch, Texture2D bound)//temporary for testing
+        public virtual void DrawBounds(SpriteBatch spriteBatch, Texture2D bound, int x, int y)//temporary for testing
         {
             if (bound != null)
-            { spriteBatch.Draw(bound, rectangle, Color.White); }
+            { spriteBatch.Draw(bound, new Rectangle(x, y, (int)(rectangle.Width * RoomManager.MINIMAP_SCALE), (int)(rectangle.Height * RoomManager.MINIMAP_SCALE)), Color.White); }
         }
 
         /// <summary>

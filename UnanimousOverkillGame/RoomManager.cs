@@ -44,6 +44,8 @@ namespace UnanimousOverkillGame
         private int screenWidth;
         private int screenHeight;
 
+        public static float MINIMAP_SCALE = 0.3f;
+
         public RoomManager(Player play, CollisionManager manager, SpriteFont font)
         {
             this.font = font;
@@ -146,6 +148,8 @@ namespace UnanimousOverkillGame
         public void BoundsDraw(SpriteBatch batch)
         {
             current.BoundsDraw(batch);
+            Vector2 drawLoc = WorldToMinimap((int)(player.X * MINIMAP_SCALE), (int)(player.Y * MINIMAP_SCALE));
+            player.DrawBounds(batch, boundsTexture, (int)drawLoc.X, (int)drawLoc.Y);
         }
 
         /// <summary>
@@ -184,6 +188,17 @@ namespace UnanimousOverkillGame
 
             int screenX = (int)worldX - left;
             int screenY = (int)worldY - top;
+
+            return new Vector2(screenX, screenY);
+        }
+
+        public Vector2 WorldToMinimap(int worldX, int worldY)
+        {
+            int top = (int)(cameraLocation.Y * MINIMAP_SCALE);
+            int left = (int)(cameraLocation.X * MINIMAP_SCALE);
+
+            int screenX = (int)worldX + ((screenWidth / 5) * 4) - left;
+            int screenY = (int)worldY + ((screenHeight / 5) * 4) - top;
 
             return new Vector2(screenX, screenY);
         }

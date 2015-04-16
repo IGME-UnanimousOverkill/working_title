@@ -258,11 +258,7 @@ namespace UnanimousOverkillGame
 
                     kbState = Keyboard.GetState();
                     // Hold down space to should tile physics boundaries.
-                    if (kbState.IsKeyDown(Keys.OemPeriod))
-                    {
-                        roomManager.BoundsDraw(spriteBatch);
-                        player.DrawBounds(spriteBatch, roomManager.boundsTexture);//temporary, for testing
-                    }
+                    roomManager.BoundsDraw(spriteBatch);
 
                     /*
                     spriteBatch.DrawString(font, "Top: " + player.colliderArray[0] 

@@ -413,7 +413,8 @@ namespace UnanimousOverkillGame
             {
                 foreach (ForegroundTile tile in foreground)
                 {
-                    tile.DrawBounds(batch);
+                    Vector2 drawLocation = manager.WorldToMinimap((int)(tile.X * RoomManager.MINIMAP_SCALE), (int)(tile.Y * RoomManager.MINIMAP_SCALE));
+                    tile.DrawBounds(batch, manager.boundsTexture, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
 
@@ -421,7 +422,8 @@ namespace UnanimousOverkillGame
             {
                 foreach (Enemy enemy in enemies)
                 {
-                    enemy.DrawBounds(batch, manager.boundsTexture);
+                    Vector2 drawLocation = manager.WorldToMinimap((int)(enemy.X * RoomManager.MINIMAP_SCALE), (int)(enemy.Y * RoomManager.MINIMAP_SCALE));
+                    enemy.DrawBounds(batch, manager.boundsTexture, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
         }
