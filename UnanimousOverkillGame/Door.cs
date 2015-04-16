@@ -24,6 +24,11 @@ namespace UnanimousOverkillGame
             roomManager = manager;
         }
 
+        public void UseDoor()
+        {
+            roomManager.ChangeRoom(destination);
+        }
+
         /// <summary>
         /// On Collision with player, change rooms.
         /// </summary>
@@ -31,7 +36,7 @@ namespace UnanimousOverkillGame
         {
             if (other is Player)
             {
-                roomManager.ChangeRoom(destination);
+                (other as Player).DoorInRange = this;
             }
         }
 
