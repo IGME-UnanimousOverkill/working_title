@@ -27,6 +27,7 @@ namespace UnanimousOverkillGame
 
         private KeyboardState prevKeyboardState;
         private Button buttonInRange;
+        private Door doorInRange;
         //SpriteBatch spriteBatch;
 
         public int Health { get { return health; } set { health = value; } }
@@ -56,6 +57,7 @@ namespace UnanimousOverkillGame
 
 
         public Button ButtonInRange { get { return buttonInRange; } set { if (value != null) buttonInRange = value; } }
+        public Door DoorInRange { get { return doorInRange; } set { if (value != null) doorInRange = value; } }
 
         public PlayerState PState { get { return pState; } set { pState = value; } }
         public PlayerState PrevState { get { return prevState; } set {  prevState = value; } }
@@ -72,6 +74,7 @@ namespace UnanimousOverkillGame
             : base(x, y, width, height, texture)
         {
             buttonInRange = null;
+            doorInRange = null;
             intox = 0;
             health = 50;
             holding = false;
@@ -132,6 +135,10 @@ namespace UnanimousOverkillGame
             if (kbState.IsKeyDown(Keys.E) && buttonInRange != null && !prevKeyboardState.IsKeyDown(Keys.E))
             {
                 buttonInRange.PressButton();
+            }
+            if (kbState.IsKeyDown(Keys.W) && doorInRange != null && !prevKeyboardState.IsKeyDown(Keys.W))
+            {
+                doorInRange.UseDoor();
             }
 
             //switch case for the player state to determine if the player is facing/walking a certain way and then changing to the next state when a key is pressed, or lifted up.
@@ -365,6 +372,7 @@ namespace UnanimousOverkillGame
             }
 
             buttonInRange = null;
+            doorInRange = null;
             prevKeyboardState = kbState;
 
             Updates(gameTime);
