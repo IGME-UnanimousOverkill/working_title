@@ -30,6 +30,7 @@ namespace UnanimousOverkillGame
 
         private const int ENEMY_WIDTH = 114;
         private const int ENEMY_HEIGHT = 88;
+        private float scale;
 
         bool jumped;
         GameTime gameTime;
@@ -43,10 +44,11 @@ namespace UnanimousOverkillGame
 
         Vector2 enemyLoc;
         public bool targetingPlayer;
-        public HoppingEnemy(int x, int y, int width, int height, Texture2D texture, Player p)
-            : base(x, y, width, height, texture)
+        public HoppingEnemy(int x, int y, float scale, Texture2D texture, Player p)
+            : base(x, y, (int)(ENEMY_WIDTH * scale), (int)(ENEMY_HEIGHT * scale), texture)
         {
             this.MaxXV = 2;
+            this.scale = scale;
             enemyLoc = new Vector2(x, y);
             enemyState = EnemyState.FaceLeft;
             player = p;
@@ -198,7 +200,7 @@ namespace UnanimousOverkillGame
                                         Color.White,
                                         0,
                                         Vector2.Zero,
-                                        1,
+                                        scale,
                                         SpriteEffects.FlipHorizontally,
                                         0);
                         break;
@@ -215,7 +217,7 @@ namespace UnanimousOverkillGame
                                         Color.White,
                                         0,
                                         Vector2.Zero,
-                                        1,
+                                        scale,
                                         SpriteEffects.None,
                                         0);
                         break;

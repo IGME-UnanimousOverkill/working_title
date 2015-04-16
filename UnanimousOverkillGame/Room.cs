@@ -183,7 +183,7 @@ namespace UnanimousOverkillGame
                     }
                     else if (door.destination == lastRoom)
                     {
-                        player.X = door.X + TILE_WIDTH;
+                        player.X = door.X + TILE_WIDTH + 4;
                         player.Y = door.Y + TILE_HEIGHT - player.Rect.Height;//made this a little more generic
                         player.positionChangedManually();
                         player.velocity = Vector2.Zero;
@@ -241,7 +241,7 @@ namespace UnanimousOverkillGame
                             {
                                 if (previousRoom == lastRoom)
                                 {
-                                    player.X = (x + 1) * TILE_WIDTH;
+                                    player.X = ((x + 1) * TILE_WIDTH) + 4;
                                     player.Y = ((y + 1) * TILE_HEIGHT) - player.Rect.Height;//made this a little more generic
                                     player.positionChangedManually();
                                     player.velocity = Vector2.Zero;
@@ -282,7 +282,7 @@ namespace UnanimousOverkillGame
                             levelObjects[x, y] = fan3;
                             break;
                         case ('h'):
-                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, hopEnemyTexture, player);
+                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.75f, hopEnemyTexture, player);
                             colliders.Add(hopEnemy);
                             enemies.Add(hopEnemy);
 

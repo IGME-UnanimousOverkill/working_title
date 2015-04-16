@@ -102,7 +102,7 @@ namespace UnanimousOverkillGame
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
             System.IO.Stream imageStream = TitleContainer.OpenStream("Content/player_spritesheet.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
-            player = new Player(100, 228, 44, 70, spriteSheet);
+            player = new Player(100, 228, 34, 55, 64, 70, spriteSheet);
 
             imageStream.Close();
             collisionManager = new CollisionManager(player);
