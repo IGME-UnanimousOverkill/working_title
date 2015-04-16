@@ -48,17 +48,18 @@ namespace UnanimousOverkillGame
         private bool jumped;
 
         //spritesheet animation stuff
-        const int WALK_FRAME_COUNT = 3; // The number of frames in the animation                 
-        const int MARIO_RECT_Y_OFFSET = 116; // How far down in the image are the frames?                 
-        const int MARIO_RECT_HEIGHT = 72; // The height of a single frame
-        const int MARIO_RECT_WIDTH = 44; // The width of a single frame
+        const int WALK_FRAME_COUNT = 7; // The number of frames in the animation                 
+        const int MARIO_RECT_Y_OFFSET = 72; // How far down in the image are the frames?                 
+        const int MARIO_RECT_HEIGHT = 62; // The height of a single frame
+        const int MARIO_RECT_X_OFFSET =15;
+        const int MARIO_RECT_WIDTH = 49; // The width of a single frame
 
 
         public Button ButtonInRange { get { return buttonInRange; } set { if (value != null) buttonInRange = value; } }
 
         public PlayerState PState { get { return pState; } set { pState = value; } }
         public PlayerState PrevState { get { return prevState; } set {  prevState = value; } }
-
+        public int Intox { get { return intox; } set { intox = value; } }
         /// <summary>
         /// initializes a player, sets the intoxication level to 0, health value to 50 and holding to false
         /// </summary>
@@ -107,6 +108,9 @@ namespace UnanimousOverkillGame
                 pState = PlayerState.Dead;
             }
             KeyboardState kbState = Keyboard.GetState();
+
+            if (intox > 100)
+                intox = 100;
 
             // Handle animation timing
             // - Add to the time counter
@@ -384,7 +388,7 @@ namespace UnanimousOverkillGame
                         spriteBatch.Draw(spriteSheet,
                                         playerLoc,
                                         new Rectangle(
-                                            frame * MARIO_RECT_WIDTH,
+                                            frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
                                             MARIO_RECT_Y_OFFSET,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
@@ -416,7 +420,7 @@ namespace UnanimousOverkillGame
                             spriteBatch.Draw(spriteSheet,
                                              playerLoc,
                                              new Rectangle(
-                                                 frame * MARIO_RECT_WIDTH,
+                                                 frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
                                                  MARIO_RECT_Y_OFFSET,
                                                  MARIO_RECT_WIDTH,
                                                  MARIO_RECT_HEIGHT),
@@ -448,7 +452,7 @@ namespace UnanimousOverkillGame
                                         playerLoc,
                                         new Rectangle(
                                             0,
-                                            MARIO_RECT_Y_OFFSET,
+                                            0,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
                                         Color.White,
@@ -465,7 +469,7 @@ namespace UnanimousOverkillGame
                                         playerLoc,
                                         new Rectangle(
                                             0,
-                                            MARIO_RECT_Y_OFFSET,
+                                            0,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
                                         Color.White,

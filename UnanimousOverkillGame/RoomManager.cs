@@ -33,6 +33,10 @@ namespace UnanimousOverkillGame
         public Texture2D tileSet;
         public Texture2D backTileSet;
         public Texture2D boundsTexture;
+        public Texture2D doorTexture;
+        public Texture2D bottleTexture;
+        public Texture2D hopEnemyTexture;
+
         public const string ROOM_DIR = "Content/Rooms/";
         private static Random rand = new Random();
         private int currentID = 0;
@@ -56,8 +60,7 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void ChangeRoom(Room room)
         {
-            // Placeholder tile assignment because no tilesets yet.
-            room.SetTileTexture(tileSet, boundsTexture, backTileSet);
+            room.SetTileTexture(tileSet, boundsTexture, backTileSet, doorTexture, bottleTexture, hopEnemyTexture);
             collisionManager.ClearCollisions();
             room.SpawnRoom(player, current);
             collisionManager.UpdateObjects(GetColliders(room));
@@ -106,12 +109,23 @@ namespace UnanimousOverkillGame
             System.IO.Stream tileStream = TitleContainer.OpenStream("Content/gameTiles.png");
             System.IO.Stream backStream = TitleContainer.OpenStream("Content/backgroundTiles.png");
             System.IO.Stream boundStream = TitleContainer.OpenStream("Content/boundsTest.png");
+            System.IO.Stream doorStream = TitleContainer.OpenStream("Content/door.png");
+            System.IO.Stream bottleStream = TitleContainer.OpenStream("Content/bottle.png");
+            System.IO.Stream hopEnemyStream = TitleContainer.OpenStream("Content/hopEnemy.png");
+
             tileSet = Texture2D.FromStream(graphics, tileStream);
             backTileSet = Texture2D.FromStream(graphics, backStream);
             boundsTexture = Texture2D.FromStream(graphics, boundStream);
+            doorTexture = Texture2D.FromStream(graphics, doorStream);
+            bottleTexture = Texture2D.FromStream(graphics, bottleStream);
+            hopEnemyTexture = Texture2D.FromStream(graphics, hopEnemyStream);
+
             tileStream.Close();
             backStream.Close();
             boundStream.Close();
+            doorStream.Close();
+            bottleStream.Close();
+            hopEnemyStream.Close();
 
             ChangeRoom(RandomRoom(null));
         }

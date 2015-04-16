@@ -47,6 +47,7 @@ namespace UnanimousOverkillGame
         SpriteFont font;
         Rectangle healthBox;
         Rectangle health;
+        Rectangle intoxBox;
         //Handling switching between GameStates
         GameState gameState;
         Keys currentKey;
@@ -82,6 +83,7 @@ namespace UnanimousOverkillGame
             gameState = GameState.Game;
             prevKeyCount = 0;
             health = new Rectangle(GraphicsDevice.Viewport.Width-200, 150,100 , 25);
+            intoxBox = new Rectangle(GraphicsDevice.Viewport.Width - 200, 200, 0, 25);
             healthBox = health;
 
             base.Initialize();
@@ -98,12 +100,11 @@ namespace UnanimousOverkillGame
 
             // TODO: use this.Content to load your game content here
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
-            System.IO.Stream imageStream = TitleContainer.OpenStream("Content/Mario.png");
+            System.IO.Stream imageStream = TitleContainer.OpenStream("Content/player_spritesheet.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
             player = new Player(100, 228, 44, 70, spriteSheet);
 
             imageStream.Close();
-
             collisionManager = new CollisionManager(player);
             player.CollisionManagerGet(collisionManager);
 
@@ -183,6 +184,7 @@ namespace UnanimousOverkillGame
                     roomManager.Update(gameTime);
                     
                     health.Width = player.Health * 2;
+                    intoxBox.Width = player.Intox * 2;
 
                     if(player.PState == PlayerState.Dead)
                     {
@@ -243,7 +245,7 @@ namespace UnanimousOverkillGame
 
             spriteBatch.Begin();
 
-
+            
             switch (gameState)
             {
                 case GameState.Menu:
@@ -262,6 +264,7 @@ namespace UnanimousOverkillGame
                         player.DrawBounds(spriteBatch, roomManager.boundsTexture);//temporary, for testing
                     }
 
+                    /*
                     spriteBatch.DrawString(font, "Top: " + player.colliderArray[0] 
                         + "\nRight: " + player.colliderArray[1] 
                         + "\nBottom: " + player.colliderArray[2]
@@ -276,7 +279,8 @@ namespace UnanimousOverkillGame
                         , new Vector2(20, 400), Color.Yellow);
                     spriteBatch.Draw(roomManager.tileSet, healthBox, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
-
+                    spriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
+                    */
                     break;
                 case GameState.Paused:
 
