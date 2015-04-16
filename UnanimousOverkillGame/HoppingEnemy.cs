@@ -53,6 +53,7 @@ namespace UnanimousOverkillGame
             count = 0;
             activateGravity = false;
             this.acceleration = new Vector2(2.0f, 2.0f);
+           
         }
         public override void OnCollide(PhysicsEntity other)
         {
@@ -68,7 +69,7 @@ namespace UnanimousOverkillGame
         public override void Update(GameTime gameTime)
         {
             this.gameTime = gameTime;
-            distanceToPlayer = Math.Abs(player.X - this.X);
+            distanceToPlayer = Math.Abs((player.X +player.Rect.Width) - (this.X + rectangle.Width));
             if (distanceToPlayer < 150)
             {
                 targetingPlayer = true;
@@ -82,17 +83,17 @@ namespace UnanimousOverkillGame
                 activateGravity = false;
                 jumped = false;
             }
-            if (distanceToPlayer > 15)
+            if (distanceToPlayer > 25 )
                 Move();
 
             if (colliderArray[3] || colliderArray[1])
             {
                 if (Math.Abs((player.X + player.Rect.Width) / 2 - (rectangle.Width + X) / 2) > (player.Rect.Width / 2 + rectangle.Width / 2 + 5))
                         enemyState = (colliderArray[3]) ? EnemyState.FaceRight : EnemyState.FaceLeft;
-                if (enemyState == EnemyState.FaceLeft)
-                    AddForce(new Vector2(-6, 0));
-                else
-                    AddForce(new Vector2(6, 0));
+                //if (enemyState == EnemyState.FaceLeft)
+                //    AddForce(new Vector2(-6, 0));
+                //else
+                //    AddForce(new Vector2(6, 0));
                 //X += (colliderArray[3] && !(colliderArray[1] && colliderArray[3])) ? 5 : -5;
                 jumpcount = 0;
             }
@@ -117,8 +118,8 @@ namespace UnanimousOverkillGame
                         {
                             enemyState = EnemyState.FaceRight;
                         }
-                        velocity = (new Vector2((enemyState == EnemyState.FaceRight) ? -20 : 20, 0));
-                        AddForce(new Vector2((enemyState == EnemyState.FaceRight)?-20:20, 0));
+                        //velocity = (new Vector2((enemyState == EnemyState.FaceRight) ? -20 : 20, 0));
+                        //AddForce(new Vector2((enemyState == EnemyState.FaceRight)?-20:20, 0));
 
                         jumpcount = 0;
                     }
@@ -139,10 +140,8 @@ namespace UnanimousOverkillGame
         public void AttackPlayer()
         {
             player.Health -= 5;
-            player.drag = false;
             player.AddForce(new Vector2((X < player.X) ? 200 : -200, 0));
             player.velocity = (new Vector2((X < player.X) ? 1000 : -1000, 0));
-            player.drag = true;
         }
 
         public void FacePlayer()

@@ -276,14 +276,14 @@ namespace UnanimousOverkillGame
                             break;
                         case ('h'):
                             HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, tileSet, player);
-                            //colliders.Add(hopEnemy);
+                            colliders.Add(hopEnemy);
                             enemies.Add(hopEnemy);
 
                             levelObjects[x, y] = hopEnemy;
                             break;
                         case ('p'):
                             PhaseBlock block = new PhaseBlock(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, rand.Next(3), true);
-                            colliders.Add(block);
+                            //colliders.Add(block);
 
                             levelObjects[x, y] = block;
                             break;
@@ -296,6 +296,11 @@ namespace UnanimousOverkillGame
                             levelObjects[x, y] = button;
                             colliders.Add(button);
                             colliders.Add(button.Box);
+                            break;
+                        case('B'):
+                            Bottle bottl = new Bottle(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, boundsTexture, player);
+                            colliders.Add(bottl);
+                            levelObjects[x, y] = bottl;
                             break;
 
                     }

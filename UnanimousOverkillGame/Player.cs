@@ -58,7 +58,7 @@ namespace UnanimousOverkillGame
 
         public PlayerState PState { get { return pState; } set { pState = value; } }
         public PlayerState PrevState { get { return prevState; } set {  prevState = value; } }
-
+        public int Intox { get { return intox; } set { intox = value; } }
         /// <summary>
         /// initializes a player, sets the intoxication level to 0, health value to 50 and holding to false
         /// </summary>
@@ -107,6 +107,9 @@ namespace UnanimousOverkillGame
                 pState = PlayerState.Dead;
             }
             KeyboardState kbState = Keyboard.GetState();
+
+            if (intox > 100)
+                intox = 100;
 
             // Handle animation timing
             // - Add to the time counter

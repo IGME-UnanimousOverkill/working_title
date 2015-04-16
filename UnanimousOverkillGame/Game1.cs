@@ -47,6 +47,7 @@ namespace UnanimousOverkillGame
         SpriteFont font;
         Rectangle healthBox;
         Rectangle health;
+        Rectangle intoxBox;
         //Handling switching between GameStates
         GameState gameState;
         Keys currentKey;
@@ -82,6 +83,7 @@ namespace UnanimousOverkillGame
             gameState = GameState.Game;
             prevKeyCount = 0;
             health = new Rectangle(GraphicsDevice.Viewport.Width-200, 150,100 , 25);
+            intoxBox = new Rectangle(GraphicsDevice.Viewport.Width - 200, 200, 0, 25);
             healthBox = health;
 
             base.Initialize();
@@ -103,7 +105,6 @@ namespace UnanimousOverkillGame
             player = new Player(100, 228, 44, 70, spriteSheet);
 
             imageStream.Close();
-
             collisionManager = new CollisionManager(player);
             player.CollisionManagerGet(collisionManager);
 
@@ -183,6 +184,7 @@ namespace UnanimousOverkillGame
                     roomManager.Update(gameTime);
                     
                     health.Width = player.Health * 2;
+                    intoxBox.Width = player.Intox * 2;
 
                     if(player.PState == PlayerState.Dead)
                     {
@@ -243,7 +245,7 @@ namespace UnanimousOverkillGame
 
             spriteBatch.Begin();
 
-
+            
             switch (gameState)
             {
                 case GameState.Menu:
@@ -276,6 +278,7 @@ namespace UnanimousOverkillGame
                         , new Vector2(20, 400), Color.Yellow);
                     spriteBatch.Draw(roomManager.tileSet, healthBox, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
+                    spriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
 
                     break;
                 case GameState.Paused:
