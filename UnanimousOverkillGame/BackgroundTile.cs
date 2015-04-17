@@ -28,8 +28,8 @@ namespace UnanimousOverkillGame
         /// Instantiates a tile just like a GameObject.
         /// Sets all initial booleans to false.
         /// </summary>
-        public BackgroundTile(int x, int y, int width, int height, Texture2D texture, int tileNum)
-            : base(x, y, width, height, texture)
+        public BackgroundTile(int x, int y, int width, int height, Texture2D texture, Texture2D normal, int tileNum)
+            : base(x, y, width, height, texture, normal)
         {
             if (tileNum > 4)
             {
@@ -43,8 +43,9 @@ namespace UnanimousOverkillGame
             color = Color.Gray;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
         {
+            device.Textures[1] = normal;
             if (texture != null)
             {
                 //color = new Color(rand.Next(250), rand.Next(250), rand.Next(250));

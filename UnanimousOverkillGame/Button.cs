@@ -97,9 +97,9 @@ namespace UnanimousOverkillGame
             box.Y = Y - BUTTON_RANGE;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
         {
-            base.Draw(spriteBatch, x, y);
+            base.Draw(device, spriteBatch, x, y);
 
             if (playerInRange)
             {
@@ -111,7 +111,7 @@ namespace UnanimousOverkillGame
         }
 
         public Button(int x, int y, int width, int height, Texture2D texture, SpriteFont font, params IsClickableObject[] objs) :
-            base(x, y, width, height, texture)
+            base(x, y, width, height, texture, null)
         {
             this.font = font;
 

@@ -19,6 +19,7 @@ namespace UnanimousOverkillGame
     {
         //Fields
         protected Texture2D texture;
+        protected Texture2D normal;
         protected Rectangle rectangle;
 
 
@@ -59,14 +60,14 @@ namespace UnanimousOverkillGame
         /// Instantiates a game object with a rectangle based upon its x, y, width and height.
         /// Does NOT require a texture.
         /// </summary>
-        protected GameObject(int x, int y, int width, int height, Texture2D texture = null)
+        protected GameObject(int x, int y, int width, int height, Texture2D texture = null, Texture2D normal = null)
         {
             this.rectangle = new Rectangle(x, y, width, height);
             this.texture = texture;
             isCollidable = true;
         }
 
-        protected GameObject(int x, int y, int width, int height, Boolean Collidable, Texture2D texture = null)
+        protected GameObject(int x, int y, int width, int height, Boolean Collidable, Texture2D texture = null, Texture2D normal = null)
         {
             this.rectangle = new Rectangle(x, y, width, height);
             this.texture = texture;
@@ -88,8 +89,9 @@ namespace UnanimousOverkillGame
         /// Draws the texture, if there is one.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch, int x, int y)
+        public virtual void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
         {
+            device.Textures[1] = normal;
             if (texture != null)
             { spriteBatch.Draw(texture, new Rectangle(x, y, rectangle.Width, rectangle.Height), Color.White); }
         }

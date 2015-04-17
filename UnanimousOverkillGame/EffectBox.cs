@@ -36,7 +36,7 @@ namespace UnanimousOverkillGame
         }
 
 
-        public EffectBox(int x, int y, int width, int height,Vector2 accelerationChange, Texture2D texture = null) : base(x,y,width,height,texture,false)
+        public EffectBox(int x, int y, int width, int height,Vector2 accelerationChange, Texture2D texture = null) : base(x,y,width,height,texture,null,false)
         {
             this.accelerationChange = accelerationChange;
             originalX = x;
@@ -44,7 +44,7 @@ namespace UnanimousOverkillGame
         }
 
         public EffectBox(int x, int y, int width, int height, Vector2 accelerationChange,PhysicsEntity parent, Texture2D texture = null)
-            : base(x, y, width, height, texture, false)
+            : base(x, y, width, height, texture, null, false)
         {
             this.accelerationChange = accelerationChange;
             this.parent = parent;

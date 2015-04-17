@@ -54,7 +54,7 @@ namespace UnanimousOverkillGame
         }
 
         public Fan(int x, int y, int width, int height, char fanType)
-            : base(x, y, width, height, null)
+            : base(x, y, width, height, null, null)
         {
             isCollidable = false;
             switch (fanType)

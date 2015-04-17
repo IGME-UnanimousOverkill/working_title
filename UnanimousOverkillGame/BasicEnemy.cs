@@ -17,7 +17,7 @@ namespace UnanimousOverkillGame
     class BasicEnemy : Enemy
     {
         public BasicEnemy(int x, int y, int width, int height, Texture2D texture)
-            : base(x, y, width, height, texture)
+            : base(x, y, width, height, texture, null)
         {
 
         }

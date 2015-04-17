@@ -38,16 +38,16 @@ namespace UnanimousOverkillGame
         /// <summary> 
         /// Instantiates a basic PhysicsEntity.  Nothing special here.
         /// </summary>
-        public PhysicsEntity(int x, int y, int width, int height, Texture2D texture)
-            : base(x, y, width, height, texture)
+        public PhysicsEntity(int x, int y, int width, int height, Texture2D texture, Texture2D normal)
+            : base(x, y, width, height, texture, normal)
         {
             velocity = new Vector2();
             acceleration = new Vector2(0.0f,0.0f);
             activateGravity = false;
         }
 
-        public PhysicsEntity(int x, int y, int width, int height, Texture2D texture, bool collidable)
-            : base(x, y, width, height,collidable, texture)
+        public PhysicsEntity(int x, int y, int width, int height, Texture2D texture, Texture2D normal, bool collidable)
+            : base(x, y, width, height,collidable, texture, normal)
         {
             velocity = new Vector2();
             acceleration = new Vector2(0.0f, 0.0f);

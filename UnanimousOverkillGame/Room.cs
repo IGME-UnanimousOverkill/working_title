@@ -198,7 +198,9 @@ namespace UnanimousOverkillGame
                     switch (level[x, y])
                     {
                         case ('*'):
-                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, rand.Next(3));
+                            int tileNum = rand.Next(7);
+                            Texture2D normal = manager.content.Load<Texture2D>("Normals/frontNormals/FrontNormalMap_0" + (tileNum + 1) + ".png");
+                            ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, normal, tileNum);
                             /*
                             int percent = rand.Next(100);
                             if (percent > 80)
@@ -288,7 +290,9 @@ namespace UnanimousOverkillGame
                             levelObjects[x, y] = hopEnemy;
                             break;
                         case ('p'):
-                            PhaseBlock block = new PhaseBlock(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, rand.Next(3), true);
+                            int phaseTileNum = rand.Next(7);
+                            Texture2D phaseNormal = manager.content.Load<Texture2D>("Normals/frontNormals/FrontNormalMap_0" + (phaseTileNum + 1) + ".png");
+                            PhaseBlock block = new PhaseBlock(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, phaseNormal, phaseTileNum, true);
                             colliders.Add(block);
 
                             levelObjects[x, y] = block;
@@ -310,7 +314,9 @@ namespace UnanimousOverkillGame
                     }
                     if (level[x, y] != ' ')
                     {
-                        BackgroundTile back = new BackgroundTile((x * TILE_WIDTH) + 8, (y * TILE_HEIGHT) - 8, TILE_WIDTH, TILE_HEIGHT, backgroundSet, rand.Next(7));
+                        int tileNum = rand.Next(7);
+                        Texture2D normal = manager.content.Load<Texture2D>("Normals/backgroundNormals/BackNormalMap_0" + (tileNum + 1) + ".png");
+                        BackgroundTile back = new BackgroundTile((x * TILE_WIDTH) + 8, (y * TILE_HEIGHT) - 8, TILE_WIDTH, TILE_HEIGHT, backgroundSet, normal, tileNum);
                         background.Add(back);
                     }
                 }
@@ -364,7 +370,7 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Draws everything in the level.
         /// </summary>
-        public void Draw(SpriteBatch batch)
+        public void Draw(GraphicsDevice device, SpriteBatch batch)
         {
 
             if (background.Count > 0)
@@ -372,7 +378,7 @@ namespace UnanimousOverkillGame
                 foreach (BackgroundTile tile in background)
                 {
                     Vector2 drawLocation = manager.WorldToScreen(tile.X, tile.Y);
-                    tile.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                    tile.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
 
@@ -381,7 +387,7 @@ namespace UnanimousOverkillGame
                 foreach (ForegroundTile tile in foreground)
                 {
                     Vector2 drawLocation = manager.WorldToScreen(tile.X, tile.Y);
-                    tile.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                    tile.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
 
@@ -390,7 +396,7 @@ namespace UnanimousOverkillGame
                 foreach (Enemy enemy in enemies)
                 {
                     Vector2 drawLocation = manager.WorldToScreen(enemy.X, enemy.Y);
-                    enemy.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                    enemy.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
 
@@ -399,7 +405,7 @@ namespace UnanimousOverkillGame
                 foreach (PhysicsEntity phys in colliders)
                 {
                     Vector2 drawLocation = manager.WorldToScreen(phys.X, phys.Y);
-                    phys.Draw(batch, (int)drawLocation.X, (int)drawLocation.Y);
+                    phys.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
         }

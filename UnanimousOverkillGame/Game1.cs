@@ -111,7 +111,7 @@ namespace UnanimousOverkillGame
             //Loads the spriteFont
             font = Content.Load<SpriteFont>("TimesNewRoman12");
 
-            roomManager = new RoomManager(player, collisionManager,font);
+            roomManager = new RoomManager(player, collisionManager, font, Content);
             roomManager.LoadContent(GraphicsDevice);
 
            
@@ -254,7 +254,7 @@ namespace UnanimousOverkillGame
                     break;
                 case GameState.Game:
 
-                    roomManager.Draw(spriteBatch);
+                    roomManager.Draw(GraphicsDevice, spriteBatch);
 
                     kbState = Keyboard.GetState();
                     // Hold down space to should tile physics boundaries.

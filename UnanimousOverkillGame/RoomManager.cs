@@ -38,6 +38,7 @@ namespace UnanimousOverkillGame
         public Texture2D hopEnemyTexture;
 
         public const string ROOM_DIR = "Content/Rooms/";
+        public ContentManager content;
         private static Random rand = new Random();
         private int currentID = 0;
         private Vector2 cameraLocation;
@@ -46,11 +47,12 @@ namespace UnanimousOverkillGame
 
         public static float MINIMAP_SCALE = 0.3f;
 
-        public RoomManager(Player play, CollisionManager manager, SpriteFont font)
+        public RoomManager(Player play, CollisionManager manager, SpriteFont font, ContentManager content)
         {
             this.font = font;
             player = play;
             collisionManager = manager;
+            this.content = content;
             head = current;
             var screen = System.Windows.Forms.Screen.PrimaryScreen;
             screenWidth = screen.Bounds.Width;
@@ -135,11 +137,11 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Draws the current room.
         /// </summary>
-        public void Draw(SpriteBatch batch)
+        public void Draw(GraphicsDevice device, SpriteBatch batch)
         {
-            current.Draw(batch);
+            current.Draw(device, batch);
             Vector2 drawLoc = WorldToScreen(player.X, player.Y);
-            player.Draw(batch, (int)drawLoc.X, (int)drawLoc.Y);
+            player.Draw(device, batch, (int)drawLoc.X, (int)drawLoc.Y);
         }
 
         /// <summary>

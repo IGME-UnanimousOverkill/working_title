@@ -30,7 +30,7 @@ namespace UnanimousOverkillGame
         }
 
         public WallCrawler(int x, int y, int width, int height, Texture2D texture, CollisionManager collisionManager)
-            : base(x, y, width, height, texture)
+            : base(x, y, width, height, texture, null)
         {
             moving = new bool[4] { true, false, false, false };
             this.collisionManager = collisionManager;

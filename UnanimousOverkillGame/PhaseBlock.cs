@@ -24,14 +24,14 @@ namespace UnanimousOverkillGame
         }
 
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
         {
             if(phasedIn)
-                base.Draw(spriteBatch, x, y);
+                base.Draw(device, spriteBatch, x, y);
         }
 
-        public PhaseBlock(int x, int y, int width, int height, int isoWidth, int isoHeight, Texture2D texture, Texture2D bounds, int tileNum, bool phasedIn)
-            : base(x, y, width, height, isoWidth, isoHeight, texture, bounds, tileNum)
+        public PhaseBlock(int x, int y, int width, int height, int isoWidth, int isoHeight, Texture2D texture, Texture2D bounds, Texture2D normal, int tileNum, bool phasedIn)
+            : base(x, y, width, height, isoWidth, isoHeight, texture, bounds, normal, tileNum)
         {
             this.phasedIn = phasedIn;
             

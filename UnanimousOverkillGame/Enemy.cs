@@ -21,8 +21,8 @@ namespace UnanimousOverkillGame
         //Fields
         protected MoveState moveState;
 
-        public Enemy(int x, int y, int width, int height, Texture2D texture)
-            : base(x, y, width, height, texture)
+        public Enemy(int x, int y, int width, int height, Texture2D texture, Texture2D normal)
+            : base(x, y, width, height, texture, null)
         {
 
         }

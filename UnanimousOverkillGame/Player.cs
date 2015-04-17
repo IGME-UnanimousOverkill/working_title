@@ -69,7 +69,7 @@ namespace UnanimousOverkillGame
         /// <param name="height">how tall the rectangle is</param>
         /// <param name="texture">the texture going into the rectangle for the player</param>
         public Player(int x, int y, int width, int height, int spriteWidth, int spriteHeight, Texture2D texture)
-            : base(x, y, width, height, texture)
+            : base(x, y, width, height, texture, null)
         {
             spriteRect = new Rectangle(x - ((spriteWidth - width) / 2), y - (spriteHeight - height), spriteWidth, spriteHeight);
             buttonInRange = null;
@@ -379,7 +379,7 @@ namespace UnanimousOverkillGame
         /// will draw the player with the given spritebatch, intended to be called from Game1's draw
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
         {
             playerSpriteBatch = spriteBatch;
             spriteRect.X = x - ((spriteRect.Width - rectangle.Width) / 2);

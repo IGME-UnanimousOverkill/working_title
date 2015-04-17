@@ -28,8 +28,8 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Instantiates a tile that physicsobjects can collide with. This will need to be editted to allow for pseudo-isometric view.
         /// </summary>
-        public ForegroundTile(int x, int y, int width, int height, int isoWidth, int isoHeight, Texture2D texture, Texture2D bounds, int tileNum)
-            : base(x, y, width, height, texture)
+        public ForegroundTile(int x, int y, int width, int height, int isoWidth, int isoHeight, Texture2D texture, Texture2D bounds, Texture2D normal, int tileNum)
+            : base(x, y, width, height, texture, normal)
         {
             isoRectangle = new Rectangle(x - ((isoWidth - width) / 2), y - ((isoHeight - height) / 2), isoWidth, isoHeight);
             boundsTexture = bounds;
@@ -45,8 +45,9 @@ namespace UnanimousOverkillGame
             color = Color.White;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
         {
+            device.Textures[1] = normal;
             if (texture != null)
             {
                 //color = new Color(rand.Next(250), rand.Next(250), rand.Next(250));

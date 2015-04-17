@@ -37,9 +37,10 @@ namespace UnanimousOverkillGame
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
         {
-            if(draw)
+            if (draw)
+                device.Textures[1] = normal;
                 spriteBatch.Draw(texture, new Vector2(x, y+count/5), new Rectangle(0, 0, 33, 51), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             if (count < -50)
                 bounce = true;
