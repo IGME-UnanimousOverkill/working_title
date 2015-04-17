@@ -39,7 +39,7 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Updates the enemy's move
         /// </summary>
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             Move();
             CheckWalls();

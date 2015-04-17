@@ -63,6 +63,7 @@ namespace UnanimousOverkillGame
         protected GameObject(int x, int y, int width, int height, Texture2D texture = null, Texture2D normal = null)
         {
             this.rectangle = new Rectangle(x, y, width, height);
+            this.normal = normal;
             this.texture = texture;
             isCollidable = true;
         }
@@ -70,6 +71,7 @@ namespace UnanimousOverkillGame
         protected GameObject(int x, int y, int width, int height, Boolean Collidable, Texture2D texture = null, Texture2D normal = null)
         {
             this.rectangle = new Rectangle(x, y, width, height);
+            this.normal = normal;
             this.texture = texture;
             isCollidable = Collidable;
         }

@@ -39,6 +39,8 @@ namespace UnanimousOverkillGame
     /// </summary>
     public class Game1 : Game
     {
+        public static bool RumbleMode = false;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RoomManager roomManager;
