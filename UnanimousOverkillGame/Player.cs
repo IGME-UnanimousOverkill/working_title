@@ -32,7 +32,7 @@ namespace UnanimousOverkillGame
 
         public int Health { get { return health; } set { health = value; } }
         private SpriteBatch playerSpriteBatch;
-
+        Bottle b;
         private Rectangle spriteRect; // Holds information about how the player should be drawn
         private Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
         private CollisionManager col;
@@ -53,10 +53,12 @@ namespace UnanimousOverkillGame
         const int MARIO_RECT_X_OFFSET = 0;
         const int MARIO_RECT_WIDTH = 64; // The width of a single frame
 
+        public int bottlesOnHand;
 
         public Button ButtonInRange { get { return buttonInRange; } set { if (value != null) buttonInRange = value; } }
         public Door DoorInRange { get { return doorInRange; } set { if (value != null) doorInRange = value; } }
-
+        public bool Holding { get { return holding; } set { holding = value; } }
+        RoomManager rm;
         public PlayerState PState { get { return pState; } set { pState = value; } }
         public PlayerState PrevState { get { return prevState; } set {  prevState = value; } }
         public int Intox { get { return intox; } set { intox = value; } }
@@ -95,7 +97,10 @@ namespace UnanimousOverkillGame
         {
             this.col = col;
         }
-
+        public void RoomManagerGet(RoomManager col)
+        {
+            this.rm = col;
+        }
         /// <summary>
         /// updates the game logic, so will change playerState, frame count and gametime, etc.
         /// </summary>
@@ -138,6 +143,27 @@ namespace UnanimousOverkillGame
                 doorInRange.UseDoor();
             }
 
+
+            
+            if (bottlesOnHand > 0)
+            {
+                if (kbState.IsKeyDown(Keys.F) && !prevKeyboardState.IsKeyDown(Keys.F))
+                {
+                    b = new Bottle((pState == PlayerState.FaceRight) ? (X + Rect.Width + 3) : (X - 50), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
+                    b.Drawing = true;
+                    b.Thrown = true;
+                    b.drag = false;
+                    rm.Current.Colliders.Add(b);
+                    rm.Current.Enemies.Add(b);
+                    b.activateGravity = true;
+                    b.AddForce(new Vector2((pState == PlayerState.FaceLeft) ? -1500 : 1500, -350));
+                    bottlesOnHand--;
+                }
+            }
+            else
+            {
+                holding = false;
+            }
             //switch case for the player state to determine if the player is facing/walking a certain way and then changing to the next state when a key is pressed, or lifted up.
             switch (pState)
             {

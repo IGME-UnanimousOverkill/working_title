@@ -38,7 +38,7 @@ namespace UnanimousOverkillGame
         private List<ForegroundTile> foreground;
         private List<BackgroundTile> background;
         private List<PhysicsEntity> colliders;
-        private List<Enemy> enemies;
+        private List<PhysicsEntity> enemies;
         private List<Door> doors;
         private Room previousRoom;
         private List<Room> nextRooms;
@@ -51,7 +51,10 @@ namespace UnanimousOverkillGame
         private Texture2D hopEnemyTexture;
         private RoomManager manager;
         private static Random rand = new Random();
-
+        public List<PhysicsEntity> Colliders { get { return colliders; } set { colliders= value; } }
+        public List<PhysicsEntity> Enemies { get { return enemies; } set { enemies = value; } }
+        int prevSize;
+        int prevSize2;
         List<string> levelsInfo;
         private SpriteFont roomFont;
         private Dictionary<Vector2, IsClickableObject> clickables;
@@ -71,7 +74,7 @@ namespace UnanimousOverkillGame
             background = new List<BackgroundTile>();
             colliders = new List<PhysicsEntity>();
             tempClickables = new List<IsClickableObject>();
-            enemies = new List<Enemy>();
+            enemies = new List<PhysicsEntity>();
             nextRooms = new List<Room>();
             doors = new List<Door>();
             ID = manager.MakeID();
@@ -86,7 +89,7 @@ namespace UnanimousOverkillGame
             background = new List<BackgroundTile>();
             colliders = new List<PhysicsEntity>();
             tempClickables = new List<IsClickableObject>();
-            enemies = new List<Enemy>();
+            enemies = new List<PhysicsEntity>();
             nextRooms = new List<Room>();
             doors = new List<Door>();
             ID = manager.MakeID();
@@ -308,7 +311,7 @@ namespace UnanimousOverkillGame
                             colliders.Add(button.Box);
                             break;
                         case('B'):
-                            Bottle bottle = new Bottle(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH / 2, TILE_HEIGHT / 2, bottleTexture, player);
+                            Bottle bottle = new Bottle(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, bottleTexture, player, manager);
                             colliders.Add(bottle);
                             levelObjects[x, y] = bottle;
                             break;
@@ -323,6 +326,8 @@ namespace UnanimousOverkillGame
                 }
             }
             checkAdditionalInformation();
+            prevSize = colliders.Count;
+            prevSize2 = enemies.Count;
         }      
 
 
@@ -361,10 +366,23 @@ namespace UnanimousOverkillGame
 
             if (enemies.Count > 0)
             {
-                foreach (Enemy enemy in enemies)
+                foreach (PhysicsEntity enemy in enemies)
                 {
-                    enemy.Update(time);
+                    if (enemy is Enemy)
+                        (enemy as Enemy).Update(time);
+                    else
+                        enemy.Updates(time);
                 }
+            }
+            if(prevSize != colliders.Count)
+            {
+                manager.UpdateCollisionManager(this);
+                prevSize = colliders.Count;
+            }
+            if(prevSize2 != enemies.Count)
+            {
+                manager.UpdateCollisionManager(this);
+                prevSize2 = enemies.Count;
             }
         }
 
@@ -394,7 +412,7 @@ namespace UnanimousOverkillGame
 
             if (enemies.Count > 0)
             {
-                foreach (Enemy enemy in enemies)
+                foreach (PhysicsEntity enemy in enemies)
                 {
                     Vector2 drawLocation = manager.WorldToScreen(enemy.X, enemy.Y);
                     enemy.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
@@ -427,7 +445,7 @@ namespace UnanimousOverkillGame
 
             if (enemies.Count > 0)
             {
-                foreach (Enemy enemy in enemies)
+                foreach (PhysicsEntity enemy in enemies)
                 {
                     Vector2 drawLocation = manager.WorldToMinimap((int)(enemy.X * RoomManager.MINIMAP_SCALE), (int)(enemy.Y * RoomManager.MINIMAP_SCALE));
                     enemy.DrawBounds(batch, manager.boundsTexture, (int)drawLocation.X, (int)drawLocation.Y);

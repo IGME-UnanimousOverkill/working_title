@@ -116,7 +116,7 @@ namespace UnanimousOverkillGame
 
             roomManager = new RoomManager(player, collisionManager, font, Content);
             roomManager.LoadContent(GraphicsDevice);
-
+            player.RoomManagerGet(roomManager);
            
             
 
@@ -187,7 +187,7 @@ namespace UnanimousOverkillGame
                     roomManager.Update(gameTime);
                     
                     health.Width = player.Health * 2;
-                    intoxBox.Width = player.Intox * 2;
+                    intoxBox.Width = (int)(player.Intox * 1.5);
 
                     if(player.PState == PlayerState.Dead)
                     {
@@ -270,8 +270,9 @@ namespace UnanimousOverkillGame
                     // Hold down space to should tile physics boundaries.
                     roomManager.BoundsDraw(spriteBatch);
 
+                    spriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                     /*
-                    spriteBatch.DrawString(font, "Top: " + player.colliderArray[0] 
+                     * font, "Top: " + player.colliderArray[0] 
                         + "\nRight: " + player.colliderArray[1] 
                         + "\nBottom: " + player.colliderArray[2]
                         + "\nLeft: " + player.colliderArray[3] 
@@ -282,11 +283,11 @@ namespace UnanimousOverkillGame
                         + "\nPlayer Yveloc: " + player.velocity.Y
                         + "\nPlayer Xaccel: " + player.acceleration.Y
                         + "\nPlayer Yaccel: " + player.acceleration.Y
-                        , new Vector2(20, 400), Color.Yellow);
+                    */
+                        , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
                     spriteBatch.Draw(roomManager.tileSet, healthBox, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
-                    */
                     break;
                 case GameState.Paused:
 

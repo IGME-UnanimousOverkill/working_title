@@ -81,6 +81,8 @@ namespace UnanimousOverkillGame
                     {
                         gameObject = objects[j];
 
+                        if (gameObject == physEntity)
+                            continue;
                         // Calculate the bottom and right side locations for the gameObject
                         float objBottom = gameObject.Y + gameObject.Rect.Height;
                         float objRight = gameObject.X + gameObject.Rect.Width;

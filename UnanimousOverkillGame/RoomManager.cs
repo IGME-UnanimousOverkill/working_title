@@ -67,10 +67,15 @@ namespace UnanimousOverkillGame
             room.SetTileTexture(tileSet, boundsTexture, backTileSet, doorTexture, bottleTexture, hopEnemyTexture);
             collisionManager.ClearCollisions();
             room.SpawnRoom(player, current);
+            UpdateCollisionManager(room);
+            current = room;
+        }
+
+        public void UpdateCollisionManager(Room room)
+        {
             collisionManager.UpdateObjects(GetColliders(room));
             collisionManager.UpdateEntities(GetEntities(room));
 
-            current = room;
         }
 
         public int MakeID()
