@@ -46,6 +46,7 @@ namespace UnanimousOverkillGame
         RoomManager roomManager;
         CollisionManager collisionManager;
         KeyboardState kbState;
+        KeyboardState prevkbState;
         SpriteFont font;
         Rectangle healthBox;
         Rectangle health;
@@ -198,8 +199,15 @@ namespace UnanimousOverkillGame
                     if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 10; player.velocity.Y = 0; }
                     if (kbState.IsKeyDown(Keys.Down)) { player.Y += 10; player.velocity.Y = 0; }
 
+                    if (prevkbState.IsKeyDown(Keys.OemPeriod) && kbState.IsKeyUp(Keys.OemPeriod))
+                    {
+                        RumbleMode = !RumbleMode;
+                    }
+
                     collisionManager.DetectCollisions();
                     collisionManager.HandleCollisions();
+
+                    prevkbState = kbState;
 
                     base.Update(gameTime);
 

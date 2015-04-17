@@ -57,7 +57,6 @@ namespace UnanimousOverkillGame
 
         public override void Update(GameTime time)
         {
-            /*
             if (falling)
             {
                 curTime += (float)time.ElapsedGameTime.Milliseconds / 1000f;
@@ -70,17 +69,14 @@ namespace UnanimousOverkillGame
                     activateGravity = true;
                 }
             }
-            */
         }
 
         public override void OnCollide(PhysicsEntity other)
         {
-            /*
-            if (other is Player)
+            if (Game1.RumbleMode && other is Player)
             {
                 falling = true;
             }
-            */
         }
     }
 }
