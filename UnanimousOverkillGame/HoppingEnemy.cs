@@ -44,8 +44,8 @@ namespace UnanimousOverkillGame
 
         Vector2 enemyLoc;
         public bool targetingPlayer;
-        public HoppingEnemy(int x, int y, float scale, Texture2D texture, Player p)
-            : base(x, y, (int)(ENEMY_WIDTH * scale), (int)(ENEMY_HEIGHT * scale), texture, null)
+        public HoppingEnemy(int x, int y, float scale, Texture2D texture, Texture2D normal, Player p)
+            : base(x, y, (int)(ENEMY_WIDTH * scale), (int)(ENEMY_HEIGHT * scale), texture, normal)
         {
             this.MaxXV = 2;
             this.scale = scale;

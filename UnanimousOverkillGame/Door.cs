@@ -18,7 +18,7 @@ namespace UnanimousOverkillGame
         public Room destination;
         private RoomManager roomManager;
 
-        public Door(int x, int y, int width, int height, Texture2D texture, Room dest, RoomManager manager) : base(x, y, width, height, texture, null)
+        public Door(int x, int y, int width, int height, Texture2D texture, Texture2D normal, Room dest, RoomManager manager) : base(x, y, width, height, texture, normal)
         {
             destination = dest;
             roomManager = manager;
