@@ -49,6 +49,7 @@ namespace UnanimousOverkillGame
         private Texture2D doorTexture;
         private Texture2D bottleTexture;
         private Texture2D hopEnemyTexture;
+        private Texture2D oozeTexture;
         private RoomManager manager;
         private static Random rand = new Random();
         public List<PhysicsEntity> Colliders { get { return colliders; } set { colliders= value; } }
@@ -98,7 +99,7 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Sets the tile texture. This will be editted to include texture packs.
         /// </summary>
-        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds, Texture2D backBounds, Texture2D doorTexture, Texture2D bottleTexture, Texture2D hopEnemyTexture)
+        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds, Texture2D backBounds, Texture2D doorTexture, Texture2D bottleTexture, Texture2D hopEnemyTexture, Texture2D oozeTexture)
         {
             tileSet = tileTexture;
             boundsTexture = bounds;
@@ -106,6 +107,7 @@ namespace UnanimousOverkillGame
             this.doorTexture = doorTexture;
             this.bottleTexture = bottleTexture;
             this.hopEnemyTexture = hopEnemyTexture;
+            this.oozeTexture = oozeTexture;
         }
 
         /// <summary>
@@ -287,11 +289,12 @@ namespace UnanimousOverkillGame
                             levelObjects[x, y] = fan3;
                             break;
                         case ('h'):
-                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.75f, hopEnemyTexture, player);
-                            colliders.Add(hopEnemy);
-                            enemies.Add(hopEnemy);
+                           // HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.75f, hopEnemyTexture, player);
+                            Ooze ooze = new Ooze(x * TILE_WIDTH, y * TILE_HEIGHT, .50f, oozeTexture, player);
+                            colliders.Add(ooze);
+                            enemies.Add(ooze);
 
-                            levelObjects[x, y] = hopEnemy;
+                            levelObjects[x, y] = ooze;
                             break;
                         case ('p'):
                             int phaseTileNum = rand.Next(7);

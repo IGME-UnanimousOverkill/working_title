@@ -62,8 +62,11 @@ namespace UnanimousOverkillGame
         {
             if (other is Player)
             {
+                if(player.Y + player.Rect.Height == Y + rectangle.Height)
+                    X = (player.X + player.Rect.Width<=X+3)?player.X + player.Rect.Width:player.X-rectangle.Width;
                 if (gameTime.TotalGameTime.TotalSeconds - lastAttackTime > 1.5)
                 {
+                   
                     AttackPlayer();
                     lastAttackTime = gameTime.TotalGameTime.TotalSeconds;
                 }
