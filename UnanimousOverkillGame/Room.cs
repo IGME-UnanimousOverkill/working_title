@@ -413,15 +413,6 @@ namespace UnanimousOverkillGame
                 }
             }
 
-            if (enemies.Count > 0)
-            {
-                foreach (PhysicsEntity enemy in enemies)
-                {
-                    Vector2 drawLocation = manager.WorldToScreen(enemy.X, enemy.Y);
-                    enemy.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
-                }
-            }
-
             if (colliders.Count > 0)
             {
                 foreach (PhysicsEntity phys in colliders)
@@ -432,6 +423,15 @@ namespace UnanimousOverkillGame
                     {
                         (phys as EffectBox).ResetSize();
                     }
+                }
+            }
+
+            if (enemies.Count > 0)
+            {
+                foreach (PhysicsEntity enemy in enemies)
+                {
+                    Vector2 drawLocation = manager.WorldToScreen(enemy.X, enemy.Y);
+                    enemy.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
         }
