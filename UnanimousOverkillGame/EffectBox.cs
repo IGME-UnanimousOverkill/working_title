@@ -16,10 +16,12 @@ namespace UnanimousOverkillGame
     class EffectBox : PhysicsEntity
     {
         Vector2 accelerationChange;
-        private int originalX;
-        private int originalY;
+        private Rectangle originalRect;
         private PhysicsEntity parent;
+        private PhysicsEntity child;
 
+
+        public Rectangle OriginalRect { get { return originalRect; } }
         public bool HasParent { get { return parent != null; } }
         public float XAccelerationChange { get { return accelerationChange.X; } }
 
@@ -27,20 +29,80 @@ namespace UnanimousOverkillGame
 
         public override void OnCollide(PhysicsEntity other)
         {
-            other.AddForce(accelerationChange);
+            if((HasParent && !(parent is EffectBox)) || !HasParent )
+                other.AddForce(accelerationChange);
             if (HasParent)
             {
-                
                 parent.OnCollide(other);
+                if (parent is EffectBox)
+                {
+                    EffectBox par = parent as EffectBox;
+                    if (par.Rect.Equals(par.OriginalRect) || other.Rect.Contains(this.originalRect))
+                    {
+                        RoomManager.GetRoomManager.Current.Colliders.Remove(this);
+                        RoomManager.GetRoomManager.Current.Enemies.Remove(this);
+                        RoomManager.GetRoomManager.UpdateCollisionManager(RoomManager.GetRoomManager.Current);
+                        par.child = null;
+                        //got to make sure all calls to this are gone.
+                        return;
+                    }
+
+
+                }
             }
+        }
+
+
+        private Rectangle GetOriginalBoxRect(EffectBox box)
+        {
+            if (box.HasParent && box.parent is EffectBox)
+            {
+                return GetOriginalBoxRect(box.parent as EffectBox);
+            }
+
+            return box.OriginalRect;
+        }
+
+        private Rectangle GetOriginalParentRect(EffectBox box)
+        {
+            if (!box.HasParent)
+            {
+                return box.rectangle;
+            }
+
+            if (box.HasParent && !(box.parent is EffectBox))
+            {
+                return box.parent.Rect;
+            }
+
+            return GetOriginalParentRect(box.parent as EffectBox);
+
+
+        }
+
+
+        private void AdjustSize(PhysicsEntity other)
+        {
+            if (parent == null)
+            {
+                return;
+            }
+        }
+
+        public void ResetSize()
+        {
+            rectangle.X = originalRect.X;
+            rectangle.Y = originalRect.Y;
+            rectangle.Width = originalRect.Width;
+            rectangle.Height = originalRect.Height;
         }
 
 
         public EffectBox(int x, int y, int width, int height,Vector2 accelerationChange, Texture2D texture = null) : base(x,y,width,height,texture,null,false)
         {
             this.accelerationChange = accelerationChange;
-            originalX = x;
-            originalY = y;
+            parent = null;
+            originalRect = new Rectangle(x, y, width, height);
         }
 
         public EffectBox(int x, int y, int width, int height, Vector2 accelerationChange,PhysicsEntity parent, Texture2D texture = null)
@@ -48,8 +110,7 @@ namespace UnanimousOverkillGame
         {
             this.accelerationChange = accelerationChange;
             this.parent = parent;
-            originalX = x;
-            originalY = y;
+            originalRect = new Rectangle(x, y, width, height);
         }
 
     }

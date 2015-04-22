@@ -21,7 +21,11 @@ namespace UnanimousOverkillGame
                 return current;
             }
         }
-        
+
+        private static RoomManager roomManager;
+
+        public static RoomManager GetRoomManager { get { return roomManager; } }
+
         public Player player;
         private CollisionManager collisionManager;
         private Room head;
@@ -59,6 +63,8 @@ namespace UnanimousOverkillGame
             var screen = System.Windows.Forms.Screen.PrimaryScreen;
             screenWidth = screen.Bounds.Width;
             screenHeight = screen.Bounds.Height;
+
+            roomManager = this;
         }
 
         /// <summary>
