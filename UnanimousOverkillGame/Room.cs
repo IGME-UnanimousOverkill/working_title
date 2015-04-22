@@ -289,7 +289,13 @@ namespace UnanimousOverkillGame
                             levelObjects[x, y] = fan3;
                             break;
                         case ('h'):
-                           // HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.75f, hopEnemyTexture, player);
+                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.75f, hopEnemyTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
+                            colliders.Add(hopEnemy);
+                            enemies.Add(hopEnemy);
+
+                            levelObjects[x, y] = hopEnemy;
+                            break;
+                        case ('o'):
                             Ooze ooze = new Ooze(x * TILE_WIDTH, y * TILE_HEIGHT, .50f, oozeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
                             colliders.Add(ooze);
                             enemies.Add(ooze);
