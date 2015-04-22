@@ -70,8 +70,8 @@ namespace UnanimousOverkillGame
         /// <param name="width">how wide the rectangle is</param>
         /// <param name="height">how tall the rectangle is</param>
         /// <param name="texture">the texture going into the rectangle for the player</param>
-        public Player(int x, int y, int width, int height, int spriteWidth, int spriteHeight, Texture2D texture)
-            : base(x, y, width, height, texture, null)
+        public Player(int x, int y, int width, int height, int spriteWidth, int spriteHeight, Texture2D texture, Texture2D normal)
+            : base(x, y, width, height, texture, normal)
         {
             spriteRect = new Rectangle(x - ((spriteWidth - width) / 2), y - (spriteHeight - height), spriteWidth, spriteHeight);
             buttonInRange = null;

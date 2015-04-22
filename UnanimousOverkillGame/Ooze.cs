@@ -27,8 +27,8 @@ namespace UnanimousOverkillGame
         GameTime gameTime;
         Vector2 enemyLoc;
         int counter;
-         public Ooze(int x, int y, float scale, Texture2D texture, Player p)
-            : base(x, y-10, (int)(ENEMY_WIDTH * scale), (int)(ENEMY_HEIGHT * scale), texture, null)
+         public Ooze(int x, int y, float scale, Texture2D texture, Texture2D normal, Player p)
+            : base(x, y-10, (int)(ENEMY_WIDTH * scale), (int)(ENEMY_HEIGHT * scale), texture, normal)
         {
             MaxXV = 50;
             player = p;

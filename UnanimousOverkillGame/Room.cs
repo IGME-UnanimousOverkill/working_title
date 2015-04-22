@@ -236,7 +236,7 @@ namespace UnanimousOverkillGame
                             else
                             {
                                 Room room = manager.RandomRoom(this);
-                                Door nextDoor = new Door(x * TILE_WIDTH +5, y * TILE_HEIGHT -6, TILE_WIDTH, TILE_HEIGHT, doorTexture, room, manager);
+                                Door nextDoor = new Door(x * TILE_WIDTH + 5, y * TILE_HEIGHT - 6, TILE_WIDTH, TILE_HEIGHT, doorTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), room, manager);
                                 nextRooms.Add(room);
                                 colliders.Add(nextDoor);
                                 levelObjects[x, y] = nextDoor;
@@ -253,7 +253,7 @@ namespace UnanimousOverkillGame
                                     player.positionChangedManually();
                                     player.velocity = Vector2.Zero;
                                 }
-                                Door previousDoor = new Door(x * TILE_WIDTH +3, y * TILE_HEIGHT -6, TILE_WIDTH, TILE_HEIGHT, doorTexture, previousRoom, manager);
+                                Door previousDoor = new Door(x * TILE_WIDTH +3, y * TILE_HEIGHT -6, TILE_WIDTH, TILE_HEIGHT, doorTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), previousRoom, manager);
                                 colliders.Add(previousDoor);
                                 doors.Add(previousDoor);
 
@@ -290,7 +290,7 @@ namespace UnanimousOverkillGame
                             break;
                         case ('h'):
                            // HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.75f, hopEnemyTexture, player);
-                            Ooze ooze = new Ooze(x * TILE_WIDTH, y * TILE_HEIGHT, .50f, oozeTexture, player);
+                            Ooze ooze = new Ooze(x * TILE_WIDTH, y * TILE_HEIGHT, .50f, oozeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
                             colliders.Add(ooze);
                             enemies.Add(ooze);
 
