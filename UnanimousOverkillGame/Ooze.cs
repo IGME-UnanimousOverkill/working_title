@@ -30,7 +30,6 @@ namespace UnanimousOverkillGame
          public Ooze(int x, int y, float scale, Texture2D texture, Texture2D normal, Player p)
             : base(x, y-10, (int)(ENEMY_WIDTH * scale), (int)(ENEMY_HEIGHT * scale), texture, normal)
         {
-            MaxXV = 50;
             player = p;
             enemyLoc = new Vector2(x, y-10);
             enemyState = EnemyState.FaceLeft;
@@ -46,12 +45,13 @@ namespace UnanimousOverkillGame
                 {
                     player.AddForce(new Vector2(0, -500));
                 }
-                if (player.Y + player.Rect.Height == Y + rectangle.Height)
-                {
-                    X = (player.X + player.Rect.Width <= X + 3) ? player.X + player.Rect.Width : player.X - rectangle.Width;
-                    velocity = Vector2.Zero;
-                    drag = true;
-                }
+                //collide with player
+                //if (player.Y + player.Rect.Height == Y + rectangle.Height)
+                //{
+                //    X = (player.X + player.Rect.Width <= X + 3) ? player.X + player.Rect.Width : player.X - rectangle.Width;
+                //    velocity = Vector2.Zero;
+                //    drag = true;
+                //}
             }
             //{ 
                //enemyState = (enemyState == EnemyState.FaceLeft) ? EnemyState.FaceRight : EnemyState.FaceLeft;
@@ -66,19 +66,19 @@ namespace UnanimousOverkillGame
         }
         public override void Update(GameTime time)
         {
+            activateGravity = true;
             this.gameTime = time;
             //Move();
             if (colliderArray[3] || colliderArray[1])
             {
                 velocity = new Vector2((enemyState == EnemyState.FaceLeft) ? 2f : -2f, 0);
                 enemyState = (enemyState == EnemyState.FaceLeft) ? EnemyState.FaceRight : EnemyState.FaceLeft;
-                drag = true;
             }
-            if(velocity.X > 2)
+            if(velocity.X > 4)
             {
                 velocity.X = 1;
             }
-            if (velocity.X < -2)
+            if (velocity.X < -3)
             {
                 velocity.X = -1;
             }
@@ -95,11 +95,11 @@ namespace UnanimousOverkillGame
         {
             if (enemyState == EnemyState.FaceLeft)
             {
-                AddForce(new Vector2(-50f, 0));
+                AddForce(new Vector2(-100f, 0));
             }
             else
             {
-                AddForce(new Vector2(50f, 0));
+                AddForce(new Vector2(100f, 0));
             }
         }
 
