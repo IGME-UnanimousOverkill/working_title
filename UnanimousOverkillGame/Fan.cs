@@ -23,28 +23,26 @@ namespace UnanimousOverkillGame
 
         private Direction direction;
         private List<EffectBox> effectBoxes;
-
+        private int fanStrength;
         private void SpawnEffect(Direction d)
         {
-            for (int i = 0; i < 3; i++)
+
+            switch (d)
             {
-                switch (d)
-                {
-                    case Direction.up:
-                        effectBoxes.Add(new EffectBox(this.X, this.Y  - (2*Room.TILE_HEIGHT), Room.TILE_WIDTH, Room.TILE_HEIGHT*3, new Vector2(0, -25)));
-                        break;
-                    case Direction.right:
-                        effectBoxes.Add(new EffectBox(this.X, this.Y, Room.TILE_WIDTH*3, Room.TILE_HEIGHT, new Vector2(25, 0)));
-                        break;
-                    case Direction.down:
-                        effectBoxes.Add(new EffectBox(this.X, this.Y, Room.TILE_WIDTH, Room.TILE_HEIGHT*3, new Vector2(0, 25)));
-                        break;
-                    case Direction.left:
-                        effectBoxes.Add(new EffectBox(this.X - (2 * Room.TILE_WIDTH), this.Y , Room.TILE_WIDTH*3, Room.TILE_HEIGHT, new Vector2(-25, 0)));
-                        break;
-                    default:
-                        break;
-                }
+                case Direction.up:
+                    effectBoxes.Add(new EffectBox(this.X, this.Y - (2 * Room.TILE_HEIGHT), Room.TILE_WIDTH, Room.TILE_HEIGHT * 3, new Vector2(0, -fanStrength)));
+                    break;
+                case Direction.right:
+                    effectBoxes.Add(new EffectBox(this.X, this.Y, Room.TILE_WIDTH * 3, Room.TILE_HEIGHT, new Vector2(fanStrength, 0)));
+                    break;
+                case Direction.down:
+                    effectBoxes.Add(new EffectBox(this.X, this.Y, Room.TILE_WIDTH, Room.TILE_HEIGHT * 3, new Vector2(0, fanStrength)));
+                    break;
+                case Direction.left:
+                    effectBoxes.Add(new EffectBox(this.X - (2 * Room.TILE_WIDTH), this.Y, Room.TILE_WIDTH * 3, Room.TILE_HEIGHT, new Vector2(-fanStrength, 0)));
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -53,9 +51,11 @@ namespace UnanimousOverkillGame
             return effectBoxes;
         }
 
-        public Fan(int x, int y, int width, int height, char fanType)
+        public Fan(int x, int y, int width, int height, char fanType, int fanStrength = 65)
             : base(x, y, width, height, null, null)
         {
+
+            this.fanStrength = fanStrength;
             isCollidable = false;
             switch (fanType)
             {

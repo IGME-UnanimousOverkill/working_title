@@ -98,7 +98,8 @@ namespace UnanimousOverkillGame
                         {
 
                             gameObject.OnCollide(physEntity);
-                            if (gameObject is Door)//stops nast problems from happening during room spawn, should  be changed in case of like locked doors or something
+                            physEntity.OnCollide(gameObject);
+                           if (gameObject is Door)//stops nast problems from happening during room spawn, should  be changed in case of like locked doors or something
                                 continue;
                             if (!gameObject.IsCollidable)
                                 continue;

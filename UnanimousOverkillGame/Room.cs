@@ -264,28 +264,28 @@ namespace UnanimousOverkillGame
                             Fan fan = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan);
                             colliders.AddRange(fan.getEffects());
-
+                            enemies.AddRange(fan.getEffects());
                             levelObjects[x, y] = fan;
                             break;
                         case ('┤'):
                             Fan fan1 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan1);
                             colliders.AddRange(fan1.getEffects());
-
+                            enemies.AddRange(fan1.getEffects());
                             levelObjects[x, y] = fan1;
                             break;
                         case ('┬'):
                             Fan fan2 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan2);
                             colliders.AddRange(fan2.getEffects());
-
+                            enemies.AddRange(fan2.getEffects());
                             levelObjects[x, y] = fan2;
                             break;
                         case ('├'):
                             Fan fan3 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan3);
                             colliders.AddRange(fan3.getEffects());
-
+                            enemies.AddRange(fan3.getEffects());
                             levelObjects[x, y] = fan3;
                             break;
                         case ('h'):
@@ -312,6 +312,7 @@ namespace UnanimousOverkillGame
                             levelObjects[x, y] = button;
                             colliders.Add(button);
                             colliders.Add(button.Box);
+                            enemies.Add(button.Box);
                             break;
                         case('B'):
                             Bottle bottle = new Bottle(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, bottleTexture, player, manager);

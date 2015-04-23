@@ -34,6 +34,8 @@ namespace UnanimousOverkillGame
         }
         public override void OnCollide(PhysicsEntity other)
         {
+            if (other is Bottle)
+                return;
             if (other is Player)
             {
                 drawing = false;
