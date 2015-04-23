@@ -60,6 +60,9 @@ namespace UnanimousOverkillGame
         //player
         static Player player;
 
+        //Shader stuff
+        Effect lightingEffect;
+
         public Game1()
             : base()
         {
@@ -117,9 +120,18 @@ namespace UnanimousOverkillGame
             roomManager = new RoomManager(player, collisionManager, font, Content);
             roomManager.LoadContent(GraphicsDevice);
             player.RoomManagerGet(roomManager);
-           
+
+            lightingEffect = LoadEffect("Content/Test.mgfx");
             
 
+        }
+
+        private Effect LoadEffect(String file)
+        {
+            System.IO.BinaryReader reader = new System.IO.BinaryReader(TitleContainer.OpenStream(file));
+            Effect effect = new Effect(GraphicsDevice, reader.ReadBytes((int)reader.BaseStream.Length));
+            reader.Close();
+            return effect;
         }
 
         /// <summary>
@@ -253,16 +265,24 @@ namespace UnanimousOverkillGame
 
             GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin();
-
             
             switch (gameState)
             {
                 case GameState.Menu:
+                    spriteBatch.Begin();
                     spriteBatch.DrawString(font, "MENU", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to start", new Vector2(250, 170), Color.White);
                     break;
                 case GameState.Game:
+
+                     spriteBatch.Begin(0, null, null, null, null, lightingEffect);
+
+                     // Set params
+                     EffectParameter lightPos = lightingEffect.Parameters["lightPos"];
+                     EffectParameter lightColor = lightingEffect.Parameters["lightColor"];
+
+                     lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X, roomManager.WorldToScreen(player.X, player.Y).Y, 0));
+                     lightColor.SetValue(Color.White.ToVector4());
 
                     roomManager.Draw(GraphicsDevice, spriteBatch);
 
@@ -271,26 +291,14 @@ namespace UnanimousOverkillGame
                     roomManager.BoundsDraw(spriteBatch);
 
                     spriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
-                    /*
-                     * font, "Top: " + player.colliderArray[0] 
-                        + "\nRight: " + player.colliderArray[1] 
-                        + "\nBottom: " + player.colliderArray[2]
-                        + "\nLeft: " + player.colliderArray[3] 
-                        + "\nRoom: " + roomManager.Current.ID.ToString()
-                        + "\nPlayer X: " + player.X
-                        + "\nPlayer Y: " + player.Y
-                        + "\nPlayer Xveloc: " + player.velocity.X
-                        + "\nPlayer Yveloc: " + player.velocity.Y
-                        + "\nPlayer Xaccel: " + player.acceleration.Y
-                        + "\nPlayer Yaccel: " + player.acceleration.Y
-                    */
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
+
                     spriteBatch.Draw(roomManager.tileSet, healthBox, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
                     break;
                 case GameState.Paused:
-
+                    spriteBatch.Begin();
                     spriteBatch.DrawString(font, "PAUSED", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to continue", new Vector2(250, 170), Color.White);
                     spriteBatch.DrawString(font, "Press ESC to go to Menu", new Vector2(250, 210), Color.White);
@@ -298,8 +306,6 @@ namespace UnanimousOverkillGame
 
                     break;
             }
-
-            spriteBatch.DrawString(font, "Current gameState: " + gameState, new Vector2(400, 400), Color.Green);
 
             spriteBatch.End();
 
