@@ -289,7 +289,13 @@ namespace UnanimousOverkillGame
                             levelObjects[x, y] = fan3;
                             break;
                         case ('h'):
-                           // HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.75f, hopEnemyTexture, player);
+                            HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.75f, hopEnemyTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
+                            colliders.Add(hopEnemy);
+                            enemies.Add(hopEnemy);
+
+                            levelObjects[x, y] = hopEnemy;
+                            break;
+                        case ('o'):
                             Ooze ooze = new Ooze(x * TILE_WIDTH, y * TILE_HEIGHT, .50f, oozeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
                             colliders.Add(ooze);
                             enemies.Add(ooze);
@@ -414,15 +420,6 @@ namespace UnanimousOverkillGame
                 }
             }
 
-            if (enemies.Count > 0)
-            {
-                foreach (PhysicsEntity enemy in enemies)
-                {
-                    Vector2 drawLocation = manager.WorldToScreen(enemy.X, enemy.Y);
-                    enemy.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
-                }
-            }
-
             if (colliders.Count > 0)
             {
                 foreach (PhysicsEntity phys in colliders)
@@ -433,6 +430,15 @@ namespace UnanimousOverkillGame
                     {
                         (phys as EffectBox).ResetSize();
                     }
+                }
+            }
+
+            if (enemies.Count > 0)
+            {
+                foreach (PhysicsEntity enemy in enemies)
+                {
+                    Vector2 drawLocation = manager.WorldToScreen(enemy.X, enemy.Y);
+                    enemy.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
         }
