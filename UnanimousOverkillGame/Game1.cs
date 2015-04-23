@@ -57,6 +57,8 @@ namespace UnanimousOverkillGame
         Keys prevKey;
         int prevKeyCount; //makes sure pause menu isn't skipped
 
+        Boolean enableShaders = false;
+
         //player
         static Player player;
 
@@ -120,8 +122,8 @@ namespace UnanimousOverkillGame
             roomManager = new RoomManager(player, collisionManager, font, Content);
             roomManager.LoadContent(GraphicsDevice);
             player.RoomManagerGet(roomManager);
-
-            lightingEffect = LoadEffect("Content/Test.mgfx");
+            if(enableShaders)
+                lightingEffect = LoadEffect("Content/Test.mgfx");
             
 
         }
@@ -277,13 +279,15 @@ namespace UnanimousOverkillGame
 
                      spriteBatch.Begin(0, null, null, null, null, lightingEffect);
 
-                     // Set params
-                     EffectParameter lightPos = lightingEffect.Parameters["lightPos"];
-                     EffectParameter lightColor = lightingEffect.Parameters["lightColor"];
+                     if (enableShaders)
+                     {
+                         // Set params
+                         EffectParameter lightPos = lightingEffect.Parameters["lightPos"];
+                         EffectParameter lightColor = lightingEffect.Parameters["lightColor"];
 
-                     lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X, roomManager.WorldToScreen(player.X, player.Y).Y, 0));
-                     lightColor.SetValue(Color.White.ToVector4());
-
+                         lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X, roomManager.WorldToScreen(player.X, player.Y).Y, 0));
+                         lightColor.SetValue(Color.White.ToVector4());
+                     }
                     roomManager.Draw(GraphicsDevice, spriteBatch);
 
                     kbState = Keyboard.GetState();
