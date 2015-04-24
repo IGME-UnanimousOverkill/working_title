@@ -18,7 +18,6 @@ namespace UnanimousOverkillGame
         Vector2 accelerationChange;
         private Rectangle originalRect;
         private PhysicsEntity parent;
-        private PhysicsEntity child;
 
 
         public Rectangle OriginalRect { get { return originalRect; } }
@@ -34,21 +33,23 @@ namespace UnanimousOverkillGame
             if (HasParent)
             {
                 parent.OnCollide(other);
-                if (parent is EffectBox)
+
+                if (other.X < rectangle.X + rectangle.Width && other.X > rectangle.X)
                 {
-                    EffectBox par = parent as EffectBox;
-                    if (par.Rect.Equals(par.OriginalRect) || other.Rect.Contains(this.originalRect))
+                    if (GetOriginalBoxRect(this).X >= rectangle.X)
                     {
-                        RoomManager.GetRoomManager.Current.Colliders.Remove(this);
-                        RoomManager.GetRoomManager.Current.Enemies.Remove(this);
-                        RoomManager.GetRoomManager.UpdateCollisionManager(RoomManager.GetRoomManager.Current);
-                        par.child = null;
-                        //got to make sure all calls to this are gone.
-                        return;
+                        if (GetOriginalBoxRect(this).X <= other.X)
+                        {
+
+                        }
+                        else
+                        {
+                            rectangle.Width = other.X - rectangle.X;
+                        }
                     }
-
-
                 }
+
+                
             }
         }
 
@@ -63,6 +64,8 @@ namespace UnanimousOverkillGame
             return box.OriginalRect;
         }
 
+
+        /*//this shouldn't be a thing for now, parents that are effects boxes
         private Rectangle GetOriginalParentRect(EffectBox box)
         {
             if (!box.HasParent)
@@ -79,7 +82,14 @@ namespace UnanimousOverkillGame
 
 
         }
+        */
 
+        public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
+        {
+            base.Draw(device, spriteBatch, x, y);
+            ResetSize();
+            
+        }
 
         private void AdjustSize(PhysicsEntity other)
         {

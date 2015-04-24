@@ -426,10 +426,6 @@ namespace UnanimousOverkillGame
                 {
                     Vector2 drawLocation = manager.WorldToScreen(phys.X, phys.Y);
                     phys.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
-                    if (phys is EffectBox)
-                    {
-                        (phys as EffectBox).ResetSize();
-                    }
                 }
             }
 
