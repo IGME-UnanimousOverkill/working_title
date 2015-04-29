@@ -53,6 +53,10 @@ namespace UnanimousOverkillGame
                 //    drag = true;
                 //}
             }
+            if(other is Enemy)
+            {
+
+            }
             //{ 
                //enemyState = (enemyState == EnemyState.FaceLeft) ? EnemyState.FaceRight : EnemyState.FaceLeft;
             //}

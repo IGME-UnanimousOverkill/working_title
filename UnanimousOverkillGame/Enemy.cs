@@ -20,16 +20,31 @@ namespace UnanimousOverkillGame
 
         //Fields
         protected MoveState moveState;
+        private int hitcounter;
 
         public Enemy(int x, int y, int width, int height, Texture2D texture, Texture2D normal)
             : base(x, y, width, height, texture, null)
         {
-
+            hitcounter = 0;
         }
 
         public virtual void Update(GameTime time)
         {
             
+        }
+
+        public void GetHit()
+        {
+            hitcounter++;
+            if(hitcounter>=3)
+            {
+                Die();
+            }
+        }
+        public void Die()
+        {
+            RoomManager.GetRoomManager.Current.Enemies.Remove(this);
+            RoomManager.GetRoomManager.Current.Colliders.Remove(this);
         }
     }
 }

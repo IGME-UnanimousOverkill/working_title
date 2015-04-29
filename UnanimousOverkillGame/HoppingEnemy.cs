@@ -71,6 +71,8 @@ namespace UnanimousOverkillGame
                     lastAttackTime = gameTime.TotalGameTime.TotalSeconds;
                 }
             }
+            if(other is Enemy)
+            { }
         }
         public override void Update(GameTime gameTime)
         {

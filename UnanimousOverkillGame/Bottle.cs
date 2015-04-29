@@ -47,12 +47,28 @@ namespace UnanimousOverkillGame
             }
             if(thrown)
             {
-                drawing = false;
-                isCollidable = false;
-                X = -20000;
-                thrown = false;
-                rm.Current.Colliders.Remove(this);
-                rm.Current.Enemies.Remove(this);
+                if (!(other is EffectBox) && !(other is Button) && !(other is Player))
+                {
+                    drawing = false;
+                    isCollidable = false;
+                    X = -20000;
+                    thrown = false;
+                    rm.Current.Colliders.Remove(this);
+                    rm.Current.Enemies.Remove(this);
+                }
+                    if (!(other is BackgroundTile) && !(other is ForegroundTile))
+                    {
+                        if (other is PhysicsEntity && !(other is Player))
+                        {
+                            if (other is Enemy && !(other is Door))
+                                (other as Enemy).GetHit();
+                            other.acceleration = Vector2.Zero;
+                            other.velocity = new Vector2(this.velocity.X,0);//new Vector2(((this.X <= other.X) ? other.MaxXV + other.velocity.X : other.velocity.X-other.MaxXV), other.velocity.Y);
+
+                            other.AddForce(new Vector2((this.X < other.X) ? 5000 : -5000, 0));
+                        }
+                    }
+                
             }
         }
         public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)

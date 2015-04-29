@@ -32,7 +32,7 @@ namespace UnanimousOverkillGame
         private float maxYVelocity = 1000;
 
         public bool drag = true;
-        public float MaxXV { set { maxXVelocity = value; } }
+        public float MaxXV { get { return maxXVelocity; } set { maxXVelocity = value; } }
 
         public bool activateGravity;
         /// <summary> 
@@ -76,7 +76,7 @@ namespace UnanimousOverkillGame
             }
 
 
-            velocity.X += acceleration.X*gameTime.ElapsedGameTime.Milliseconds/1000;
+            velocity.X += acceleration.X * gameTime.ElapsedGameTime.Milliseconds / 1000;
 
             if (Math.Abs(velocity.X) > maxXVelocity)
             {
