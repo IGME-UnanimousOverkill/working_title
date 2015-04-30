@@ -145,36 +145,42 @@ namespace UnanimousOverkillGame
 
 
             
-            if (bottlesOnHand > 0)
-            {
-                if (kbState.IsKeyDown(Keys.F) && !prevKeyboardState.IsKeyDown(Keys.F))
+                if (bottlesOnHand > 0)
                 {
-                    if(pState ==PlayerState.FaceLeft || pState == PlayerState.WalkLeft)
+                    if (pState != PlayerState.Falling)
                     {
-                        b = new Bottle((X - 60), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
-                        b.velocity = new Vector2(-5 + velocity.X, velocity.Y);
-                        b.AddForce(new Vector2(-1500, -350));
-                    }
-                    else if(pState == PlayerState.FaceRight ||pState == PlayerState.WalkRight)
-                    {
-                        b = new Bottle((X + Rect.Width + 3), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
-                        b.velocity = new Vector2(5 + velocity.X, velocity.Y);
-                        b.AddForce(new Vector2(1500, -350));
+                        if (kbState.IsKeyDown(Keys.F) && !prevKeyboardState.IsKeyDown(Keys.F))
+                        {
 
+
+                            if (pState == PlayerState.FaceLeft || pState == PlayerState.WalkLeft)
+                            {
+                                b = new Bottle((X - 60), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
+                                b.velocity = new Vector2(-5 + velocity.X, velocity.Y);
+                                b.AddForce(new Vector2(-1500, -350));
+                            }
+                            else if (pState == PlayerState.FaceRight || pState == PlayerState.WalkRight)
+                            {
+                                b = new Bottle((X + Rect.Width + 3), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
+                                b.velocity = new Vector2(5 + velocity.X, velocity.Y);
+                                b.AddForce(new Vector2(1500, -350));
+
+                            }
+                            b.Drawing = true;
+                            b.Thrown = true;
+                            b.drag = false;
+                            rm.Current.Colliders.Add(b);
+                            rm.Current.Enemies.Add(b);
+                            b.activateGravity = true;
+                            bottlesOnHand--;
+
+                        }
                     }
-                    b.Drawing = true;
-                    b.Thrown = true;
-                    b.drag = false;
-                    rm.Current.Colliders.Add(b);
-                    rm.Current.Enemies.Add(b);
-                    b.activateGravity = true;
-                    bottlesOnHand--;
                 }
-            }
-            else
-            {
-                holding = false;
-            }
+                else
+                {
+                    holding = false;
+                }
             //switch case for the player state to determine if the player is facing/walking a certain way and then changing to the next state when a key is pressed, or lifted up.
             switch (pState)
             {

@@ -88,7 +88,7 @@ namespace UnanimousOverkillGame
             graphics.PreferredBackBufferHeight = screen.Bounds.Height;
             graphics.ApplyChanges();
 
-            gameState = GameState.Game;
+            gameState = GameState.Menu;
             prevKeyCount = 0;
             health = new Rectangle(GraphicsDevice.Viewport.Width-200, 150,100 , 25);
             intoxBox = new Rectangle(GraphicsDevice.Viewport.Width - 200, 200, 0, 25);
@@ -203,6 +203,10 @@ namespace UnanimousOverkillGame
                     health.Width = player.Health * 2;
                     intoxBox.Width = (int)(player.Intox * 1.5);
 
+                    if(player.Y > 1500)
+                    {
+                        player.PState = PlayerState.Dead;
+                    }
                     if(player.PState == PlayerState.Dead)
                     {
                         gameState = GameState.Menu;
