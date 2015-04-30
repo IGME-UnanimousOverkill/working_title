@@ -41,6 +41,7 @@ namespace UnanimousOverkillGame
         public Texture2D bottleTexture;
         public Texture2D hopEnemyTexture;
         public Texture2D oozeEnemyTexture;
+        public Texture2D spikesTexture;
 
 
         public const string ROOM_DIR = "Content/Rooms/";
@@ -72,7 +73,7 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void ChangeRoom(Room room)
         {
-            room.SetTileTexture(tileSet, boundsTexture, backTileSet, doorTexture, bottleTexture, hopEnemyTexture, oozeEnemyTexture);
+            room.SetTileTexture(tileSet, boundsTexture, backTileSet, doorTexture, bottleTexture, hopEnemyTexture, oozeEnemyTexture, spikesTexture);
             collisionManager.ClearCollisions();
             room.SpawnRoom(player, current);
             UpdateCollisionManager(room);
@@ -130,6 +131,7 @@ namespace UnanimousOverkillGame
             System.IO.Stream bottleStream = TitleContainer.OpenStream("Content/bottle.png");
             System.IO.Stream hopEnemyStream = TitleContainer.OpenStream("Content/hopEnemy.png");
             System.IO.Stream oozeEnemyStream = TitleContainer.OpenStream("Content/Ooze.png");
+            System.IO.Stream spikesStream = TitleContainer.OpenStream("Content/spikes.png");
 
             tileSet = Texture2D.FromStream(graphics, tileStream);
             backTileSet = Texture2D.FromStream(graphics, backStream);
@@ -138,6 +140,7 @@ namespace UnanimousOverkillGame
             bottleTexture = Texture2D.FromStream(graphics, bottleStream);
             hopEnemyTexture = Texture2D.FromStream(graphics, hopEnemyStream);
             oozeEnemyTexture = Texture2D.FromStream(graphics, oozeEnemyStream);
+            spikesTexture = Texture2D.FromStream(graphics, spikesStream);
 
             tileStream.Close();
             backStream.Close();
@@ -146,6 +149,7 @@ namespace UnanimousOverkillGame
             bottleStream.Close();
             hopEnemyStream.Close();
             oozeEnemyStream.Close();
+            spikesStream.Close();
 
             ChangeRoom(RandomRoom(null));
         }

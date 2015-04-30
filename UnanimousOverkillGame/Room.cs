@@ -50,6 +50,7 @@ namespace UnanimousOverkillGame
         private Texture2D bottleTexture;
         private Texture2D hopEnemyTexture;
         private Texture2D oozeTexture;
+        private Texture2D spikeTexture;
         private RoomManager manager;
         private static Random rand = new Random();
         public List<PhysicsEntity> Colliders { get { return colliders; } set { colliders= value; } }
@@ -99,7 +100,7 @@ namespace UnanimousOverkillGame
         /// <summary>
         /// Sets the tile texture. This will be editted to include texture packs.
         /// </summary>
-        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds, Texture2D backBounds, Texture2D doorTexture, Texture2D bottleTexture, Texture2D hopEnemyTexture, Texture2D oozeTexture)
+        public void SetTileTexture(Texture2D tileTexture, Texture2D bounds, Texture2D backBounds, Texture2D doorTexture, Texture2D bottleTexture, Texture2D hopEnemyTexture, Texture2D oozeTexture, Texture2D spikeTexture)
         {
             tileSet = tileTexture;
             boundsTexture = bounds;
@@ -108,6 +109,7 @@ namespace UnanimousOverkillGame
             this.bottleTexture = bottleTexture;
             this.hopEnemyTexture = hopEnemyTexture;
             this.oozeTexture = oozeTexture;
+            this.spikeTexture = spikeTexture;
         }
 
         /// <summary>
@@ -274,6 +276,7 @@ namespace UnanimousOverkillGame
                             enemies.AddRange(fan1.getEffects());
                             levelObjects[x, y] = fan1;
                             break;
+
                         case ('┬'):
                             Fan fan2 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan2);
@@ -281,6 +284,7 @@ namespace UnanimousOverkillGame
                             enemies.AddRange(fan2.getEffects());
                             levelObjects[x, y] = fan2;
                             break;
+
                         case ('├'):
                             Fan fan3 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
                             colliders.Add(fan3);
@@ -288,42 +292,49 @@ namespace UnanimousOverkillGame
                             enemies.AddRange(fan3.getEffects());
                             levelObjects[x, y] = fan3;
                             break;
+
                         case ('h'):
                             HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.6f, hopEnemyTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
                             colliders.Add(hopEnemy);
                             enemies.Add(hopEnemy);
-
                             levelObjects[x, y] = hopEnemy;
                             break;
+
                         case ('o'):
                             Ooze ooze = new Ooze(x * TILE_WIDTH, y * TILE_HEIGHT, .50f, oozeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
                             colliders.Add(ooze);
                             enemies.Add(ooze);
-
                             levelObjects[x, y] = ooze;
                             break;
+
                         case ('p'):
                             int phaseTileNum = rand.Next(7);
                             Texture2D phaseNormal = manager.content.Load<Texture2D>("Normals/frontNormals/FrontNormalMap_0" + (phaseTileNum + 1) + ".png");
                             PhaseBlock block = new PhaseBlock(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, phaseNormal, phaseTileNum, true);
                             colliders.Add(block);
-
                             levelObjects[x, y] = block;
                             break;
 
                         case ('b'):
                             
                             Button button = new Button(x * TILE_WIDTH + TILE_WIDTH / 3, y * TILE_HEIGHT + TILE_HEIGHT / 3, TILE_WIDTH / 3, TILE_HEIGHT / 3, boundsTexture, roomFont, null);
-
                             levelObjects[x, y] = button;
                             colliders.Add(button);
                             colliders.Add(button.Box);
                             enemies.Add(button.Box);
                             break;
-                        case('B'):
+
+                        case ('B'):
                             Bottle bottle = new Bottle(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, bottleTexture, player, manager);
                             colliders.Add(bottle);
                             levelObjects[x, y] = bottle;
+                            break;
+
+                        case ('s'):
+                            Spikes spikes = new Spikes(x * TILE_WIDTH, y * TILE_HEIGHT-10, spikeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
+                            colliders.Add(spikes);
+                            enemies.Add(spikes);
+                            levelObjects[x, y] = spikes;
                             break;
                     }
                     if (level[x, y] != ' ')

@@ -56,28 +56,28 @@ namespace UnanimousOverkillGame
             count = 0;
             activateGravity = false;
             this.acceleration = new Vector2(2.0f, 2.0f);
-           
+
         }
         public override void OnCollide(PhysicsEntity other)
         {
             if (other is Player)
             {
-                if(player.Y + player.Rect.Height == Y + rectangle.Height)
-                    X = (player.X + player.Rect.Width<=X+3)?player.X + player.Rect.Width:player.X-rectangle.Width;
+                if (player.Y + player.Rect.Height == Y + rectangle.Height)
+                    X = (player.X + player.Rect.Width <= X + 3) ? player.X + player.Rect.Width : player.X - rectangle.Width;
                 if (gameTime.TotalGameTime.TotalSeconds - lastAttackTime > 1.5)
                 {
-                   
+
                     AttackPlayer();
                     lastAttackTime = gameTime.TotalGameTime.TotalSeconds;
                 }
             }
-            if(other is Enemy)
+            if (other is Enemy)
             { }
         }
         public override void Update(GameTime gameTime)
         {
             this.gameTime = gameTime;
-            distanceToPlayer = Math.Abs((player.X +player.Rect.Width)/2 - (this.X + rectangle.Width)/2);
+            distanceToPlayer = Math.Abs((player.X + player.Rect.Width) / 2 - (this.X + rectangle.Width) / 2);
             if (distanceToPlayer < 150)
             {
                 targetingPlayer = true;
@@ -91,13 +91,13 @@ namespace UnanimousOverkillGame
                 activateGravity = false;
                 jumped = false;
             }
-            if (distanceToPlayer > 10 )
+            if (distanceToPlayer > 10)
                 Move();
 
             if (colliderArray[3] || colliderArray[1])
             {
                 if (Math.Abs((player.X + player.Rect.Width) / 2 - (rectangle.Width + X) / 2) > (player.Rect.Width / 2 + rectangle.Width / 2 + 5))
-                        enemyState = (colliderArray[3]) ? EnemyState.FaceRight : EnemyState.FaceLeft;
+                    enemyState = (colliderArray[3]) ? EnemyState.FaceRight : EnemyState.FaceLeft;
                 //if (enemyState == EnemyState.FaceLeft)
                 //    AddForce(new Vector2(-6, 0));
                 //else
@@ -118,20 +118,20 @@ namespace UnanimousOverkillGame
                     {
                         check = rand.Next(0, 2);
                         if (Math.Abs((player.X + player.Rect.Width) / 2 - (rectangle.Width + X) / 2) > (player.Rect.Width / 2 + rectangle.Width / 2 + 5))
-                        if (check == 1  )
-                        {
-                            enemyState = EnemyState.FaceLeft;
-                        }
-                        else if (check == 0 )
-                        {
-                            enemyState = EnemyState.FaceRight;
-                        }
+                            if (check == 1)
+                            {
+                                enemyState = EnemyState.FaceLeft;
+                            }
+                            else if (check == 0)
+                            {
+                                enemyState = EnemyState.FaceRight;
+                            }
                         //velocity = (new Vector2((enemyState == EnemyState.FaceRight) ? -20 : 20, 0));
                         //AddForce(new Vector2((enemyState == EnemyState.FaceRight)?-20:20, 0));
 
                         jumpcount = 0;
                     }
-                    if (Math.Abs((player.X + player.Rect.Width )/2 - (rectangle.Width + X)/2) > (player.Rect.Width/2 + rectangle.Width/2 + 5))
+                    if (Math.Abs((player.X + player.Rect.Width) / 2 - (rectangle.Width + X) / 2) > (player.Rect.Width / 2 + rectangle.Width / 2 + 5))
                         AddForce(new Vector2(0, -350));
                     activateGravity = true;
                     jumped = true;
@@ -150,6 +150,7 @@ namespace UnanimousOverkillGame
             player.Health -= 5;
             player.AddForce(new Vector2((X < player.X) ? 200 : -200, 0));
             player.velocity = (new Vector2((X < player.X) ? 1000 : -1000, 0));
+            player.Color = Color.Red;
         }
 
         public void FacePlayer()

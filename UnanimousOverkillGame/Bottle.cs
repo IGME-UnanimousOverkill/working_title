@@ -34,8 +34,7 @@ namespace UnanimousOverkillGame
         }
         public override void OnCollide(PhysicsEntity other)
         {
-            if (other is Bottle)
-                return;
+            
             if (other is Player)
             {
                 drawing = false;
@@ -44,10 +43,11 @@ namespace UnanimousOverkillGame
                 player.bottlesOnHand++;
                 X = -20000;
                 player.Holding = true;
+                player.Color = Color.Green;
             }
             if(thrown)
             {
-                if (!(other is EffectBox) && !(other is Button) && !(other is Player))
+                if (!(other is EffectBox) && !(other is Button) && !(other is Player)&&!(other is Fan)&&!(other is Bottle)&&!(other is Spikes))
                 {
                     drawing = false;
                     isCollidable = false;
@@ -60,7 +60,7 @@ namespace UnanimousOverkillGame
                     {
                         if (other is PhysicsEntity && !(other is Player))
                         {
-                            if (other is Enemy && !(other is Door))
+                            if (other is Enemy && !(other is Door)&&!(other is Spikes))
                                 (other as Enemy).GetHit();
                             other.acceleration = Vector2.Zero;
                             other.velocity = new Vector2(this.velocity.X,0);//new Vector2(((this.X <= other.X) ? other.MaxXV + other.velocity.X : other.velocity.X-other.MaxXV), other.velocity.Y);

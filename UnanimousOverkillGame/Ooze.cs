@@ -53,10 +53,6 @@ namespace UnanimousOverkillGame
                 //    drag = true;
                 //}
             }
-            if(other is Enemy)
-            {
-
-            }
             //{ 
                //enemyState = (enemyState == EnemyState.FaceLeft) ? EnemyState.FaceRight : EnemyState.FaceLeft;
             //}
@@ -70,6 +66,7 @@ namespace UnanimousOverkillGame
         }
         public override void Update(GameTime time)
         {
+
             activateGravity = true;
             this.gameTime = time;
             //Move();

@@ -53,6 +53,7 @@ namespace UnanimousOverkillGame
         const int MARIO_RECT_X_OFFSET = 0;
         const int MARIO_RECT_WIDTH = 64; // The width of a single frame
 
+        private Color color;
         public int bottlesOnHand;
 
         public Button ButtonInRange { get { return buttonInRange; } set { if (value != null) buttonInRange = value; } }
@@ -62,6 +63,7 @@ namespace UnanimousOverkillGame
         public PlayerState PState { get { return pState; } set { pState = value; } }
         public PlayerState PrevState { get { return prevState; } set {  prevState = value; } }
         public int Intox { get { return intox; } set { intox = value; } }
+        public Color Color { set { color = value; } }
         /// <summary>
         /// initializes a player, sets the intoxication level to 0, health value to 50 and holding to false
         /// </summary>
@@ -87,7 +89,7 @@ namespace UnanimousOverkillGame
             this.prevY = y;
             spriteSheet = texture; //takes the sprite sheet in here so you can "animate" in the draw method
             activateGravity = false;
-
+            color = Color.White;
             prevKeyboardState = Keyboard.GetState();
             bottlesOnHand = 500;
             jumped = false;
@@ -440,7 +442,7 @@ namespace UnanimousOverkillGame
                                             MARIO_RECT_Y_OFFSET,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
-                                        Color.White,
+                                        color,
                                         0,
                                         Vector2.Zero,
                                         SpriteEffects.None,
@@ -453,7 +455,7 @@ namespace UnanimousOverkillGame
                                             MARIO_RECT_Y_OFFSET,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
-                                        Color.White,
+                                        color,
                                         0,
                                         Vector2.Zero,
                                         SpriteEffects.None,
@@ -470,7 +472,7 @@ namespace UnanimousOverkillGame
                                                  MARIO_RECT_Y_OFFSET,
                                                  MARIO_RECT_WIDTH,
                                                  MARIO_RECT_HEIGHT),
-                                             Color.White,
+                                             color,
                                              0,
                                              Vector2.Zero,
                                              SpriteEffects.FlipHorizontally,
@@ -483,7 +485,7 @@ namespace UnanimousOverkillGame
                                             MARIO_RECT_Y_OFFSET,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
-                                        Color.White,
+                                        color,
                                         0,
                                         Vector2.Zero,
                                         SpriteEffects.FlipHorizontally,
@@ -499,7 +501,7 @@ namespace UnanimousOverkillGame
                                             0,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
-                                        Color.White,
+                                        color,
                                         0,
                                         Vector2.Zero,
                                         SpriteEffects.None,
@@ -515,7 +517,7 @@ namespace UnanimousOverkillGame
                                             0,
                                             MARIO_RECT_WIDTH,
                                             MARIO_RECT_HEIGHT),
-                                        Color.White,
+                                        color,
                                         0,
                                         Vector2.Zero,
                                         SpriteEffects.FlipHorizontally,
@@ -531,8 +533,8 @@ namespace UnanimousOverkillGame
                                     (1 * MARIO_RECT_WIDTH), 
                                     0, 
                                     MARIO_RECT_WIDTH, 
-                                    MARIO_RECT_HEIGHT), 
-                                    Color.White, 
+                                    MARIO_RECT_HEIGHT),
+                                    color, 
                                     0, 
                                     Vector2.Zero, 
                                     SpriteEffects.FlipHorizontally, 
@@ -544,8 +546,8 @@ namespace UnanimousOverkillGame
                                     (1 * MARIO_RECT_WIDTH), 
                                     0, 
                                     MARIO_RECT_WIDTH, 
-                                    MARIO_RECT_HEIGHT), 
-                                    Color.White, 
+                                    MARIO_RECT_HEIGHT),
+                                    color, 
                                     0, 
                                     Vector2.Zero, 
                                     SpriteEffects.None, 
@@ -561,8 +563,8 @@ namespace UnanimousOverkillGame
                                     (1 * MARIO_RECT_WIDTH), 
                                     0, 
                                     MARIO_RECT_WIDTH, 
-                                    MARIO_RECT_HEIGHT), 
-                                    Color.White, 0, 
+                                    MARIO_RECT_HEIGHT),
+                                    color, 0, 
                                     Vector2.Zero,  
                                     SpriteEffects.
                                     FlipHorizontally, 
@@ -575,8 +577,8 @@ namespace UnanimousOverkillGame
                                     (1 * MARIO_RECT_WIDTH), 
                                     0, 
                                     MARIO_RECT_WIDTH, 
-                                    MARIO_RECT_HEIGHT), 
-                                    Color.White, 
+                                    MARIO_RECT_HEIGHT),
+                                    color, 
                                     0, 
                                     Vector2.Zero, 
                                     SpriteEffects.None, 
@@ -585,6 +587,7 @@ namespace UnanimousOverkillGame
                     }
 
             }
+            color = Color.White;
         }
     }
 }
