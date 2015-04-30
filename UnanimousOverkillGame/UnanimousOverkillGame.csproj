@@ -175,6 +175,9 @@
     <Content Include="Content\Rooms\TestRoom2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Rooms\TestRoom5.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Test.fx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

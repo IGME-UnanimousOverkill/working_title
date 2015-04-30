@@ -43,7 +43,7 @@ namespace UnanimousOverkillGame
             {
                 if(player.Y + player.Rect.Height +3<Y+5)
                 {
-                    player.AddForce(new Vector2(0, -500));
+                    player.AddForce(new Vector2(0, -700));
                 }
                 //collide with player
                 //if (player.Y + player.Rect.Height == Y + rectangle.Height)
