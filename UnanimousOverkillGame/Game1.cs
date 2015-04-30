@@ -57,7 +57,7 @@ namespace UnanimousOverkillGame
         Keys prevKey;
         int prevKeyCount; //makes sure pause menu isn't skipped
 
-        Boolean enableShaders = false;
+        Boolean enableShaders = true;
 
         //player
         static Player player;
@@ -289,7 +289,7 @@ namespace UnanimousOverkillGame
                          EffectParameter lightPos = lightingEffect.Parameters["lightPos"];
                          EffectParameter lightColor = lightingEffect.Parameters["lightColor"];
 
-                         lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X, roomManager.WorldToScreen(player.X, player.Y).Y, 0));
+                         lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X+140, roomManager.WorldToScreen(player.X, player.Y).Y+150, 120));
                          lightColor.SetValue(Color.White.ToVector4());
                      }
                     roomManager.Draw(GraphicsDevice, spriteBatch);
