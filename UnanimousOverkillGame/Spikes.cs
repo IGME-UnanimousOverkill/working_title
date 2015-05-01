@@ -15,8 +15,8 @@ namespace UnanimousOverkillGame
     {
         private Player player;
 
-        private const int ENEMY_WIDTH = 114;
-        private const int ENEMY_HEIGHT = 60;
+        private const int ENEMY_WIDTH = 50;
+        private const int ENEMY_HEIGHT = 50;
 
         GameTime gameTime;
         static double lastAttackTime;

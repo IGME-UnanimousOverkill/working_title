@@ -105,7 +105,10 @@ namespace UnanimousOverkillGame
                 //X += (colliderArray[3] && !(colliderArray[1] && colliderArray[3])) ? 5 : -5;
                 jumpcount = 0;
             }
-
+            if(!colliderArray[2])
+            {
+                activateGravity = true;
+            }
             int check = rand.Next(-70, 90);
             if (count >= (90 + check))
             {

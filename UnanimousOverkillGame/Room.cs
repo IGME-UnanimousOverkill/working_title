@@ -331,7 +331,7 @@ namespace UnanimousOverkillGame
                             break;
 
                         case ('s'):
-                            Spikes spikes = new Spikes(x * TILE_WIDTH, y * TILE_HEIGHT-10, spikeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
+                            Spikes spikes = new Spikes(x * TILE_WIDTH, y * TILE_HEIGHT, spikeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
                             colliders.Add(spikes);
                             enemies.Add(spikes);
                             levelObjects[x, y] = spikes;

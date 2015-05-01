@@ -56,11 +56,11 @@ namespace UnanimousOverkillGame
                     rm.Current.Colliders.Remove(this);
                     rm.Current.Enemies.Remove(this);
                 }
-                    if (!(other is BackgroundTile) && !(other is ForegroundTile))
+                    if (!(other is BackgroundTile) && !(other is ForegroundTile)&&!(other is Spikes) &&!(other is PhaseBlock))
                     {
                         if (other is PhysicsEntity && !(other is Player))
                         {
-                            if (other is Enemy && !(other is Door)&&!(other is Spikes))
+                            if (other is Enemy && !(other is Door))
                                 (other as Enemy).GetHit();
                             other.acceleration = Vector2.Zero;
                             other.velocity = new Vector2(this.velocity.X,0);//new Vector2(((this.X <= other.X) ? other.MaxXV + other.velocity.X : other.velocity.X-other.MaxXV), other.velocity.Y);

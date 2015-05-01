@@ -310,8 +310,8 @@ namespace UnanimousOverkillGame
                     spriteBatch.DrawString(font, "PAUSED", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to continue", new Vector2(250, 170), Color.White);
                     spriteBatch.DrawString(font, "Press ESC to go to Menu", new Vector2(250, 210), Color.White);
-                    player.Health = 25;
-
+                    player.Health = 25;                    
+                    roomManager.BoundsDraw(spriteBatch);
                     break;
             }
 
