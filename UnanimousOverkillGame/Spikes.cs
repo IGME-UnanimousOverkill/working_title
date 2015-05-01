@@ -57,7 +57,7 @@ namespace UnanimousOverkillGame
         }
         public void AttackPlayer()
         {
-            player.Health -= 5;
+            player.Health -= 10;
             player.Color = Color.Red;
         }
 

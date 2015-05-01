@@ -79,7 +79,7 @@ namespace UnanimousOverkillGame
             buttonInRange = null;
             doorInRange = null;
             intox = 0;
-            health = 50;
+            health = 100;
             holding = false;
             fps = 10.0;
             timePerFrame = 1.0 / fps;
@@ -114,6 +114,7 @@ namespace UnanimousOverkillGame
                 health = 0;
                 pState = PlayerState.Dead;
             }
+
             KeyboardState kbState = Keyboard.GetState();
 
             if (intox > 100)

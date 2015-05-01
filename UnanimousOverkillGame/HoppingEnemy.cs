@@ -150,7 +150,7 @@ namespace UnanimousOverkillGame
 
         public void AttackPlayer()
         {
-            player.Health -= 5;
+            player.Health -= 10;
             player.AddForce(new Vector2((X < player.X) ? 200 : -200, 0));
             player.velocity = (new Vector2((X < player.X) ? 1000 : -1000, 0));
             player.Color = Color.Red;

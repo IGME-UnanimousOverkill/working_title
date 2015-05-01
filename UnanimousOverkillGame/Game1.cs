@@ -90,9 +90,7 @@ namespace UnanimousOverkillGame
 
             gameState = GameState.Menu;
             prevKeyCount = 0;
-            health = new Rectangle(GraphicsDevice.Viewport.Width-200, 150,100 , 25);
             intoxBox = new Rectangle(GraphicsDevice.Viewport.Width - 200, 200, 0, 25);
-            healthBox = health;
 
             base.Initialize();
         }
@@ -124,7 +122,9 @@ namespace UnanimousOverkillGame
             player.RoomManagerGet(roomManager);
             if(enableShaders)
                 lightingEffect = LoadEffect("Content/Test.mgfx");
-            
+            health = new Rectangle(player.X - (player.Rect.Width + 20 - player.Rect.Width) / 2, player.Y - 30, player.Rect.Width + 20, 5);
+            healthBox = health;
+
 
         }
 
@@ -195,12 +195,15 @@ namespace UnanimousOverkillGame
                             gameState = GameState.Paused;
                         }
                     }
-
+                    health.X =(int)( roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2),(player.Y - 20)).X);
+                    health.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).Y);
+                    healthBox.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).X);
+                    healthBox.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).Y);
                     //calls the player update method to get the logic for movement
                     player.Update(gameTime);
                     roomManager.Update(gameTime);
-                    
-                    health.Width = player.Health * 2;
+                    double value = ((double)(player.Health) / 100.0);
+                    health.Width = (int)(value * healthBox.Width);
                     intoxBox.Width = (int)(player.Intox * 1.5);
 
                     if(player.Y > 1500)
@@ -300,8 +303,10 @@ namespace UnanimousOverkillGame
 
                     spriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
+                    spriteBatch.Draw(roomManager.spikesTexture, healthBox, Color.Red);
+                    spriteBatch.Draw(roomManager.spikesTexture,healthBox,new Rectangle(0,0,roomManager.spikesTexture.Width,roomManager.spikesTexture.Height),Color.Red,0,Vector2.Zero,SpriteEffects.FlipVertically,0);
+                    spriteBatch.Draw(roomManager.spikesTexture, healthBox, new Rectangle(0, 0, roomManager.spikesTexture.Width, roomManager.spikesTexture.Height), Color.Red, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
 
-                    spriteBatch.Draw(roomManager.tileSet, healthBox, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
                     spriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
                     break;
