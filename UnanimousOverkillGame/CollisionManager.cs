@@ -74,8 +74,10 @@ namespace UnanimousOverkillGame
                     physEntity.colliderArray[3] = false;
 
                     // Calculate the bottom and right side locations for the physEntity
-                    float entBottom = physEntity.Y + physEntity.Rect.Height - 5;
+                    float entBottom = physEntity.Y + physEntity.Rect.Height;
                     float entRight = physEntity.X + physEntity.Rect.Width;
+                    float entTop = physEntity.Y;
+                    float entLeft = physEntity.X;
 
                     for (int j = 0; j < objects.Count; j++)
                     {
@@ -88,10 +90,10 @@ namespace UnanimousOverkillGame
                         float objRight = gameObject.X + gameObject.Rect.Width;
 
                         // Check distances between the sides of the objects.
-                        float tDistance = objBottom - physEntity.Y;
+                        float tDistance = objBottom - entTop;
                         float bDistance = entBottom - gameObject.Y;
                         float rDistance = entRight - gameObject.X;
-                        float lDistance = objRight - physEntity.X;
+                        float lDistance = objRight - entLeft;
 
                         // Whichever side is closest is the side they are colliding on.
                         if (physEntity.Rect.Intersects(gameObject.Rect))
@@ -167,7 +169,7 @@ namespace UnanimousOverkillGame
                 entity = collisions[i].Entity;
                 if (collisions[i].collideArray[0])
                 {
-                    entity.Y = gObject.Y + gObject.Rect.Height -1;
+                    entity.Y = gObject.Y + gObject.Rect.Height - 1;
                     if (entity.velocity.Y < 0)
                     {
                         entity.velocity.Y = 0;
@@ -175,7 +177,7 @@ namespace UnanimousOverkillGame
                 }
                 if (collisions[i].collideArray[1])
                 {
-                    entity.X = gObject.X - entity.Rect.Width +1;
+                    entity.X = gObject.X - entity.Rect.Width + 1;
                     if (entity.velocity.X > 0)
                     {
                         entity.velocity.X = 0;
@@ -183,7 +185,7 @@ namespace UnanimousOverkillGame
                 }
                 if (collisions[i].collideArray[2])
                 {
-                    entity.Y = gObject.Y - entity.Rect.Height +1;
+                    entity.Y = gObject.Y - entity.Rect.Height + 1;
                     entity.activateGravity = false;//dont want to keep falling lol
                     if (entity.velocity.Y > 0)
                     {
