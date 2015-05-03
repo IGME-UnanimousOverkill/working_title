@@ -53,6 +53,7 @@ namespace UnanimousOverkillGame
         const int MARIO_RECT_X_OFFSET = 0;
         const int MARIO_RECT_WIDTH = 64; // The width of a single frame
 
+        public int deathCounter;
         private Color color;
         public int bottlesOnHand;
 
@@ -93,6 +94,7 @@ namespace UnanimousOverkillGame
             prevKeyboardState = Keyboard.GetState();
             bottlesOnHand = 500;
             jumped = false;
+            deathCounter = 0;
         }
 
         public void CollisionManagerGet(CollisionManager col)
