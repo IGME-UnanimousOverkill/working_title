@@ -45,12 +45,15 @@ namespace UnanimousOverkillGame
 
 
         public const string ROOM_DIR = "Content/Rooms/";
+        public const string SPECIAL_DIR = "Content/SpecialRooms/";
         public ContentManager content;
         private static Random rand = new Random();
         private int currentID = 0;
         private Vector2 cameraLocation;
         private int screenWidth;
         private int screenHeight;
+
+        private int currentDepth = 1;
 
         public static float MINIMAP_SCALE = 0.3f;
 
@@ -179,8 +182,22 @@ namespace UnanimousOverkillGame
         /// </summary>
         public Room RandomRoom(Room previous)
         {
-            Room room = new Room(this, previous, font);
-            
+            if (previous != null)
+            {
+                currentDepth = previous.depth + 1;
+            }
+
+            Room room = new Room(this, previous, font, currentDepth);
+
+            if (File.Exists(SPECIAL_DIR + "Room" + currentDepth + ".txt"))
+            {
+                Console.WriteLine(SPECIAL_DIR + "Room" + currentDepth + " exists");
+                room.LoadRoom(SPECIAL_DIR + "Room" + currentDepth + ".txt");
+                return room;
+            }
+
+            Console.WriteLine(SPECIAL_DIR + "Room" + currentDepth + " does not exist");
+
             string[] files = Directory.GetFiles(ROOM_DIR);
             room.LoadRoom(files[rand.Next(files.Length)]);
 

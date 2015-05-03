@@ -62,13 +62,15 @@ namespace UnanimousOverkillGame
         private Dictionary<Vector2, IsClickableObject> clickables;
         private List<IsClickableObject> tempClickables;
 
+        public int depth;
+
         public const int TILE_WIDTH = 50;
         public const int TILE_HEIGHT = 50;
 
         /// <summary>
         /// Default constructor for RoomManager
         /// </summary>
-        public Room(RoomManager roomManager, SpriteFont roomFont)
+        public Room(RoomManager roomManager, SpriteFont roomFont, int num)
         {
             this.roomFont = roomFont;
             manager = roomManager;
@@ -80,9 +82,10 @@ namespace UnanimousOverkillGame
             nextRooms = new List<Room>();
             doors = new List<Door>();
             ID = manager.MakeID();
+            depth = num;
         }
 
-        public Room(RoomManager roomManager, Room previous, SpriteFont roomFont)
+        public Room(RoomManager roomManager, Room previous, SpriteFont roomFont, int num)
         {
             this.roomFont = roomFont;
             manager = roomManager;
@@ -95,6 +98,7 @@ namespace UnanimousOverkillGame
             nextRooms = new List<Room>();
             doors = new List<Door>();
             ID = manager.MakeID();
+            depth = num;
         }
 
         /// <summary>
@@ -349,8 +353,18 @@ namespace UnanimousOverkillGame
             checkAdditionalInformation();
             prevSize = colliders.Count;
             prevSize2 = enemies.Count;
-        }      
+        }   
+   
+        public void RespawnRoom()
+        {
+            colliders.Clear();
+            enemies.Clear();
+            foreground.Clear();
+            doors.Clear();
+            background.Clear();
 
+            SpawnRoom(manager.player, previousRoom);
+        }
 
         private void checkAdditionalInformation()
         {
