@@ -43,6 +43,7 @@ namespace UnanimousOverkillGame
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteBatch uiSpriteBatch;
         RoomManager roomManager;
         CollisionManager collisionManager;
         KeyboardState kbState;
@@ -103,6 +104,7 @@ namespace UnanimousOverkillGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            uiSpriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
@@ -212,7 +214,11 @@ namespace UnanimousOverkillGame
                     }
                     if(player.PState == PlayerState.Dead)
                     {
-                        gameState = GameState.Menu;
+                        player.deathCounter++;
+                        if(player.deathCounter <= 5)
+                            roomManager.RespawnRoom();
+                        else
+                            gameState = GameState.Menu;
                     }
 
                     kbState = Keyboard.GetState();
@@ -279,13 +285,14 @@ namespace UnanimousOverkillGame
             {
                 case GameState.Menu:
                     spriteBatch.Begin();
+                    uiSpriteBatch.Begin();
                     spriteBatch.DrawString(font, "MENU", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to start", new Vector2(250, 170), Color.White);
                     break;
                 case GameState.Game:
 
                      spriteBatch.Begin(0, null, null, null, null, lightingEffect);
-
+                     uiSpriteBatch.Begin();
                      if (enableShaders)
                      {
                          // Set params
@@ -299,16 +306,18 @@ namespace UnanimousOverkillGame
 
                     kbState = Keyboard.GetState();
                     // Hold down space to should tile physics boundaries.
-                    roomManager.BoundsDraw(spriteBatch);
+                    //roomManager.BoundsDraw(uiSpriteBatch);
 
-                    spriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
+                    uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
-                    spriteBatch.Draw(roomManager.spikesTexture, healthBox, Color.Red);
-                    spriteBatch.Draw(roomManager.spikesTexture,healthBox,new Rectangle(0,0,roomManager.spikesTexture.Width,roomManager.spikesTexture.Height),Color.Red,0,Vector2.Zero,SpriteEffects.FlipVertically,0);
-                    spriteBatch.Draw(roomManager.spikesTexture, healthBox, new Rectangle(0, 0, roomManager.spikesTexture.Width, roomManager.spikesTexture.Height), Color.Red, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                    uiSpriteBatch.DrawString(font, "Deaths:" + player.deathCounter
+                        , new Vector2(GraphicsDevice.Viewport.Width - 200, 15), Color.Red);
+                    uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, Color.Red);
+                    uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, new Rectangle(0, 0, roomManager.spikesTexture.Width, roomManager.spikesTexture.Height), Color.Red, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+                    uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, new Rectangle(0, 0, roomManager.spikesTexture.Width, roomManager.spikesTexture.Height), Color.Red, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
 
-                    spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
-                    spriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
+                    uiSpriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
+                    uiSpriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
                     break;
                 case GameState.Paused:
                     spriteBatch.Begin();
@@ -321,7 +330,7 @@ namespace UnanimousOverkillGame
             }
 
             spriteBatch.End();
-
+            uiSpriteBatch.End();
             base.Draw(gameTime);
         }
     }

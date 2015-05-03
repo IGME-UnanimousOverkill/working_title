@@ -361,6 +361,8 @@ namespace UnanimousOverkillGame
             foreground.Clear();
             doors.Clear();
             background.Clear();
+            manager.player.Health = 100;
+            manager.player.bottlesOnHand = 0;
 
             SpawnRoom(manager.player, previousRoom);
         }
