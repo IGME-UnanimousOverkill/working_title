@@ -141,7 +141,6 @@ namespace UnanimousOverkillGame
         /// <param name="path">The path to the text file.</param>
         public void LoadRoom(string path)
         {
-
             StreamReader levelReader = new StreamReader(path);
             string readerLine = levelReader.ReadLine();
             List<string> levels = new List<string>();
@@ -368,7 +367,6 @@ namespace UnanimousOverkillGame
 
         private void checkAdditionalInformation()
         {
-
             List<String> lineSplits;
             lineSplits = new List<string>();
             int xNum,yNum;
@@ -382,7 +380,6 @@ namespace UnanimousOverkillGame
                 {
                     levelObjects[xNum, yNum].AddInformation(lineSplits.GetRange(3, lineSplits.Count - 3), levelObjects);
                 }
-
             }
         }
 
@@ -426,7 +423,6 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Draw(GraphicsDevice device, SpriteBatch batch)
         {
-
             if (background.Count > 0)
             {
                 foreach (BackgroundTile tile in background)
