@@ -204,6 +204,10 @@ namespace UnanimousOverkillGame
             return room;
         }
 
+        public void RespawnRoom()
+        {
+            current.RespawnRoom();
+        }
 
         /// <summary>
         /// Methods for converting from World Coordinates to Screen Coordinates. Mainly for drawing with a scrolling screen.
