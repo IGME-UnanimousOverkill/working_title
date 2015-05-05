@@ -204,7 +204,7 @@ namespace UnanimousOverkillGame
                     //calls the player update method to get the logic for movement
                     player.Update(gameTime);
                     roomManager.Update(gameTime);
-                    double value = ((double)(player.Health) / 100.0);
+                    double value = ((double)(player.Health) / player.maxHealth);
                     health.Width = (int)(value * healthBox.Width);
                     intoxBox.Width = (int)(player.Intox * 1.5);
 
@@ -326,7 +326,6 @@ namespace UnanimousOverkillGame
                     spriteBatch.DrawString(font, "PAUSED", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to continue", new Vector2(250, 170), Color.White);
                     spriteBatch.DrawString(font, "Press ESC to go to Menu", new Vector2(250, 210), Color.White);
-                    player.Health = 25;                    
                     roomManager.BoundsDraw(spriteBatch);
                     break;
             }
