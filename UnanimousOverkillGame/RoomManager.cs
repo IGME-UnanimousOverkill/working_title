@@ -42,7 +42,7 @@ namespace UnanimousOverkillGame
         public Texture2D hopEnemyTexture;
         public Texture2D oozeEnemyTexture;
         public Texture2D spikesTexture;
-
+        public int greatestID;
 
         public const string ROOM_DIR = "Content/Rooms/";
         public const string SPECIAL_DIR = "Content/SpecialRooms/";
@@ -67,7 +67,7 @@ namespace UnanimousOverkillGame
             var screen = System.Windows.Forms.Screen.PrimaryScreen;
             screenWidth = screen.Bounds.Width;
             screenHeight = screen.Bounds.Height;
-
+            greatestID = 0;
             roomManager = this;
         }
 
@@ -94,8 +94,11 @@ namespace UnanimousOverkillGame
         public int MakeID()
         {
             currentID += 1;
+            if (currentID > greatestID)
+                greatestID = currentID;
             return currentID;
         }
+
 
         /// <summary>
         /// Update Method in case rooms need updating.

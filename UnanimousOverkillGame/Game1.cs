@@ -310,6 +310,10 @@ namespace UnanimousOverkillGame
 
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
+                    uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.ID + " / " + (roomManager.greatestID-1)
+                        , new Vector2(300, 230), Color.White);
+                    uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
+                        , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
                     uiSpriteBatch.DrawString(font, "Deaths:" + player.deathCounter
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 15), Color.Red);
                     uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, Color.Red);

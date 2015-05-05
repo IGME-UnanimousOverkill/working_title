@@ -238,12 +238,12 @@ namespace UnanimousOverkillGame
                         }
                         else
                         {
-                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)&&!colliderArray[1])
                             {
                                 prevState = pState;
                                 pState = PlayerState.WalkLeft;
                             }
-                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)&&!colliderArray[3])
                             {
                                 prevState = pState;
                                 pState = PlayerState.WalkRight;
@@ -263,12 +263,12 @@ namespace UnanimousOverkillGame
                         }
                         else
                         {
-                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)&&!colliderArray[1])
                             {
                                 prevState = pState;
                                 pState = PlayerState.WalkLeft;
                             }
-                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)&&!colliderArray[3])
                             {
                                 prevState = pState;
                                 pState = PlayerState.WalkRight;
