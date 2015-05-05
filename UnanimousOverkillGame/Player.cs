@@ -36,16 +36,15 @@ namespace UnanimousOverkillGame
         private Rectangle spriteRect; // Holds information about how the player should be drawn
         private Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
         private CollisionManager col;
-        private const int jumpHeight = 110;
+        private int jumpHeight = 500;
         private int finalHeight = 0;
         //movement animation stuff
         private int frame; // The current animation frame
         private double timeCounter; // The amount of time that has passed  
         private double fps; // The speed of the animation                  
         private double timePerFrame; // The amount of time (in fractional seconds) per frame                  
-
+        private int intoxDecreaseCounter;
         private bool jumped;
-
         //spritesheet animation stuff
         const int WALK_FRAME_COUNT = 7; // The number of frames in the animation                 
         const int MARIO_RECT_Y_OFFSET = 70; // How far down in the image are the frames?                 
@@ -60,9 +59,10 @@ namespace UnanimousOverkillGame
         public Button ButtonInRange { get { return buttonInRange; } set { if (value != null) buttonInRange = value; } }
         public Door DoorInRange { get { return doorInRange; } set { if (value != null) doorInRange = value; } }
         public bool Holding { get { return holding; } set { holding = value; } }
+        private int holdingCounter;
         RoomManager rm;
         public PlayerState PState { get { return pState; } set { pState = value; } }
-        public PlayerState PrevState { get { return prevState; } set {  prevState = value; } }
+        public PlayerState PrevState { get { return prevState; } set { prevState = value; } }
         public int Intox { get { return intox; } set { intox = value; } }
         public Color Color { set { color = value; } }
         /// <summary>
@@ -94,6 +94,8 @@ namespace UnanimousOverkillGame
             prevKeyboardState = Keyboard.GetState();
             bottlesOnHand = 500;
             jumped = false;
+            holdingCounter = 0;
+            intoxDecreaseCounter = 0;
             deathCounter = 0;
         }
 
@@ -111,7 +113,7 @@ namespace UnanimousOverkillGame
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
-            if(health <=0)
+            if (health <= 0)
             {
                 health = 0;
                 pState = PlayerState.Dead;
@@ -121,6 +123,8 @@ namespace UnanimousOverkillGame
 
             if (intox > 100)
                 intox = 100;
+            if (intox < 0)
+                intox = 0;
 
             // Handle animation timing
             // - Add to the time counter
@@ -135,7 +139,8 @@ namespace UnanimousOverkillGame
 
                 timeCounter -= timePerFrame; // Remove the time we "used"
             }
-            if(!colliderArray[0] && !colliderArray[1] && !colliderArray[2] && !colliderArray[3] && pState != PlayerState.Jumping){
+            if (!colliderArray[0] && !colliderArray[1] && !colliderArray[2] && !colliderArray[3] && pState != PlayerState.Jumping)
+            {
                 pState = PlayerState.Falling;
 
             }
@@ -149,43 +154,78 @@ namespace UnanimousOverkillGame
             }
 
 
-            
+            MouseState mState = Mouse.GetState();
+            if (kbState.IsKeyDown(Keys.F) && !prevKeyboardState.IsKeyDown(Keys.F))
+            {
                 if (bottlesOnHand > 0)
                 {
                     if (pState != PlayerState.Falling)
                     {
-                        if (kbState.IsKeyDown(Keys.F) && !prevKeyboardState.IsKeyDown(Keys.F))
+
+                        if (holding == false)
                         {
-
-
-                            if (pState == PlayerState.FaceLeft || pState == PlayerState.WalkLeft)
-                            {
-                                b = new Bottle((X - 60), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
-                                b.velocity = new Vector2(-5 + velocity.X, velocity.Y);
-                                b.AddForce(new Vector2(-1500, -350));
-                            }
-                            else if (pState == PlayerState.FaceRight || pState == PlayerState.WalkRight)
-                            {
-                                b = new Bottle((X + Rect.Width + 3), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
-                                b.velocity = new Vector2(5 + velocity.X, velocity.Y);
-                                b.AddForce(new Vector2(1500, -350));
-
-                            }
-                            b.Drawing = true;
-                            b.Thrown = true;
-                            b.drag = false;
-                            rm.Current.Colliders.Add(b);
-                            rm.Current.Enemies.Add(b);
-                            b.activateGravity = true;
-                            bottlesOnHand--;
-
+                            holding = true;
                         }
+
+
                     }
+                }
+            }
+
+            if (holding)
+            {
+                if (holdingCounter >= 120)
+                {
+                    holdingCounter = 0;
+                    holding = false;
                 }
                 else
                 {
-                    holding = false;
+                    if (mState.RightButton == ButtonState.Pressed)
+                    {
+                        holding = false;
+                        intox += 5;
+                        bottlesOnHand--;
+                    }
+                    else if (mState.LeftButton == ButtonState.Pressed)
+                    {
+                        holding = false;
+                        if (pState == PlayerState.FaceLeft || pState == PlayerState.WalkLeft)
+                        {
+                            b = new Bottle((X - 60), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
+                            b.velocity = new Vector2(-5 + velocity.X, velocity.Y);
+                            b.AddForce(new Vector2(-1500, -350));
+                        }
+                        else if (pState == PlayerState.FaceRight || pState == PlayerState.WalkRight)
+                        {
+                            b = new Bottle((X + Rect.Width + 3), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
+                            b.velocity = new Vector2(5 + velocity.X, velocity.Y);
+                            b.AddForce(new Vector2(1500, -350));
+
+                        }
+                        b.Drawing = true;
+                        b.Thrown = true;
+                        b.drag = false;
+                        rm.Current.Colliders.Add(b);
+                        rm.Current.Enemies.Add(b);
+                        b.activateGravity = true;
+                        bottlesOnHand--;
+                    }
                 }
+            }
+            if(intoxDecreaseCounter >= 600)
+            {
+                intox -= 5;
+                intoxDecreaseCounter = 0;
+            }
+            if (intox >= 40)
+            {
+                jumpHeight = 700;
+            }
+            else
+            {
+                jumpHeight = 500;
+            }
             //switch case for the player state to determine if the player is facing/walking a certain way and then changing to the next state when a key is pressed, or lifted up.
             switch (pState)
             {
@@ -359,7 +399,7 @@ namespace UnanimousOverkillGame
                         //Jump(finalHeight);
                         if (!jumped)
                         {
-                            AddForce(new Vector2(0, -500));
+                            AddForce(new Vector2(0, -jumpHeight));
                             activateGravity = true;
                             jumped = true;
                             pState = PlayerState.Falling;
@@ -419,7 +459,14 @@ namespace UnanimousOverkillGame
             buttonInRange = null;
             doorInRange = null;
             prevKeyboardState = kbState;
-
+            if (holding)
+            {
+                holdingCounter++;
+            }
+            if(intox >0)
+            {
+                intoxDecreaseCounter++;
+            }
             Updates(gameTime);
         }
 
@@ -433,23 +480,38 @@ namespace UnanimousOverkillGame
             spriteRect.X = x - ((spriteRect.Width - rectangle.Width) / 2);
             spriteRect.Y = y - (spriteRect.Height - rectangle.Height);
             //switch case for player state again to determine which way to turn the texture and to determine where in the spritesheet to take the texture from 
+            if (holding)
+            {
+                if (pState == PlayerState.FaceRight || pState == PlayerState.WalkRight)
+                {
+                    spriteBatch.Draw(rm.bottleTexture, new Rectangle((int)rm.WorldToScreen(this.Rect.X + this.Rect.Width, this.Rect.Y).X, (int)rm.WorldToScreen(this.Rect.X + this.Rect.Width, this.Rect.Y).Y, 24, 38), Color.White);
+                }
+                else if (pState == PlayerState.FaceLeft || pState == PlayerState.WalkLeft)
+                {
+                    spriteBatch.Draw(rm.bottleTexture, new Rectangle((int)rm.WorldToScreen(this.Rect.X - 24, this.Rect.Y).X, (int)rm.WorldToScreen(this.Rect.X - 24, this.Rect.Y).Y, 24, 38), Color.White);
+                }
+                if (pState == PlayerState.Falling || pState == PlayerState.Jumping || pState == PlayerState.Dead)
+                {
+                    holding = false;
+                }
+            }
             switch (pState)
             {
                 case PlayerState.WalkRight:
                     {
                         if (!colliderArray[1])
-                        spriteBatch.Draw(spriteSheet,
-                                        spriteRect,
-                                        new Rectangle(
-                                            frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
-                                            MARIO_RECT_Y_OFFSET,
-                                            MARIO_RECT_WIDTH,
-                                            MARIO_RECT_HEIGHT),
-                                        color,
-                                        0,
-                                        Vector2.Zero,
-                                        SpriteEffects.None,
-                                        0);
+                            spriteBatch.Draw(spriteSheet,
+                                            spriteRect,
+                                            new Rectangle(
+                                                frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
+                                                MARIO_RECT_Y_OFFSET,
+                                                MARIO_RECT_WIDTH,
+                                                MARIO_RECT_HEIGHT),
+                                            color,
+                                            0,
+                                            Vector2.Zero,
+                                            SpriteEffects.None,
+                                            0);
                         else
                             spriteBatch.Draw(spriteSheet,
                                         spriteRect,
@@ -531,29 +593,29 @@ namespace UnanimousOverkillGame
                     {
                         if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
                             spriteBatch.Draw(spriteSheet,
-                                spriteRect, 
+                                spriteRect,
                                 new Rectangle(
-                                    (1 * MARIO_RECT_WIDTH), 
-                                    0, 
-                                    MARIO_RECT_WIDTH, 
+                                    (1 * MARIO_RECT_WIDTH),
+                                    0,
+                                    MARIO_RECT_WIDTH,
                                     MARIO_RECT_HEIGHT),
-                                    color, 
-                                    0, 
-                                    Vector2.Zero, 
-                                    SpriteEffects.FlipHorizontally, 
+                                    color,
+                                    0,
+                                    Vector2.Zero,
+                                    SpriteEffects.FlipHorizontally,
                                     0);
                         else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
                             spriteBatch.Draw(spriteSheet,
-                                spriteRect, 
+                                spriteRect,
                                 new Rectangle(
-                                    (1 * MARIO_RECT_WIDTH), 
-                                    0, 
-                                    MARIO_RECT_WIDTH, 
+                                    (1 * MARIO_RECT_WIDTH),
+                                    0,
+                                    MARIO_RECT_WIDTH,
                                     MARIO_RECT_HEIGHT),
-                                    color, 
-                                    0, 
-                                    Vector2.Zero, 
-                                    SpriteEffects.None, 
+                                    color,
+                                    0,
+                                    Vector2.Zero,
+                                    SpriteEffects.None,
                                     0);
                         break;
                     }
@@ -561,30 +623,30 @@ namespace UnanimousOverkillGame
                     {
                         if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
                             spriteBatch.Draw(spriteSheet,
-                                spriteRect, 
+                                spriteRect,
                                 new Rectangle(
-                                    (1 * MARIO_RECT_WIDTH), 
-                                    0, 
-                                    MARIO_RECT_WIDTH, 
+                                    (1 * MARIO_RECT_WIDTH),
+                                    0,
+                                    MARIO_RECT_WIDTH,
                                     MARIO_RECT_HEIGHT),
-                                    color, 0, 
-                                    Vector2.Zero,  
+                                    color, 0,
+                                    Vector2.Zero,
                                     SpriteEffects.
-                                    FlipHorizontally, 
+                                    FlipHorizontally,
                                     0);
                         else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
                             spriteBatch.Draw(
                                 spriteSheet,
-                                spriteRect, 
+                                spriteRect,
                                 new Rectangle(
-                                    (1 * MARIO_RECT_WIDTH), 
-                                    0, 
-                                    MARIO_RECT_WIDTH, 
+                                    (1 * MARIO_RECT_WIDTH),
+                                    0,
+                                    MARIO_RECT_WIDTH,
                                     MARIO_RECT_HEIGHT),
-                                    color, 
-                                    0, 
-                                    Vector2.Zero, 
-                                    SpriteEffects.None, 
+                                    color,
+                                    0,
+                                    Vector2.Zero,
+                                    SpriteEffects.None,
                                     0);
                         break;
                     }

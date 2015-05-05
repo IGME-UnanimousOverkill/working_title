@@ -58,7 +58,7 @@ namespace UnanimousOverkillGame
         Keys prevKey;
         int prevKeyCount; //makes sure pause menu isn't skipped
 
-        Boolean enableShaders = true;
+        Boolean enableShaders = false;
 
         //player
         static Player player;

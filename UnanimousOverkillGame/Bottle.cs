@@ -39,10 +39,8 @@ namespace UnanimousOverkillGame
             {
                 drawing = false;
                 isCollidable = false;
-                player.Intox+=5;
                 player.bottlesOnHand++;
                 X = -20000;
-                player.Holding = true;
                 player.Color = Color.Green;
             }
             if(thrown)
