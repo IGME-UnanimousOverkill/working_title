@@ -318,6 +318,8 @@ namespace UnanimousOverkillGame
 
                     uiSpriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
                     uiSpriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
+                    uiSpriteBatch.DrawString(font, "intoxication: " + player.Intox
+                        , new Vector2(intoxBox.X-74,intoxBox.Y+2), Color.Red);
                     break;
                 case GameState.Paused:
                     spriteBatch.Begin();

@@ -31,6 +31,7 @@ namespace UnanimousOverkillGame
             bounce = false;
             player = p;
             this.rm = rm;
+            MaxXV = 7;
         }
         public override void OnCollide(PhysicsEntity other)
         {

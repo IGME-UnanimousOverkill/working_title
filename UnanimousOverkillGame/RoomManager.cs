@@ -80,6 +80,7 @@ namespace UnanimousOverkillGame
             collisionManager.ClearCollisions();
             room.SpawnRoom(player, current);
             UpdateCollisionManager(room);
+            player.Health += 5;
             current = room;
         }
 

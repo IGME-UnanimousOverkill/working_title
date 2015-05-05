@@ -55,7 +55,7 @@ namespace UnanimousOverkillGame
         public int deathCounter;
         private Color color;
         public int bottlesOnHand;
-
+        public bool wallClimb;
         public Button ButtonInRange { get { return buttonInRange; } set { if (value != null) buttonInRange = value; } }
         public Door DoorInRange { get { return doorInRange; } set { if (value != null) doorInRange = value; } }
         public bool Holding { get { return holding; } set { holding = value; } }
@@ -97,6 +97,7 @@ namespace UnanimousOverkillGame
             holdingCounter = 0;
             intoxDecreaseCounter = 0;
             deathCounter = 0;
+            wallClimb = false;
         }
 
         public void CollisionManagerGet(CollisionManager col)
@@ -171,6 +172,41 @@ namespace UnanimousOverkillGame
                     }
                 }
             }
+            if (wallClimb)
+            {
+                if (colliderArray[3] || colliderArray[1])
+                {
+                    activateGravity = false;
+                    //colliderArray[2] = true;
+                    if (kbState.IsKeyDown(Keys.S))
+                    {
+                        activateGravity = true;
+                    }
+                    if (kbState.IsKeyDown(Keys.A))
+                    {
+                        if (!prevKeyboardState.IsKeyDown(Keys.A))
+                            pState = PlayerState.FaceLeft;
+                        else
+                            pState = PlayerState.WalkLeft;
+                        }
+                    if (kbState.IsKeyDown(Keys.D))
+                        if (!prevKeyboardState.IsKeyDown(Keys.D))
+                            pState = PlayerState.FaceRight;
+                        else
+                            pState = PlayerState.WalkRight;
+
+                    if(kbState.IsKeyDown(Keys.Space)&& !prevKeyboardState.IsKeyDown(Keys.Space))
+                    {
+                        AddForce(new Vector2((pState == PlayerState.FaceRight) ? 10 : -10, -jumpHeight));       
+                        velocity = new Vector2((pState == PlayerState.FaceRight)?MaxXV:-MaxXV,velocity.Y);
+                    }
+                }
+                else
+                {
+                    if(colliderArray[2] == false)
+                        activateGravity = true;
+                }
+            }
 
             if (holding)
             {
@@ -193,14 +229,14 @@ namespace UnanimousOverkillGame
                         if (pState == PlayerState.FaceLeft || pState == PlayerState.WalkLeft)
                         {
                             b = new Bottle((X - 60), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
-                            b.velocity = new Vector2(-5 + velocity.X, velocity.Y);
-                            b.AddForce(new Vector2(-1500, -350));
+                            b.velocity = new Vector2(-20 + velocity.X, velocity.Y);
+                            b.AddForce(new Vector2(-2000, -350));
                         }
                         else if (pState == PlayerState.FaceRight || pState == PlayerState.WalkRight)
                         {
                             b = new Bottle((X + Rect.Width + 3), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
-                            b.velocity = new Vector2(5 + velocity.X, velocity.Y);
-                            b.AddForce(new Vector2(1500, -350));
+                            b.velocity = new Vector2(20 + velocity.X, velocity.Y);
+                            b.AddForce(new Vector2(2000, -350));
 
                         }
                         b.Drawing = true;
@@ -213,12 +249,21 @@ namespace UnanimousOverkillGame
                     }
                 }
             }
-            if(intoxDecreaseCounter >= 600)
+            if(intoxDecreaseCounter >= 1200)
             {
                 intox -= 5;
                 intoxDecreaseCounter = 0;
             }
             if (intox >= 40)
+            {
+                wallClimb = true;
+            }
+            else
+            {
+                wallClimb = false;
+            }
+
+            if (intox >= 70)
             {
                 jumpHeight = 700;
             }
@@ -386,7 +431,7 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.Jumping:
                     {
-                        if (!activateGravity)
+                        if (!activateGravity&&!wallClimb)
                         {
                             activateGravity = true;
                         }
@@ -400,6 +445,7 @@ namespace UnanimousOverkillGame
                         if (!jumped)
                         {
                             AddForce(new Vector2(0, -jumpHeight));
+                            
                             activateGravity = true;
                             jumped = true;
                             pState = PlayerState.Falling;
@@ -427,7 +473,7 @@ namespace UnanimousOverkillGame
                     }
                 case PlayerState.Falling:
                     {
-                        if (!activateGravity)
+                        if (!activateGravity&&!wallClimb)
                         {
                             activateGravity = true;
                         }
@@ -442,14 +488,14 @@ namespace UnanimousOverkillGame
                         {
                             if (!colliderArray[3])
                             {
-                                AddForce(new Vector2(-6, 0));
+                                AddForce(new Vector2(-8, 0));
                             }
                         }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                         {
                             if (!colliderArray[1])
                             {
-                                AddForce(new Vector2(6, 0));
+                                AddForce(new Vector2(8, 0));
                             }
                         }
                         break;
