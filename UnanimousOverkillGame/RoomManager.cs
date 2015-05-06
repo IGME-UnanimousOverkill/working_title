@@ -212,7 +212,9 @@ namespace UnanimousOverkillGame
 
         public void RespawnRoom()
         {
+            collisionManager.ClearCollisions();
             current.RespawnRoom();
+            UpdateCollisionManager(current);
         }
 
         /// <summary>
