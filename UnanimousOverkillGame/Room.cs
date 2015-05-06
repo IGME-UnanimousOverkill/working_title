@@ -363,6 +363,7 @@ namespace UnanimousOverkillGame
             background.Clear();
             manager.player.Health = 100;
             manager.player.bottlesOnHand = 0;
+            manager.UpdateCollisionManager(this);
 
             SpawnRoom(manager.player, previousRoom);
         }

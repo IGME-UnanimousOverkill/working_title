@@ -58,9 +58,9 @@ namespace UnanimousOverkillGame
         Keys prevKey;
         int prevKeyCount; //makes sure pause menu isn't skipped
 
-        Boolean enableShaders = true;
+        Boolean enableShaders = false;
 
-        bool Fullscreen = false;
+        bool Fullscreen = true;
 
         //player
         static Player player;
@@ -201,6 +201,10 @@ namespace UnanimousOverkillGame
                             prevKeyCount = 10; //the amount of time that has to pass before Paused --> Menu
                             gameState = GameState.Paused;
                         }
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.P))
+                    {
+                        player.Health = 0;
                     }
                     health.X =(int)( roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2),(player.Y - 20)).X);
                     health.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).Y);
