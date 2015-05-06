@@ -58,7 +58,7 @@ namespace UnanimousOverkillGame
         Keys prevKey;
         int prevKeyCount; //makes sure pause menu isn't skipped
 
-        Boolean enableShaders = false;
+        Boolean enableShaders = true;
 
         //player
         static Player player;
@@ -310,7 +310,7 @@ namespace UnanimousOverkillGame
 
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
-                    uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.ID + " / " + (roomManager.greatestID-1)
+                    uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.depth
                         , new Vector2(300, 230), Color.White);
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);

@@ -191,24 +191,21 @@ namespace UnanimousOverkillGame
                 currentDepth = previous.depth + 1;
             }
 
-            if (currentDepth >= 10)
-            {
-                Game1.RumbleMode = true;
-            }
-
             Room room = new Room(this, previous, font, currentDepth);
 
             if (File.Exists(SPECIAL_DIR + "Room" + currentDepth + ".txt"))
             {
-                Console.WriteLine(SPECIAL_DIR + "Room" + currentDepth + " exists");
                 room.LoadRoom(SPECIAL_DIR + "Room" + currentDepth + ".txt");
                 return room;
             }
 
-            Console.WriteLine(SPECIAL_DIR + "Room" + currentDepth + " does not exist");
-
             string[] files = Directory.GetFiles(ROOM_DIR);
             room.LoadRoom(files[rand.Next(files.Length)]);
+
+            if (current != null && current.depth >= 10)
+            {
+                Game1.RumbleMode = true;
+            }
 
             return room;
         }

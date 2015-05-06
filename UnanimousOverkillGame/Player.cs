@@ -168,7 +168,7 @@ namespace UnanimousOverkillGame
                             pState = PlayerState.FaceLeft;
                     if (kbState.IsKeyDown(Keys.D) && !prevKeyboardState.IsKeyDown(Keys.D))
                         pState = PlayerState.FaceRight;
-                    if (kbState.IsKeyDown(Keys.W))
+                    if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Space))
                         AddForce(new Vector2(0, -20));
                 }
                 else
