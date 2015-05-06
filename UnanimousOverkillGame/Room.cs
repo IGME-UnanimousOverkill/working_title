@@ -214,11 +214,16 @@ namespace UnanimousOverkillGame
                             if (Game1.RumbleMode)
                             {
                                 int percent = rand.Next(100);
-                                if (percent > 90)
+                                if (percent > 100 - depth)
                                 {
-                                    tile.activateGravity = true;
+                                    enemies.Add(tile);
+                                    tile.color = Color.Gray;
+                                    percent = rand.Next(100);
+                                    if (percent > 110 - depth)
+                                    {
+                                        tile.falling = true;
+                                    }
                                 }
-                                enemies.Add(tile);
                             }
                             foreground.Add(tile);
                             colliders.Add(tile);
