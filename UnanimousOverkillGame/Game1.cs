@@ -60,6 +60,8 @@ namespace UnanimousOverkillGame
 
         Boolean enableShaders = true;
 
+        bool Fullscreen = false;
+
         //player
         static Player player;
 
@@ -82,12 +84,15 @@ namespace UnanimousOverkillGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            var screen = System.Windows.Forms.Screen.PrimaryScreen;
-            Window.IsBorderless = true;
-            Window.Position = new Point(screen.Bounds.X, screen.Bounds.Y);
-            graphics.PreferredBackBufferWidth = screen.Bounds.Width;
-            graphics.PreferredBackBufferHeight = screen.Bounds.Height;
-            graphics.ApplyChanges();
+            if (Fullscreen)
+            {
+                var screen = System.Windows.Forms.Screen.PrimaryScreen;
+                Window.IsBorderless = true;
+                Window.Position = new Point(screen.Bounds.X, screen.Bounds.Y);
+                graphics.PreferredBackBufferWidth = screen.Bounds.Width;
+                graphics.PreferredBackBufferHeight = screen.Bounds.Height;
+                graphics.ApplyChanges();
+            }
 
             gameState = GameState.Menu;
             prevKeyCount = 0;
@@ -119,7 +124,7 @@ namespace UnanimousOverkillGame
             //Loads the spriteFont
             font = Content.Load<SpriteFont>("TimesNewRoman12");
 
-            roomManager = new RoomManager(player, collisionManager, font, Content);
+            roomManager = new RoomManager(player, collisionManager, font, Content, GraphicsDevice);
             roomManager.LoadContent(GraphicsDevice);
             player.RoomManagerGet(roomManager);
             if(enableShaders)

@@ -57,16 +57,16 @@ namespace UnanimousOverkillGame
 
         public static float MINIMAP_SCALE = 0.3f;
 
-        public RoomManager(Player play, CollisionManager manager, SpriteFont font, ContentManager content)
+        public RoomManager(Player play, CollisionManager manager, SpriteFont font, ContentManager content, GraphicsDevice graphics)
         {
             this.font = font;
             player = play;
             collisionManager = manager;
             this.content = content;
             head = current;
-            var screen = System.Windows.Forms.Screen.PrimaryScreen;
-            screenWidth = screen.Bounds.Width;
-            screenHeight = screen.Bounds.Height;
+            var screen = graphics.Viewport.Bounds;
+            screenWidth = screen.Width;
+            screenHeight = screen.Height;
             greatestID = 0;
             roomManager = this;
         }
