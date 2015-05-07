@@ -42,7 +42,7 @@ namespace UnanimousOverkillGame
         public Texture2D hopEnemyTexture;
         public Texture2D oozeEnemyTexture;
         public Texture2D spikesTexture;
-
+        public int greatestID;
 
         public const string ROOM_DIR = "Content/Rooms/";
         public const string SPECIAL_DIR = "Content/SpecialRooms/";
@@ -57,17 +57,17 @@ namespace UnanimousOverkillGame
 
         public static float MINIMAP_SCALE = 0.3f;
 
-        public RoomManager(Player play, CollisionManager manager, SpriteFont font, ContentManager content)
+        public RoomManager(Player play, CollisionManager manager, SpriteFont font, ContentManager content, GraphicsDevice graphics)
         {
             this.font = font;
             player = play;
             collisionManager = manager;
             this.content = content;
             head = current;
-            var screen = System.Windows.Forms.Screen.PrimaryScreen;
-            screenWidth = screen.Bounds.Width;
-            screenHeight = screen.Bounds.Height;
-
+            var screen = graphics.Viewport.Bounds;
+            screenWidth = screen.Width;
+            screenHeight = screen.Height;
+            greatestID = 0;
             roomManager = this;
         }
 
@@ -80,6 +80,7 @@ namespace UnanimousOverkillGame
             collisionManager.ClearCollisions();
             room.SpawnRoom(player, current);
             UpdateCollisionManager(room);
+            player.Health += 5;
             current = room;
         }
 
@@ -93,8 +94,11 @@ namespace UnanimousOverkillGame
         public int MakeID()
         {
             currentID += 1;
+            if (currentID > greatestID)
+                greatestID = currentID;
             return currentID;
         }
+
 
         /// <summary>
         /// Update Method in case rooms need updating.
@@ -191,19 +195,27 @@ namespace UnanimousOverkillGame
 
             if (File.Exists(SPECIAL_DIR + "Room" + currentDepth + ".txt"))
             {
-                Console.WriteLine(SPECIAL_DIR + "Room" + currentDepth + " exists");
                 room.LoadRoom(SPECIAL_DIR + "Room" + currentDepth + ".txt");
                 return room;
             }
 
-            Console.WriteLine(SPECIAL_DIR + "Room" + currentDepth + " does not exist");
-
             string[] files = Directory.GetFiles(ROOM_DIR);
             room.LoadRoom(files[rand.Next(files.Length)]);
+
+            if (current != null && current.depth >= 10)
+            {
+                Game1.RumbleMode = true;
+            }
 
             return room;
         }
 
+        public void RespawnRoom()
+        {
+            collisionManager.ClearCollisions();
+            current.RespawnRoom();
+            UpdateCollisionManager(current);
+        }
 
         /// <summary>
         /// Methods for converting from World Coordinates to Screen Coordinates. Mainly for drawing with a scrolling screen.

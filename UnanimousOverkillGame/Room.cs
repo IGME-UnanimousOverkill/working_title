@@ -141,7 +141,6 @@ namespace UnanimousOverkillGame
         /// <param name="path">The path to the text file.</param>
         public void LoadRoom(string path)
         {
-
             StreamReader levelReader = new StreamReader(path);
             string readerLine = levelReader.ReadLine();
             List<string> levels = new List<string>();
@@ -215,11 +214,16 @@ namespace UnanimousOverkillGame
                             if (Game1.RumbleMode)
                             {
                                 int percent = rand.Next(100);
-                                if (percent > 90)
+                                if (percent > 100 - depth)
                                 {
-                                    tile.activateGravity = true;
+                                    enemies.Add(tile);
+                                    tile.color = Color.Gray;
+                                    percent = rand.Next(100);
+                                    if (percent > 110 - depth)
+                                    {
+                                        tile.falling = true;
+                                    }
                                 }
-                                enemies.Add(tile);
                             }
                             foreground.Add(tile);
                             colliders.Add(tile);
@@ -362,13 +366,14 @@ namespace UnanimousOverkillGame
             foreground.Clear();
             doors.Clear();
             background.Clear();
+            manager.player.Health = 100;
+            manager.player.bottlesOnHand = 0;
 
             SpawnRoom(manager.player, previousRoom);
         }
 
         private void checkAdditionalInformation()
         {
-
             List<String> lineSplits;
             lineSplits = new List<string>();
             int xNum,yNum;
@@ -382,7 +387,6 @@ namespace UnanimousOverkillGame
                 {
                     levelObjects[xNum, yNum].AddInformation(lineSplits.GetRange(3, lineSplits.Count - 3), levelObjects);
                 }
-
             }
         }
 
@@ -426,7 +430,6 @@ namespace UnanimousOverkillGame
         /// </summary>
         public void Draw(GraphicsDevice device, SpriteBatch batch)
         {
-
             if (background.Count > 0)
             {
                 foreach (BackgroundTile tile in background)

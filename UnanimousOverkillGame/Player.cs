@@ -21,49 +21,51 @@ namespace UnanimousOverkillGame
         //fields
         private int intox; //will represent the amount of goo drunk, initialized to 0
         private int health; //will show the amount of health the player currently has, initialized to 50 for now
+        public int maxHealth;//max health value
         private bool holding; //will show whether the player is holding an object or not, initilized to false
         private PlayerState pState; //will hold the movement state the player is currently in, inside of the Game1 file
-        private PlayerState prevState;
+        private PlayerState prevState;//previous state as of the previous frame
 
-        private KeyboardState prevKeyboardState;
-        private Button buttonInRange;
-        private Door doorInRange;
+        private KeyboardState prevKeyboardState;//previous keyboard state as of the previous frame
+        private Button buttonInRange;//if a button is in range of the player
+        private Door doorInRange;//if a door is in range of a player
         //SpriteBatch spriteBatch;
 
-        public int Health { get { return health; } set { health = value; } }
-        private SpriteBatch playerSpriteBatch;
-        Bottle b;
+        public int Health { get { return health; } set { health = value; } }//health property
+        private SpriteBatch playerSpriteBatch;//the players spritebatch, acts just as a reference to the spritebatch given from the draw call
+        Bottle b;//the bottle that can be thrown
         private Rectangle spriteRect; // Holds information about how the player should be drawn
         private Texture2D spriteSheet; //holds the texture for the player, preferably a sprite sheet for animation 
-        private CollisionManager col;
-        private const int jumpHeight = 110;
-        private int finalHeight = 0;
+        private CollisionManager col;//a reference to the collision manager
+        private int jumpHeight = 500;//the jump height of the player
+        private int finalHeight = 0;//obsolete, was used for the previous jumping mechanics
         //movement animation stuff
         private int frame; // The current animation frame
         private double timeCounter; // The amount of time that has passed  
         private double fps; // The speed of the animation                  
         private double timePerFrame; // The amount of time (in fractional seconds) per frame                  
-
-        private bool jumped;
-
+        private int intoxDecreaseCounter;//how long until the intoxication slowly decreases
+        private bool jumped;//if the player has jumped, should reset when the player lands on some platform or the ground
         //spritesheet animation stuff
         const int WALK_FRAME_COUNT = 7; // The number of frames in the animation                 
         const int MARIO_RECT_Y_OFFSET = 70; // How far down in the image are the frames?                 
         const int MARIO_RECT_HEIGHT = 70; // The height of a single frame
-        const int MARIO_RECT_X_OFFSET = 0;
+        const int MARIO_RECT_X_OFFSET = 0;//the offset from the left of the spritesheet
         const int MARIO_RECT_WIDTH = 64; // The width of a single frame
 
-        private Color color;
-        public int bottlesOnHand;
-
-        public Button ButtonInRange { get { return buttonInRange; } set { if (value != null) buttonInRange = value; } }
-        public Door DoorInRange { get { return doorInRange; } set { if (value != null) doorInRange = value; } }
-        public bool Holding { get { return holding; } set { holding = value; } }
-        RoomManager rm;
-        public PlayerState PState { get { return pState; } set { pState = value; } }
-        public PlayerState PrevState { get { return prevState; } set {  prevState = value; } }
-        public int Intox { get { return intox; } set { intox = value; } }
-        public Color Color { set { color = value; } }
+        public int deathCounter;//how many times the player has died
+        private Color color;//the color to output for the player(used when the player interacts with an enemy or a bottle)
+        public int bottlesOnHand;//how many bottles you are currently carrying
+        public bool wallClimb;//if the player can wall climb activated after intox is >= 40
+        public Button ButtonInRange { get { return buttonInRange; } set { if (value != null) buttonInRange = value; } }//property for the buttoninrange field
+        public Door DoorInRange { get { return doorInRange; } set { if (value != null) doorInRange = value; } }//property for the doorinrange field
+        public bool Holding { get { return holding; } set { holding = value; } }//property for the holding field
+        private int holdingCounter;//how long until a bottle disappears from view after not being interacted with when holding
+        RoomManager rm;//reference to the room manager
+        public PlayerState PState { get { return pState; } set { pState = value; } }//property for the pstate field
+        public PlayerState PrevState { get { return prevState; } set { prevState = value; } }//property for the prevstate field
+        public int Intox { get { return intox; } set { intox = value; } }//property for the intox field
+        public Color Color { set { color = value; } }//property for the color field
         /// <summary>
         /// initializes a player, sets the intoxication level to 0, health value to 50 and holding to false
         /// </summary>
@@ -80,6 +82,7 @@ namespace UnanimousOverkillGame
             doorInRange = null;
             intox = 0;
             health = 100;
+            maxHealth = 100;
             holding = false;
             fps = 10.0;
             timePerFrame = 1.0 / fps;
@@ -93,12 +96,18 @@ namespace UnanimousOverkillGame
             prevKeyboardState = Keyboard.GetState();
             bottlesOnHand = 500;
             jumped = false;
+            holdingCounter = 0;
+            intoxDecreaseCounter = 0;
+            deathCounter = 0;
+            wallClimb = false;
         }
 
+        //used to get a reference to the collsion manager
         public void CollisionManagerGet(CollisionManager col)
         {
             this.col = col;
         }
+        //used to get a reference to the room manager
         public void RoomManagerGet(RoomManager col)
         {
             this.rm = col;
@@ -109,16 +118,18 @@ namespace UnanimousOverkillGame
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
-            if(health <=0)
+            KeyboardState kbState = Keyboard.GetState();//initializes the keyboard state for getting movement input and other commands/actions
+            if (health <= 0)//resets health back to 0 if it goes below and kills the player
             {
                 health = 0;
                 pState = PlayerState.Dead;
             }
-
-            KeyboardState kbState = Keyboard.GetState();
-
-            if (intox > 100)
+            if(health>maxHealth)//resets the health to maxhealth if it goes past
+                health = maxHealth; 
+            if (intox > 100)//if the intox goes past the max value, then resets it to it
                 intox = 100;
+            if (intox < 0)//keeps the intox from going below 0
+                intox = 0;
 
             // Handle animation timing
             // - Add to the time counter
@@ -133,57 +144,89 @@ namespace UnanimousOverkillGame
 
                 timeCounter -= timePerFrame; // Remove the time we "used"
             }
-            if(!colliderArray[0] && !colliderArray[1] && !colliderArray[2] && !colliderArray[3] && pState != PlayerState.Jumping){
+            if (!colliderArray[0] && !colliderArray[1] && !colliderArray[2] && !colliderArray[3] && pState != PlayerState.Jumping)//if the player is not colliding with anything nor jumping then it is falling
                 pState = PlayerState.Falling;
-
-            }
-            if (kbState.IsKeyDown(Keys.E) && buttonInRange != null && !prevKeyboardState.IsKeyDown(Keys.E))
-            {
+            if (kbState.IsKeyDown(Keys.E) && buttonInRange != null && !prevKeyboardState.IsKeyDown(Keys.E))//if you press e while in range of a button it presses the button
                 buttonInRange.PressButton();
-            }
-            if (kbState.IsKeyDown(Keys.W) && doorInRange != null && !prevKeyboardState.IsKeyDown(Keys.W))
-            {
+            if (kbState.IsKeyDown(Keys.W) && doorInRange != null && !prevKeyboardState.IsKeyDown(Keys.W))//if you press w while in range of a door it opens the door and progresses to the next room
                 doorInRange.UseDoor();
-            }
 
-
-            
+            MouseState mState = Mouse.GetState();//initializes the mousestate for input
+            if (kbState.IsKeyDown(Keys.F) && !prevKeyboardState.IsKeyDown(Keys.F))//if you press f, and you have bottles, and you arent in the air, it makes it so you are now holding a bottle
                 if (bottlesOnHand > 0)
-                {
                     if (pState != PlayerState.Falling)
-                    {
-                        if (kbState.IsKeyDown(Keys.F) && !prevKeyboardState.IsKeyDown(Keys.F))
-                        {
+                        if (holding == false)
+                            holding = true;
 
-
-                            if (pState == PlayerState.FaceLeft || pState == PlayerState.WalkLeft)
-                            {
-                                b = new Bottle((X - 60), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
-                                b.velocity = new Vector2(-5 + velocity.X, velocity.Y);
-                                b.AddForce(new Vector2(-1500, -350));
-                            }
-                            else if (pState == PlayerState.FaceRight || pState == PlayerState.WalkRight)
-                            {
-                                b = new Bottle((X + Rect.Width + 3), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
-                                b.velocity = new Vector2(5 + velocity.X, velocity.Y);
-                                b.AddForce(new Vector2(1500, -350));
-
-                            }
-                            b.Drawing = true;
-                            b.Thrown = true;
-                            b.drag = false;
-                            rm.Current.Colliders.Add(b);
-                            rm.Current.Enemies.Add(b);
-                            b.activateGravity = true;
-                            bottlesOnHand--;
-
-                        }
-                    }
+            if (wallClimb)//if you can wall climb(intox >=40) then if you collide with something on the left or right, you no longer fall and can move up and down manually
+                if (colliderArray[3] || colliderArray[1])
+                {
+                    activateGravity = false;
+                    if (kbState.IsKeyDown(Keys.S))
+                        activateGravity = true;
+                    if (kbState.IsKeyDown(Keys.A)&&!prevKeyboardState.IsKeyDown(Keys.A))
+                            pState = PlayerState.FaceLeft;
+                    if (kbState.IsKeyDown(Keys.D) && !prevKeyboardState.IsKeyDown(Keys.D))
+                        pState = PlayerState.FaceRight;
+                    if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Space))
+                        AddForce(new Vector2(0, -20));
                 }
                 else
+                    if (colliderArray[2] == false)
+                        activateGravity = true;
+
+            if (holding)//if you are holding a bottle, if you dont interact with it within 2 seconds it goes back into your "inventory". otherwise(you do interact with it) if you left click you throw it, if you right click you drink it
+                if (holdingCounter >= 120)
                 {
+                    holdingCounter = 0;
                     holding = false;
                 }
+                else
+                    if (mState.RightButton == ButtonState.Pressed)
+                    {
+                        holding = false;
+                        intox += 5;
+                        bottlesOnHand--;
+                    }
+                    else if (mState.LeftButton == ButtonState.Pressed)
+                    {
+                        holding = false;
+                        if (pState == PlayerState.FaceLeft || pState == PlayerState.WalkLeft)
+                        {
+                            b = new Bottle((X - 60), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
+                            b.velocity = new Vector2(-20 + velocity.X, velocity.Y);
+                            b.AddForce(new Vector2(-2000, -350));
+                        }
+                        else if (pState == PlayerState.FaceRight || pState == PlayerState.WalkRight)
+                        {
+                            b = new Bottle((X + Rect.Width + 3), Y - 10, Room.TILE_WIDTH, Room.TILE_HEIGHT, rm.bottleTexture, this, rm);
+                            b.velocity = new Vector2(20 + velocity.X, velocity.Y);
+                            b.AddForce(new Vector2(2000, -350));
+
+                        }
+                        b.Drawing = true;
+                        b.Thrown = true;
+                        b.drag = false;
+                        rm.Current.Colliders.Add(b);
+                        rm.Current.Enemies.Add(b);
+                        b.activateGravity = true;
+                        bottlesOnHand--;
+                    }
+
+            if (intoxDecreaseCounter >= 1200)//after 20 seconds your intoxication level decreases by 5
+            {
+                intox -= 5;
+                intoxDecreaseCounter = 0;
+            }
+            if (intox >= 40)//if intox is >= 40 you can wallclimb otherwise you cant
+                wallClimb = true;
+            else
+                wallClimb = false;
+            if (intox >= 70)//if intox >=70 you jump higher otherwise you jump at a normal height
+                jumpHeight = 700;
+            else
+                jumpHeight = 500;
+
             //switch case for the player state to determine if the player is facing/walking a certain way and then changing to the next state when a key is pressed, or lifted up.
             switch (pState)
             {
@@ -192,16 +235,15 @@ namespace UnanimousOverkillGame
 
                         if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
-
                         }
                         else
                         {
-                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)&&!colliderArray[1])
                             {
                                 prevState = pState;
                                 pState = PlayerState.WalkLeft;
                             }
-                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)&&!colliderArray[3])
                             {
                                 prevState = pState;
                                 pState = PlayerState.WalkRight;
@@ -211,30 +253,22 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            //finalHeight = Y - jumpHeight;
-
                         }
-                        //if (colliderArray[2] == false&&)
-                        //{
-                        //    prevState = pState;
-                        //    pState = PlayerState.Falling;
-                        //}
                         break;
                     }
                 case PlayerState.FaceRight:
                     {
                         if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
-
                         }
                         else
                         {
-                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+                            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)&&!colliderArray[1])
                             {
                                 prevState = pState;
                                 pState = PlayerState.WalkLeft;
                             }
-                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
+                            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)&&!colliderArray[3])
                             {
                                 prevState = pState;
                                 pState = PlayerState.WalkRight;
@@ -244,23 +278,13 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            //finalHeight = Y - jumpHeight;
-
                         }
-                        //if (colliderArray[2] == false)
-                        //{
-                        //    prevState = pState;
-                        //    pState = PlayerState.Falling;
-                        //}
                         break;
                     }
                 case PlayerState.WalkRight:
                     {
                         if (!colliderArray[1])
-                        {
                             AddForce(new Vector2(10, 0));
-                        }
-
                         if ((kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) && (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)))
                         {
                             prevState = pState;
@@ -288,14 +312,7 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            //finalHeight = Y - jumpHeight;
-
                         }
-                        //if (colliderArray[2] == false)
-                        //{
-                        //    prevState = pState;
-                        //    pState = PlayerState.Falling;
-                        //}
                         break;
                     }
                 case PlayerState.WalkLeft:
@@ -331,65 +348,41 @@ namespace UnanimousOverkillGame
                         {
                             prevState = pState;
                             pState = PlayerState.Jumping;
-                            //finalHeight = Y - jumpHeight;
                         }
-                        //if (colliderArray[2] == false)
-                        //{
-                        //    prevState = pState;
-                        //    pState = PlayerState.Falling;
-                        //}
-
-
                         break;
                     }
                 case PlayerState.Jumping:
                     {
-                        if (!activateGravity)
-                        {
+                        if (!activateGravity && !wallClimb)
                             activateGravity = true;
-                        }
                         if (colliderArray[2] == true)
                         {
                             pState = prevState;
                             jumped = false;
                             activateGravity = false;
                         }
-                        //Jump(finalHeight);
                         if (!jumped)
                         {
-                            AddForce(new Vector2(0, -500));
+                            AddForce(new Vector2(0, -jumpHeight));
+
                             activateGravity = true;
                             jumped = true;
                             pState = PlayerState.Falling;
                         }
                         if (colliderArray[0] || Y <= finalHeight)
-                        {
                             pState = PlayerState.Falling;
-                        }
                         if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
-                        {
                             if (!colliderArray[3])
-                            {
                                 AddForce(new Vector2(-6, 0));
-                            }
-                        }
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
-                        {
                             if (!colliderArray[1])
-                            {
                                 AddForce(new Vector2(6, 0));
-                            }
-                        }
                         break;
-
                     }
                 case PlayerState.Falling:
                     {
-                        if (!activateGravity)
-                        {
+                        if (!activateGravity && !wallClimb)
                             activateGravity = true;
-                        }
-                        //Fall();
                         if (colliderArray[2] == true)
                         {
                             pState = prevState;
@@ -397,27 +390,21 @@ namespace UnanimousOverkillGame
                             activateGravity = false;
                         }
                         if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
-                        {
                             if (!colliderArray[3])
-                            {
-                                AddForce(new Vector2(-6, 0));
-                            }
-                        }
+                                AddForce(new Vector2(-8, 0));
                         if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
-                        {
                             if (!colliderArray[1])
-                            {
-                                AddForce(new Vector2(6, 0));
-                            }
-                        }
+                                AddForce(new Vector2(8, 0));
                         break;
                     }
             }
-
             buttonInRange = null;
             doorInRange = null;
             prevKeyboardState = kbState;
-
+            if (holding)
+                holdingCounter++;
+            if (intox > 0)
+                intoxDecreaseCounter++;
             Updates(gameTime);
         }
 
@@ -427,27 +414,36 @@ namespace UnanimousOverkillGame
         /// <param name="spriteBatch"></param>
         public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
         {
-            playerSpriteBatch = spriteBatch;
+            playerSpriteBatch = spriteBatch;//gets the spritebatch reference
             spriteRect.X = x - ((spriteRect.Width - rectangle.Width) / 2);
             spriteRect.Y = y - (spriteRect.Height - rectangle.Height);
             //switch case for player state again to determine which way to turn the texture and to determine where in the spritesheet to take the texture from 
+            if (holding)
+            {
+                if (pState == PlayerState.FaceRight || pState == PlayerState.WalkRight)
+                    spriteBatch.Draw(rm.bottleTexture, new Rectangle((int)rm.WorldToScreen(this.Rect.X + this.Rect.Width, this.Rect.Y).X, (int)rm.WorldToScreen(this.Rect.X + this.Rect.Width, this.Rect.Y).Y, 24, 38), Color.White);
+                else if (pState == PlayerState.FaceLeft || pState == PlayerState.WalkLeft)
+                    spriteBatch.Draw(rm.bottleTexture, new Rectangle((int)rm.WorldToScreen(this.Rect.X - 24, this.Rect.Y).X, (int)rm.WorldToScreen(this.Rect.X - 24, this.Rect.Y).Y, 24, 38), Color.White);
+                if (pState == PlayerState.Falling || pState == PlayerState.Jumping || pState == PlayerState.Dead)
+                    holding = false;
+            }
             switch (pState)
             {
                 case PlayerState.WalkRight:
                     {
                         if (!colliderArray[1])
-                        spriteBatch.Draw(spriteSheet,
-                                        spriteRect,
-                                        new Rectangle(
-                                            frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
-                                            MARIO_RECT_Y_OFFSET,
-                                            MARIO_RECT_WIDTH,
-                                            MARIO_RECT_HEIGHT),
-                                        color,
-                                        0,
-                                        Vector2.Zero,
-                                        SpriteEffects.None,
-                                        0);
+                            spriteBatch.Draw(spriteSheet,
+                                            spriteRect,
+                                            new Rectangle(
+                                                frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
+                                                MARIO_RECT_Y_OFFSET,
+                                                MARIO_RECT_WIDTH,
+                                                MARIO_RECT_HEIGHT),
+                                            color,
+                                            0,
+                                            Vector2.Zero,
+                                            SpriteEffects.None,
+                                            0);
                         else
                             spriteBatch.Draw(spriteSheet,
                                         spriteRect,
@@ -529,29 +525,29 @@ namespace UnanimousOverkillGame
                     {
                         if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
                             spriteBatch.Draw(spriteSheet,
-                                spriteRect, 
+                                spriteRect,
                                 new Rectangle(
-                                    (1 * MARIO_RECT_WIDTH), 
-                                    0, 
-                                    MARIO_RECT_WIDTH, 
+                                    (1 * MARIO_RECT_WIDTH),
+                                    0,
+                                    MARIO_RECT_WIDTH,
                                     MARIO_RECT_HEIGHT),
-                                    color, 
-                                    0, 
-                                    Vector2.Zero, 
-                                    SpriteEffects.FlipHorizontally, 
+                                    color,
+                                    0,
+                                    Vector2.Zero,
+                                    SpriteEffects.FlipHorizontally,
                                     0);
                         else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
                             spriteBatch.Draw(spriteSheet,
-                                spriteRect, 
+                                spriteRect,
                                 new Rectangle(
-                                    (1 * MARIO_RECT_WIDTH), 
-                                    0, 
-                                    MARIO_RECT_WIDTH, 
+                                    (1 * MARIO_RECT_WIDTH),
+                                    0,
+                                    MARIO_RECT_WIDTH,
                                     MARIO_RECT_HEIGHT),
-                                    color, 
-                                    0, 
-                                    Vector2.Zero, 
-                                    SpriteEffects.None, 
+                                    color,
+                                    0,
+                                    Vector2.Zero,
+                                    SpriteEffects.None,
                                     0);
                         break;
                     }
@@ -559,30 +555,30 @@ namespace UnanimousOverkillGame
                     {
                         if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
                             spriteBatch.Draw(spriteSheet,
-                                spriteRect, 
+                                spriteRect,
                                 new Rectangle(
-                                    (1 * MARIO_RECT_WIDTH), 
-                                    0, 
-                                    MARIO_RECT_WIDTH, 
+                                    (1 * MARIO_RECT_WIDTH),
+                                    0,
+                                    MARIO_RECT_WIDTH,
                                     MARIO_RECT_HEIGHT),
-                                    color, 0, 
-                                    Vector2.Zero,  
+                                    color, 0,
+                                    Vector2.Zero,
                                     SpriteEffects.
-                                    FlipHorizontally, 
+                                    FlipHorizontally,
                                     0);
                         else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
                             spriteBatch.Draw(
                                 spriteSheet,
-                                spriteRect, 
+                                spriteRect,
                                 new Rectangle(
-                                    (1 * MARIO_RECT_WIDTH), 
-                                    0, 
-                                    MARIO_RECT_WIDTH, 
+                                    (1 * MARIO_RECT_WIDTH),
+                                    0,
+                                    MARIO_RECT_WIDTH,
                                     MARIO_RECT_HEIGHT),
-                                    color, 
-                                    0, 
-                                    Vector2.Zero, 
-                                    SpriteEffects.None, 
+                                    color,
+                                    0,
+                                    Vector2.Zero,
+                                    SpriteEffects.None,
                                     0);
                         break;
                     }

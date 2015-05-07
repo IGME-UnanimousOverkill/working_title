@@ -19,9 +19,9 @@ namespace UnanimousOverkillGame
         Texture2D boundsTexture;
         Rectangle tileRectangle;
         static Random rand = new Random();
-        Color color;
+        public Color color;
 
-        bool falling = false;
+        public bool falling = false;
         float fallTime = 1f;
         float curTime = 0f;
 

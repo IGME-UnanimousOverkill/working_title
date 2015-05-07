@@ -43,6 +43,7 @@ namespace UnanimousOverkillGame
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteBatch uiSpriteBatch;
         RoomManager roomManager;
         CollisionManager collisionManager;
         KeyboardState kbState;
@@ -58,6 +59,8 @@ namespace UnanimousOverkillGame
         int prevKeyCount; //makes sure pause menu isn't skipped
 
         Boolean enableShaders = false;
+
+        bool Fullscreen = true;
 
         //player
         static Player player;
@@ -81,12 +84,15 @@ namespace UnanimousOverkillGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            var screen = System.Windows.Forms.Screen.PrimaryScreen;
-            Window.IsBorderless = true;
-            Window.Position = new Point(screen.Bounds.X, screen.Bounds.Y);
-            graphics.PreferredBackBufferWidth = screen.Bounds.Width;
-            graphics.PreferredBackBufferHeight = screen.Bounds.Height;
-            graphics.ApplyChanges();
+            if (Fullscreen)
+            {
+                var screen = System.Windows.Forms.Screen.PrimaryScreen;
+                Window.IsBorderless = true;
+                Window.Position = new Point(screen.Bounds.X, screen.Bounds.Y);
+                graphics.PreferredBackBufferWidth = screen.Bounds.Width;
+                graphics.PreferredBackBufferHeight = screen.Bounds.Height;
+                graphics.ApplyChanges();
+            }
 
             gameState = GameState.Menu;
             prevKeyCount = 0;
@@ -103,6 +109,7 @@ namespace UnanimousOverkillGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            uiSpriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
             //loads the texture for the sprite sheet for the player, just using the one from the practice exercise, cause it was easier
@@ -117,7 +124,7 @@ namespace UnanimousOverkillGame
             //Loads the spriteFont
             font = Content.Load<SpriteFont>("TimesNewRoman12");
 
-            roomManager = new RoomManager(player, collisionManager, font, Content);
+            roomManager = new RoomManager(player, collisionManager, font, Content, GraphicsDevice);
             roomManager.LoadContent(GraphicsDevice);
             player.RoomManagerGet(roomManager);
             if(enableShaders)
@@ -195,6 +202,10 @@ namespace UnanimousOverkillGame
                             gameState = GameState.Paused;
                         }
                     }
+                    if (Keyboard.GetState().IsKeyDown(Keys.P))
+                    {
+                        player.Health = 0;
+                    }
                     health.X =(int)( roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2),(player.Y - 20)).X);
                     health.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).Y);
                     healthBox.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).X);
@@ -202,7 +213,7 @@ namespace UnanimousOverkillGame
                     //calls the player update method to get the logic for movement
                     player.Update(gameTime);
                     roomManager.Update(gameTime);
-                    double value = ((double)(player.Health) / 100.0);
+                    double value = ((double)(player.Health) / player.maxHealth);
                     health.Width = (int)(value * healthBox.Width);
                     intoxBox.Width = (int)(player.Intox * 1.5);
 
@@ -212,7 +223,11 @@ namespace UnanimousOverkillGame
                     }
                     if(player.PState == PlayerState.Dead)
                     {
-                        gameState = GameState.Menu;
+                        player.deathCounter++;
+                        if(player.deathCounter <= 5)
+                            roomManager.RespawnRoom();
+                        else
+                            gameState = GameState.Menu;
                     }
 
                     kbState = Keyboard.GetState();
@@ -279,13 +294,14 @@ namespace UnanimousOverkillGame
             {
                 case GameState.Menu:
                     spriteBatch.Begin();
+                    uiSpriteBatch.Begin();
                     spriteBatch.DrawString(font, "MENU", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to start", new Vector2(250, 170), Color.White);
                     break;
                 case GameState.Game:
 
                      spriteBatch.Begin(0, null, null, null, null, lightingEffect);
-
+                     uiSpriteBatch.Begin();
                      if (enableShaders)
                      {
                          // Set params
@@ -299,29 +315,36 @@ namespace UnanimousOverkillGame
 
                     kbState = Keyboard.GetState();
                     // Hold down space to should tile physics boundaries.
-                    roomManager.BoundsDraw(spriteBatch);
+                    //roomManager.BoundsDraw(uiSpriteBatch);
 
-                    spriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
+                    uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
-                    spriteBatch.Draw(roomManager.spikesTexture, healthBox, Color.Red);
-                    spriteBatch.Draw(roomManager.spikesTexture,healthBox,new Rectangle(0,0,roomManager.spikesTexture.Width,roomManager.spikesTexture.Height),Color.Red,0,Vector2.Zero,SpriteEffects.FlipVertically,0);
-                    spriteBatch.Draw(roomManager.spikesTexture, healthBox, new Rectangle(0, 0, roomManager.spikesTexture.Width, roomManager.spikesTexture.Height), Color.Red, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                    uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.depth
+                        , new Vector2(300, 230), Color.White);
+                    uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
+                        , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
+                    uiSpriteBatch.DrawString(font, "Deaths:" + player.deathCounter
+                        , new Vector2(GraphicsDevice.Viewport.Width - 200, 15), Color.Red);
+                    uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, Color.Red);
+                    uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, new Rectangle(0, 0, roomManager.spikesTexture.Width, roomManager.spikesTexture.Height), Color.Red, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+                    uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, new Rectangle(0, 0, roomManager.spikesTexture.Width, roomManager.spikesTexture.Height), Color.Red, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
 
-                    spriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
-                    spriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
+                    uiSpriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
+                    uiSpriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
+                    uiSpriteBatch.DrawString(font, "intoxication: " + player.Intox
+                        , new Vector2(intoxBox.X-74,intoxBox.Y+2), Color.Red);
                     break;
                 case GameState.Paused:
                     spriteBatch.Begin();
                     spriteBatch.DrawString(font, "PAUSED", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to continue", new Vector2(250, 170), Color.White);
                     spriteBatch.DrawString(font, "Press ESC to go to Menu", new Vector2(250, 210), Color.White);
-                    player.Health = 25;                    
                     roomManager.BoundsDraw(spriteBatch);
                     break;
             }
 
             spriteBatch.End();
-
+            uiSpriteBatch.End();
             base.Draw(gameTime);
         }
     }
