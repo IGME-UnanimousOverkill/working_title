@@ -19,6 +19,7 @@ namespace UnanimousOverkillGame
         private Rectangle originalRect;
         private PhysicsEntity parent;
 
+        private Point parentCentrer;
 
         public Rectangle OriginalRect { get { return originalRect; } }
         public bool HasParent { get { return parent != null; } }
@@ -28,28 +29,46 @@ namespace UnanimousOverkillGame
 
         public override void OnCollide(PhysicsEntity other)
         {
-            if((HasParent && !(parent is EffectBox)) || !HasParent )
-                other.AddForce(accelerationChange);
+            other.AddForce(accelerationChange);
             if (HasParent)
             {
                 parent.OnCollide(other);
-
-                if (other.X < rectangle.X + rectangle.Width && other.X > rectangle.X)
+                if (other.X >= parentCentrer.X && other.X < rectangle.Width + X && other.X > X)
                 {
-                    if (GetOriginalBoxRect(this).X >= rectangle.X)
-                    {
-                        if (GetOriginalBoxRect(this).X <= other.X)
-                        {
-
-                        }
-                        else
-                        {
-                            rectangle.Width = other.X - rectangle.X;
-                        }
-                    }
+                    rectangle.Width = X + (other.X - X);
+                }
+                else if (other.X >= parentCentrer.X && other.X + other.Rect.Width > X && other.X < X)
+                {
+                    rectangle.Width = 0;
+                }
+                else if (other.X + other.Rect.Width <= parentCentrer.X && other.X + other.Rect.Width < rectangle.Width + X && other.X + other.Rect.Width > X)
+                {
+                    rectangle.Width = other.X + other.Rect.Width + ((X+rectangle.Width) - (other.X + other.Rect.Width));
+                    rectangle.X = other.X + other.Rect.Width;
+                }
+                else if (other.X + other.Rect.Width <= parentCentrer.X && other.X + other.Rect.Width > X + rectangle.Width && other.X > X)
+                {
+                    rectangle.Width = 0;
                 }
 
-                
+                if (other.Y >= parentCentrer.Y && other.Y < rectangle.Height + Y && other.Y > Y)
+                {
+                    rectangle.Height = Y + (other.Y - Y);
+                }
+                else if (other.Y >= parentCentrer.Y && other.Y + other.Rect.Height > Y && other.Y < Y)
+                {
+                    rectangle.Height = 0;
+                }
+                else if (other.Y + other.Rect.Height <= parentCentrer.Y && other.Y + other.Rect.Height < rectangle.Height + Y && other.Y + other.Rect.Height > Y)
+                {
+                    rectangle.Height = other.Y + other.Rect.Height + ((Y + rectangle.Height) - (other.Y + other.Rect.Height));
+                    rectangle.Y = other.Y + other.Rect.Height;
+                }
+                else if (other.Y + other.Rect.Height <= parentCentrer.Y && other.Y + other.Rect.Height > Y + rectangle.Height && other.Y > Y)
+                {
+                    rectangle.Height = 0;
+                }
+
             }
         }
 
@@ -88,7 +107,7 @@ namespace UnanimousOverkillGame
         {
             base.Draw(device, spriteBatch, x, y);
             ResetSize();
-            
+
         }
 
         private void AdjustSize(PhysicsEntity other)
@@ -108,18 +127,20 @@ namespace UnanimousOverkillGame
         }
 
 
-        public EffectBox(int x, int y, int width, int height,Vector2 accelerationChange, Texture2D texture = null) : base(x,y,width,height,texture,null,false)
+        public EffectBox(int x, int y, int width, int height, Vector2 accelerationChange, Texture2D texture = null)
+            : base(x, y, width, height, texture, null, false)
         {
             this.accelerationChange = accelerationChange;
             parent = null;
             originalRect = new Rectangle(x, y, width, height);
         }
 
-        public EffectBox(int x, int y, int width, int height, Vector2 accelerationChange,PhysicsEntity parent, Texture2D texture = null)
+        public EffectBox(int x, int y, int width, int height, Vector2 accelerationChange, PhysicsEntity parent, Texture2D texture = null)
             : base(x, y, width, height, texture, null, false)
         {
             this.accelerationChange = accelerationChange;
             this.parent = parent;
+            parentCentrer = new Point(parent.X + parent.Rect.Width / 2, parent.Y + parent.Rect.Height / 2);
             originalRect = new Rectangle(x, y, width, height);
         }
 
