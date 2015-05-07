@@ -26,7 +26,11 @@ namespace UnanimousOverkillGame
         protected int prevX;
         protected int prevY;
 
+        private bool positionLocked;
+
         protected bool isCollidable;
+
+        public bool PositionLocked { get { return positionLocked; } set { positionLocked = value; } }
 
         //Properties
 
@@ -35,12 +39,12 @@ namespace UnanimousOverkillGame
         public int X
         { 
             get { return rectangle.X; }
-            set { prevX = rectangle.X; rectangle.X = value; onPositionChange(); }
+            set { if (!positionLocked) { prevX = rectangle.X; rectangle.X = value; onPositionChange(); } }
         }
         public int Y
         {
             get { return rectangle.Y; }
-            set { prevY = rectangle.Y; rectangle.Y = value; onPositionChange(); }
+            set { if (!positionLocked) { prevY = rectangle.Y; rectangle.Y = value; onPositionChange(); } }
         }
         public Rectangle Rect { get { return rectangle; } }
         public Texture2D Texture

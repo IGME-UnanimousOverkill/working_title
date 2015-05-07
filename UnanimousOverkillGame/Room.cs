@@ -211,8 +211,10 @@ namespace UnanimousOverkillGame
                             int tileNum = rand.Next(7);
                             Texture2D normal = manager.content.Load<Texture2D>("Normals/frontNormals/FrontNormalMap_0" + (tileNum + 1) + ".png");
                             ForegroundTile tile = new ForegroundTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, normal, tileNum);
+                            tile.PositionLocked = true;
                             if (Game1.RumbleMode)
                             {
+                                tile.PositionLocked = false;
                                 int percent = rand.Next(100);
                                 if (percent > 100 - depth)
                                 {
@@ -330,6 +332,14 @@ namespace UnanimousOverkillGame
                             colliders.Add(button);
                             colliders.Add(button.Box);
                             enemies.Add(button.Box);
+                            break;
+
+                        case ('T'):
+                            Button button1 = new Button(x * TILE_WIDTH + TILE_WIDTH / 3, y * TILE_HEIGHT + TILE_HEIGHT / 3, TILE_WIDTH / 3, TILE_HEIGHT / 3, boundsTexture, roomFont, null,true);
+                            levelObjects[x, y] = button1;
+                            colliders.Add(button1);
+                            colliders.Add(button1.Box);
+                            enemies.Add(button1.Box);
                             break;
 
                         case ('B'):

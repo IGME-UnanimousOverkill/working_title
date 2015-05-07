@@ -22,7 +22,7 @@ namespace UnanimousOverkillGame
         private List<PhysicsEntity> objs;
         private event Clicked click;
         private EffectBox box;
-
+        private bool isThrowButton;
         private SpriteFont font;
 
         public EffectBox Box { get { return box; } }
@@ -83,10 +83,20 @@ namespace UnanimousOverkillGame
         public override void OnCollide(PhysicsEntity other)
         {
             base.OnCollide(other);
-            if (other is Player)
+            if (!isThrowButton)
             {
-                playerInRange = true;
-                (other as Player).ButtonInRange = this;
+                if (other is Player)
+                {
+                    playerInRange = true;
+                    (other as Player).ButtonInRange = this;
+                }
+            }
+            else
+            {
+                if (other is Bottle)
+                {
+                    PressButton();
+                }
             }
         }
 
@@ -101,7 +111,7 @@ namespace UnanimousOverkillGame
         {
             base.Draw(device, spriteBatch, x, y);
 
-            if (playerInRange)
+            if (playerInRange && !isThrowButton)
             {
                 spriteBatch.DrawString(font, "E", new Vector2(x/* + this.Rect.Width / 2 - 5*/, y/* - 10*/), Color.White);
                 playerInRange = false;
@@ -110,18 +120,24 @@ namespace UnanimousOverkillGame
 
         }
 
-        public Button(int x, int y, int width, int height, Texture2D texture, SpriteFont font, params IsClickableObject[] objs) :
+        public Button(int x, int y, int width, int height, Texture2D texture, SpriteFont font, IsClickableObject[] objs, bool isThrowButton = false) :
             base(x, y, width, height, texture, null)
         {
             this.font = font;
-
+            this.isThrowButton = isThrowButton;
             if (objs != null)
                 foreach (IsClickableObject obj in objs)
                 {
                     click += obj.onClick;
                 }
-
-            box = new EffectBox(x - BUTTON_RANGE, y - BUTTON_RANGE, (2 * BUTTON_RANGE) + width, (2 * BUTTON_RANGE) + height, Vector2.Zero, this);
+            if (!isThrowButton)
+            {
+                box = new EffectBox(x - BUTTON_RANGE, y - BUTTON_RANGE, (2 * BUTTON_RANGE) + width, (2 * BUTTON_RANGE) + height, Vector2.Zero, this);
+            }
+            else
+            {
+                box = new EffectBox(x - 5, y - 5, width + 10, height + 10,Vector2.Zero,this);
+            }
         }
     }
 }

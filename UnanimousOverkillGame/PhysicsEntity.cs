@@ -31,7 +31,11 @@ namespace UnanimousOverkillGame
         private float maxXVelocity = 5;
         private float maxYVelocity = 1000;
 
+
+
         public bool drag = true;
+
+
         public float MaxXV { get { return maxXVelocity; } set { maxXVelocity = value; } }
 
         public bool activateGravity;

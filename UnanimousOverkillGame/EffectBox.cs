@@ -33,6 +33,15 @@ namespace UnanimousOverkillGame
             if (HasParent)
             {
                 parent.OnCollide(other);
+                /* having problems
+                if (other.Rect.Contains(parent.Rect))
+                {
+                    X = parentCentrer.X;
+                    Y = parentCentrer.Y;
+                    rectangle.Width = 0;
+                    rectangle.Height = 0;
+                    return;
+                }
                 if (other.X >= parentCentrer.X && other.X < rectangle.Width + X && other.X > X)
                 {
                     rectangle.Width = X + (other.X - X);
@@ -59,6 +68,7 @@ namespace UnanimousOverkillGame
                 {
                     rectangle.Height = 0;
                 }
+                     
                 else if (other.Y + other.Rect.Height <= parentCentrer.Y && other.Y + other.Rect.Height < rectangle.Height + Y && other.Y + other.Rect.Height > Y)
                 {
                     rectangle.Height = other.Y + other.Rect.Height + ((Y + rectangle.Height) - (other.Y + other.Rect.Height));
@@ -68,7 +78,7 @@ namespace UnanimousOverkillGame
                 {
                     rectangle.Height = 0;
                 }
-
+                */
             }
         }
 
@@ -140,7 +150,7 @@ namespace UnanimousOverkillGame
         {
             this.accelerationChange = accelerationChange;
             this.parent = parent;
-            parentCentrer = new Point(parent.X + parent.Rect.Width / 2, parent.Y + parent.Rect.Height / 2);
+            parentCentrer = parent.Rect.Center;
             originalRect = new Rectangle(x, y, width, height);
         }
 
