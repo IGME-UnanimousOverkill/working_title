@@ -15,7 +15,7 @@ namespace UnanimousOverkillGame
 {
     class ForegroundTile : Enemy
     {
-        Rectangle isoRectangle;
+        public Rectangle isoRectangle;
         Texture2D boundsTexture;
         Rectangle tileRectangle;
         static Random rand = new Random();

@@ -167,8 +167,6 @@ namespace UnanimousOverkillGame
         public void Draw(GraphicsDevice device, SpriteBatch batch)
         {
             current.Draw(device, batch);
-            Vector2 drawLoc = WorldToScreen(player.X, player.Y);
-            player.Draw(device, batch, (int)drawLoc.X, (int)drawLoc.Y);
         }
 
         /// <summary>

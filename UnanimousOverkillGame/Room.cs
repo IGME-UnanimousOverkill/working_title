@@ -39,6 +39,7 @@ namespace UnanimousOverkillGame
         private List<BackgroundTile> background;
         private List<PhysicsEntity> colliders;
         private List<PhysicsEntity> enemies;
+        private List<GameObject> drawable;
         private List<Door> doors;
         private Room previousRoom;
         private List<Room> nextRooms;
@@ -78,6 +79,7 @@ namespace UnanimousOverkillGame
             background = new List<BackgroundTile>();
             colliders = new List<PhysicsEntity>();
             tempClickables = new List<IsClickableObject>();
+            drawable = new List<GameObject>();
             enemies = new List<PhysicsEntity>();
             nextRooms = new List<Room>();
             doors = new List<Door>();
@@ -94,6 +96,7 @@ namespace UnanimousOverkillGame
             background = new List<BackgroundTile>();
             colliders = new List<PhysicsEntity>();
             tempClickables = new List<IsClickableObject>();
+            drawable = new List<GameObject>();
             enemies = new List<PhysicsEntity>();
             nextRooms = new List<Room>();
             doors = new List<Door>();
@@ -201,6 +204,7 @@ namespace UnanimousOverkillGame
             }
             foreground.Clear();
             int exitNum = 0;
+            drawable.Add(player);
             for (int y = level.GetLength(1) - 1; y >= 0; y--)
             {
                 for (int x = 0; x < level.GetLength(0); x++)
@@ -228,6 +232,7 @@ namespace UnanimousOverkillGame
                             foreground.Add(tile);
                             colliders.Add(tile);
                             levelObjects[x, y] = tile;
+                            drawable.Add(tile);
                             break;
                         // Cases for entrances and exits.
                         case ('>'):
@@ -275,6 +280,7 @@ namespace UnanimousOverkillGame
                             colliders.Add(fan);
                             colliders.AddRange(fan.getEffects());
                             enemies.AddRange(fan.getEffects());
+                            drawable.Add(fan);
                             levelObjects[x, y] = fan;
                             break;
                         case ('┤'):
@@ -282,6 +288,7 @@ namespace UnanimousOverkillGame
                             colliders.Add(fan1);
                             colliders.AddRange(fan1.getEffects());
                             enemies.AddRange(fan1.getEffects());
+                            drawable.Add(fan1);
                             levelObjects[x, y] = fan1;
                             break;
 
@@ -290,6 +297,7 @@ namespace UnanimousOverkillGame
                             colliders.Add(fan2);
                             colliders.AddRange(fan2.getEffects());
                             enemies.AddRange(fan2.getEffects());
+                            drawable.Add(fan2);
                             levelObjects[x, y] = fan2;
                             break;
 
@@ -298,6 +306,7 @@ namespace UnanimousOverkillGame
                             colliders.Add(fan3);
                             colliders.AddRange(fan3.getEffects());
                             enemies.AddRange(fan3.getEffects());
+                            drawable.Add(fan3);
                             levelObjects[x, y] = fan3;
                             break;
 
@@ -305,6 +314,7 @@ namespace UnanimousOverkillGame
                             HoppingEnemy hopEnemy = new HoppingEnemy(x * TILE_WIDTH, y * TILE_HEIGHT, 0.6f, hopEnemyTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
                             colliders.Add(hopEnemy);
                             enemies.Add(hopEnemy);
+                            drawable.Add(hopEnemy);
                             levelObjects[x, y] = hopEnemy;
                             break;
 
@@ -312,6 +322,7 @@ namespace UnanimousOverkillGame
                             Ooze ooze = new Ooze(x * TILE_WIDTH, y * TILE_HEIGHT, .50f, oozeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
                             colliders.Add(ooze);
                             enemies.Add(ooze);
+                            drawable.Add(ooze);
                             levelObjects[x, y] = ooze;
                             break;
 
@@ -320,6 +331,7 @@ namespace UnanimousOverkillGame
                             Texture2D phaseNormal = manager.content.Load<Texture2D>("Normals/frontNormals/FrontNormalMap_0" + (phaseTileNum + 1) + ".png");
                             PhaseBlock block = new PhaseBlock(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), tileSet, boundsTexture, phaseNormal, phaseTileNum, true);
                             colliders.Add(block);
+                            drawable.Add(block);
                             levelObjects[x, y] = block;
                             break;
 
@@ -330,11 +342,13 @@ namespace UnanimousOverkillGame
                             colliders.Add(button);
                             colliders.Add(button.Box);
                             enemies.Add(button.Box);
+                            drawable.Add(button);
                             break;
 
                         case ('B'):
                             Bottle bottle = new Bottle(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, bottleTexture, player, manager);
                             colliders.Add(bottle);
+                            drawable.Add(bottle);
                             levelObjects[x, y] = bottle;
                             break;
 
@@ -342,6 +356,7 @@ namespace UnanimousOverkillGame
                             Spikes spikes = new Spikes(x * TILE_WIDTH, y * TILE_HEIGHT, spikeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
                             colliders.Add(spikes);
                             enemies.Add(spikes);
+                            drawable.Add(spikes);
                             levelObjects[x, y] = spikes;
                             break;
                     }
@@ -362,6 +377,7 @@ namespace UnanimousOverkillGame
         public void RespawnRoom()
         {
             colliders.Clear();
+            drawable.Clear();
             enemies.Clear();
             foreground.Clear();
             doors.Clear();
@@ -438,31 +454,21 @@ namespace UnanimousOverkillGame
                     tile.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
-
-            if (foreground.Count > 0)
+            if (doors.Count > 0)
             {
-                foreach (ForegroundTile tile in foreground)
+                foreach (Door door in doors)
                 {
-                    Vector2 drawLocation = manager.WorldToScreen(tile.X, tile.Y);
-                    tile.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
+                    Vector2 drawLocation = manager.WorldToScreen(door.X, door.Y);
+                    door.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
 
-            if (colliders.Count > 0)
+            if (drawable.Count > 0)
             {
-                foreach (PhysicsEntity phys in colliders)
+                foreach (GameObject thing in drawable)
                 {
-                    Vector2 drawLocation = manager.WorldToScreen(phys.X, phys.Y);
-                    phys.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
-                }
-            }
-
-            if (enemies.Count > 0)
-            {
-                foreach (PhysicsEntity enemy in enemies)
-                {
-                    Vector2 drawLocation = manager.WorldToScreen(enemy.X, enemy.Y);
-                    enemy.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
+                    Vector2 drawLocation = manager.WorldToScreen(thing.X, thing.Y);
+                    thing.Draw(device, batch, (int)drawLocation.X, (int)drawLocation.Y);
                 }
             }
         }
