@@ -198,7 +198,7 @@ namespace UnanimousOverkillGame
             }
 
             string[] files = Directory.GetFiles(ROOM_DIR);
-            room.LoadRoom(files[1/*rand.Next(files.Length)*/]);
+            room.LoadRoom(files[rand.Next(files.Length)]);
 
             if (current != null && current.depth >= 10)
             {

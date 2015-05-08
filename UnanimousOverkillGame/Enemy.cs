@@ -45,6 +45,7 @@ namespace UnanimousOverkillGame
         {
             RoomManager.GetRoomManager.Current.Enemies.Remove(this);
             RoomManager.GetRoomManager.Current.Colliders.Remove(this);
+            RoomManager.GetRoomManager.Current.Drawable.Remove(this);
         }
     }
 }

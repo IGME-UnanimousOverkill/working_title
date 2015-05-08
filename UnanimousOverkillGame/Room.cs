@@ -56,6 +56,7 @@ namespace UnanimousOverkillGame
         private static Random rand = new Random();
         public List<PhysicsEntity> Colliders { get { return colliders; } set { colliders= value; } }
         public List<PhysicsEntity> Enemies { get { return enemies; } set { enemies = value; } }
+        public List<GameObject> Drawable { get { return drawable; } set { drawable = value; } }
         int prevSize;
         int prevSize2;
         List<string> levelsInfo;
@@ -204,7 +205,6 @@ namespace UnanimousOverkillGame
             }
             foreground.Clear();
             int exitNum = 0;
-            drawable.Add(player);
             for (int y = level.GetLength(1) - 1; y >= 0; y--)
             {
                 for (int x = 0; x < level.GetLength(0); x++)
@@ -353,6 +353,7 @@ namespace UnanimousOverkillGame
                             colliders.Add(button1);
                             colliders.Add(button1.Box);
                             enemies.Add(button1.Box);
+                            drawable.Add(button1);
                             break;
 
                         case ('B'):
@@ -382,6 +383,7 @@ namespace UnanimousOverkillGame
             checkAdditionalInformation();
             prevSize = colliders.Count;
             prevSize2 = enemies.Count;
+            drawable.Add(player);
         }   
    
         public void RespawnRoom()

@@ -209,6 +209,7 @@ namespace UnanimousOverkillGame
                         b.drag = false;
                         rm.Current.Colliders.Add(b);
                         rm.Current.Enemies.Add(b);
+                        rm.Current.Drawable.Add(b);
                         b.activateGravity = true;
                         bottlesOnHand--;
                     }
