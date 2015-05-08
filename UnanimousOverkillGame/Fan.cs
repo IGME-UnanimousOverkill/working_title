@@ -30,16 +30,16 @@ namespace UnanimousOverkillGame
             switch (d)
             {
                 case Direction.up:
-                    effectBoxes.Add(new EffectBox(this.X, this.Y - (2 * Room.TILE_HEIGHT), Room.TILE_WIDTH, Room.TILE_HEIGHT * 3, new Vector2(0, -fanStrength)));
+                    effectBoxes.Add(new EffectBox(this.X, this.Y - (2 * Room.TILE_HEIGHT), Room.TILE_WIDTH, Room.TILE_HEIGHT * 3, new Vector2(0, -fanStrength),this));
                     break;
                 case Direction.right:
-                    effectBoxes.Add(new EffectBox(this.X, this.Y, Room.TILE_WIDTH * 3, Room.TILE_HEIGHT, new Vector2(fanStrength, 0)));
+                    effectBoxes.Add(new EffectBox(this.X, this.Y, Room.TILE_WIDTH * 3, Room.TILE_HEIGHT, new Vector2(fanStrength, 0), this));
                     break;
                 case Direction.down:
-                    effectBoxes.Add(new EffectBox(this.X, this.Y, Room.TILE_WIDTH, Room.TILE_HEIGHT * 3, new Vector2(0, fanStrength)));
+                    effectBoxes.Add(new EffectBox(this.X, this.Y, Room.TILE_WIDTH, Room.TILE_HEIGHT * 3, new Vector2(0, fanStrength), this));
                     break;
                 case Direction.left:
-                    effectBoxes.Add(new EffectBox(this.X - (2 * Room.TILE_WIDTH), this.Y, Room.TILE_WIDTH * 3, Room.TILE_HEIGHT, new Vector2(-fanStrength, 0)));
+                    effectBoxes.Add(new EffectBox(this.X - (2 * Room.TILE_WIDTH), this.Y, Room.TILE_WIDTH * 3, Room.TILE_HEIGHT, new Vector2(-fanStrength, 0), this));
                     break;
                 default:
                     break;
