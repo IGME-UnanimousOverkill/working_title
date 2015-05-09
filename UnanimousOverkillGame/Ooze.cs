@@ -27,15 +27,18 @@ namespace UnanimousOverkillGame
         GameTime gameTime;
         Vector2 enemyLoc;
         int counter;
+        int collided;
          public Ooze(int x, int y, float scale, Texture2D texture, Texture2D normal, Player p)
             : base(x, y-10, (int)(ENEMY_WIDTH * scale), (int)(ENEMY_HEIGHT * scale), texture, normal)
         {
+            collided = 0;
             player = p;
             enemyLoc = new Vector2(x, y-10);
             enemyState = EnemyState.FaceLeft;
             this.scale = scale;
             activateGravity = true;
             this.drag = false;
+            this.MaxXV = 5;
         }
         public override void OnCollide(PhysicsEntity other)
         {
@@ -66,28 +69,36 @@ namespace UnanimousOverkillGame
         }
         public override void Update(GameTime time)
         {
-
-            activateGravity = true;
+            this.drag = false;
+            activateGravity = false;
+            if (colliderArray[2] == false)
+                activateGravity = true;
             this.gameTime = time;
             //Move();
             if (colliderArray[3] || colliderArray[1])
             {
-                velocity = new Vector2((enemyState == EnemyState.FaceLeft) ? 2f : -2f, 0);
-                enemyState = (enemyState == EnemyState.FaceLeft) ? EnemyState.FaceRight : EnemyState.FaceLeft;
+                collided++;
+                if (collided >= 16)
+                {
+                    collided = 0;
+                    velocity = new Vector2((enemyState == EnemyState.FaceLeft) ? 2f : -2f, 0);
+                    enemyState = (enemyState == EnemyState.FaceLeft) ? EnemyState.FaceRight : EnemyState.FaceLeft;
+                }
             }
             if(velocity.X > 4)
             {
-                velocity.X = 1;
+                velocity.X = 2;
             }
-            if (velocity.X < -3)
+            if (velocity.X < -4)
             {
-                velocity.X = -1;
+                velocity.X = -2;
             }
             if(counter >60)
             {
                 drag = false;
                 Move();
                 counter = 0;
+                collided = 0;
             }
             counter++;
             Updates(time);

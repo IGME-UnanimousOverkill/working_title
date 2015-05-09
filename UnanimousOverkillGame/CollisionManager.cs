@@ -98,7 +98,8 @@ namespace UnanimousOverkillGame
                         // Whichever side is closest is the side they are colliding on.
                         if (physEntity.Rect.Intersects(gameObject.Rect))
                         {
-
+                            if ((gameObject is HoppingEnemy||gameObject is Ooze) && (physEntity is HoppingEnemy ||physEntity is Ooze))
+                                continue;
                             gameObject.OnCollide(physEntity);
                             physEntity.OnCollide(gameObject);
                            if (gameObject is Door)//stops nast problems from happening during room spawn, should  be changed in case of like locked doors or something
@@ -118,10 +119,15 @@ namespace UnanimousOverkillGame
 
                             //RIGHT
                             else if (rDistance < bDistance && rDistance < lDistance && rDistance < tDistance)
-                            { 
-                                physEntity.colliderArray[1] = true;
-                                if (physEntity.X != physEntity.PrevX && newCollision)
-                                collisions.Add(new Collision(physEntity, gameObject, CollisionSide.right)); 
+                            {
+                                if ((gameObject is Player && physEntity is Ooze) || (gameObject is Ooze && physEntity is Player))
+                                { }
+                                else
+                                {
+                                    physEntity.colliderArray[1] = true;
+                                    if (physEntity.X != physEntity.PrevX && newCollision)
+                                        collisions.Add(new Collision(physEntity, gameObject, CollisionSide.right));
+                                }
                             }
 
                             //BOTTOM
@@ -134,10 +140,15 @@ namespace UnanimousOverkillGame
 
                             //LEFT
                             else if (lDistance < bDistance && lDistance < tDistance && lDistance < rDistance)
-                            { 
-                                physEntity.colliderArray[3] = true; 
-                                if(physEntity.X != physEntity.PrevX && newCollision)
-                                collisions.Add(new Collision(physEntity, gameObject, CollisionSide.left)); 
+                            {
+                                if ((gameObject is Player && physEntity is Ooze) || (gameObject is Ooze && physEntity is Player))
+                                { }
+                                else
+                                {
+                                    physEntity.colliderArray[3] = true;
+                                    if (physEntity.X != physEntity.PrevX && newCollision)
+                                        collisions.Add(new Collision(physEntity, gameObject, CollisionSide.left)); 
+                                }   
                             }
                         }
                     }

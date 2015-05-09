@@ -207,6 +207,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>FOR %25%25f in ("$(ProjectDir)Content\*.fx") DO "$(ProjectDir)FX_Convert.bat" "%25%25f"</PreBuildEvent>

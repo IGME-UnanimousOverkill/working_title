@@ -202,10 +202,12 @@ namespace UnanimousOverkillGame
                             gameState = GameState.Paused;
                         }
                     }
-                    if (Keyboard.GetState().IsKeyDown(Keys.P))
+                    kbState = Keyboard.GetState();
+                    if (kbState.IsKeyDown(Keys.P) && !(prevkbState.IsKeyDown(Keys.P)))
                     {
                         player.Health = 0;
                     }
+                    prevkbState = kbState;
                     health.X =(int)( roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2),(player.Y - 20)).X);
                     health.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).Y);
                     healthBox.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).X);

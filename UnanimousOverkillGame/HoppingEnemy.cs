@@ -16,34 +16,32 @@ enum EnemyState
     FaceRight,
     Jumping
 }
-
+//worked on by: Gavin Keirstead
 namespace UnanimousOverkillGame
 {
     class HoppingEnemy : Enemy
     {
-        private const double timeBetweenHops = 1.5;
-        private EnemyState enemyState;
-        private Player player;
-        private const int hopDistanceAggro = 40;
-        private const int hopDistnacePassive = 20;
+        private const double timeBetweenHops = 1.5;//the time between each hop
+        private EnemyState enemyState;//holds the state in which the enemy is i.e. which way it is facing
+        private Player player;//reference to the player
+        private const int hopDistanceAggro = 40;//the distance it will hop when targeting the player
+        private const int hopDistnacePassive = 20;//the distance it will hop when not targeting the player
         Random rand = new Random();
 
-        private const int ENEMY_WIDTH = 114;
-        private const int ENEMY_HEIGHT = 88;
-        private float scale;
+        private const int ENEMY_WIDTH = 114;//holds the width of the enemy
+        private const int ENEMY_HEIGHT = 88;//holds the height of the enemy
+        private float scale;//the scale value for the enemy
 
-        bool jumped;
+        bool jumped;//whether the enemy has jumped
         GameTime gameTime;
-        double lastAttackTime;
-        int lastAttackTime2;
+        double lastAttackTime;//the time it last attacked
 
+        int jumpcount;//how many times it has jumped in the current direction
+        public double distanceToPlayer;//the x distance to the player
+        int count;//used to determine when to possibly change directions 
 
-        int jumpcount;
-        public double distanceToPlayer;
-        int count;
-
-        Vector2 enemyLoc;
-        public bool targetingPlayer;
+        Vector2 enemyLoc;//location of the enemy
+        public bool targetingPlayer;//whether the enemy is targeting the player or not
         public HoppingEnemy(int x, int y, float scale, Texture2D texture, Texture2D normal, Player p)
             : base(x, y, (int)(ENEMY_WIDTH * scale), (int)(ENEMY_HEIGHT * scale), texture, normal)
         {
@@ -63,16 +61,17 @@ namespace UnanimousOverkillGame
             if (other is Player)
             {
                 if (player.Y + player.Rect.Height == Y + rectangle.Height)
-                    X = (player.X + player.Rect.Width <= X + 3) ? player.X + player.Rect.Width : player.X - rectangle.Width;
-                if (gameTime.TotalGameTime.TotalSeconds - lastAttackTime > 1.5)
+                    X = (player.X  <= X) ? player.X + player.Rect.Width : player.X - rectangle.Width;
+                if (gameTime.TotalGameTime.TotalSeconds - lastAttackTime > 1.5)//if it has been 1.5 seconds since the last attack, attack
                 {
-
                     AttackPlayer();
                     lastAttackTime = gameTime.TotalGameTime.TotalSeconds;
                 }
             }
             if (other is Enemy)
-            { }
+            { 
+
+            }
         }
         public override void Update(GameTime gameTime)
         {
@@ -145,7 +144,6 @@ namespace UnanimousOverkillGame
 
             Updates(gameTime);
             count++;
-            lastAttackTime2++;
         }
 
         public void AttackPlayer()
