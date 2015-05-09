@@ -58,7 +58,7 @@ namespace UnanimousOverkillGame
         Keys prevKey;
         int prevKeyCount; //makes sure pause menu isn't skipped
 
-        Boolean enableShaders = false;
+        Boolean enableShaders = true;
 
         bool Fullscreen = true;
 
@@ -116,7 +116,7 @@ namespace UnanimousOverkillGame
             System.IO.Stream imageStream = TitleContainer.OpenStream("Content/player_spritesheet.png");
             Texture2D spriteSheet = Texture2D.FromStream(GraphicsDevice, imageStream);
             player = new Player(100, 228, 34, 55, 64, 70, spriteSheet, Content.Load<Texture2D>("Normals/BlankNormal.png"));
-
+            player.getUISpriteBatch(uiSpriteBatch);
             imageStream.Close();
             collisionManager = new CollisionManager(player);
             player.CollisionManagerGet(collisionManager);
