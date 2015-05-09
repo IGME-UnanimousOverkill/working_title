@@ -396,6 +396,7 @@ namespace UnanimousOverkillGame
             background.Clear();
             manager.player.Health = 100;
             manager.player.bottlesOnHand /=2;
+            manager.player.Intox = 0;
 
             SpawnRoom(manager.player, previousRoom);
         }
