@@ -100,6 +100,7 @@ namespace UnanimousOverkillGame
                         {
                             if ((gameObject is HoppingEnemy||gameObject is Ooze) && (physEntity is HoppingEnemy ||physEntity is Ooze))
                                 continue;
+                            
                             gameObject.OnCollide(physEntity);
                             physEntity.OnCollide(gameObject);
                            if (gameObject is Door)//stops nast problems from happening during room spawn, should  be changed in case of like locked doors or something
@@ -107,6 +108,8 @@ namespace UnanimousOverkillGame
                             if (!gameObject.IsCollidable)
                                 continue;
                             if (gameObject == physEntity)
+                                continue;
+                            if ((gameObject is Player && physEntity is Button) || (gameObject is Button && physEntity is Player))
                                 continue;
                             //below, sets collide array and creates new collision object
                             //TOP
