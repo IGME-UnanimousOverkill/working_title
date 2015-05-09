@@ -144,24 +144,24 @@ namespace UnanimousOverkillGame
         /// Entity rises a certain height into the air.
         /// Relies on Fall method to fall.
         /// </summary>
-        public void Jump(int finishHeight)
-        {
-            if(colliderArray[0] == false && Y>finishHeight)
-            {
-                Y -= 5;
-            }
-        }
+        //public void Jump(int finishHeight)
+        //{
+        //    if(colliderArray[0] == false && Y>finishHeight)
+        //    {
+        //        Y -= 5;
+        //    }
+        //}
 
         /// <summary>
         /// obsolete
         /// Causes the entity to be affected by "gravity".
         /// </summary>
-        public void Fall()
-        {
-            if (colliderArray[2] == false)
-            {
-                Y += 5;
-            }
-        }
+        //public void Fall()
+        //{
+        //    if (colliderArray[2] == false)
+        //    {
+        //        Y += 5;
+        //    }
+        //}
     }
 }

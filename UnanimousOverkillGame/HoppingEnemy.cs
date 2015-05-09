@@ -154,7 +154,7 @@ namespace UnanimousOverkillGame
             player.Color = Color.Red;//hit indicator
         }
 
-        public void FacePlayer()
+        public void FacePlayer()//faces player
         {
             if (player.X < this.X)
             {
@@ -166,7 +166,7 @@ namespace UnanimousOverkillGame
             }
         }
 
-        public void Move()
+        public void Move()//moves in the direction the enemy is facing
         {
             if (targetingPlayer)
                 if (enemyState == EnemyState.FaceLeft)

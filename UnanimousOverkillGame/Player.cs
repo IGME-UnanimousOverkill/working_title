@@ -431,7 +431,7 @@ namespace UnanimousOverkillGame
                 if (pState == PlayerState.Falling || pState == PlayerState.Jumping || pState == PlayerState.Dead)
                     holding = false;
             }
-            if (color != Color.White)
+            if (color != Color.White)//used to make player flash when hit or picking up bottle
             {
                 switch (pState)
                 {

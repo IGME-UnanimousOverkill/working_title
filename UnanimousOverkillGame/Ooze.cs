@@ -18,16 +18,16 @@ namespace UnanimousOverkillGame
 {
     class Ooze : Enemy
     {
-        private EnemyState enemyState;
-        private Player player;
-        Random rand = new Random();
-        private const int ENEMY_WIDTH = 114;
-        private const int ENEMY_HEIGHT = 88;
-        private float scale;
-        GameTime gameTime;
-        Vector2 enemyLoc;
-        int counter;
-        int collided;
+        private EnemyState enemyState;//enemy state, not used
+        private Player player;//reference to player
+        Random rand = new Random();//random
+        private const int ENEMY_WIDTH = 114;//enemy width
+        private const int ENEMY_HEIGHT = 88;//enemy height
+        private float scale;//scale of enemy
+        GameTime gameTime;//gametime 
+        Vector2 enemyLoc;//location of enemy
+        int counter;//counter for move
+        int collided;//how many times it has collided
          public Ooze(int x, int y, float scale, Texture2D texture, Texture2D normal, Player p)
             : base(x, y-10, (int)(ENEMY_WIDTH * scale), (int)(ENEMY_HEIGHT * scale), texture, normal)
         {
@@ -42,7 +42,7 @@ namespace UnanimousOverkillGame
         }
         public override void OnCollide(PhysicsEntity other)
         {
-            if (other is Player)
+            if (other is Player)//if other is player(will only be on top or bottom) bounces player
             {
                 if(player.Y + player.Rect.Height +3<Y+5)
                 {
@@ -69,31 +69,31 @@ namespace UnanimousOverkillGame
         }
         public override void Update(GameTime time)
         {
-            this.drag = false;
-            activateGravity = false;
-            if (colliderArray[2] == false)
+            this.drag = false;//no horizontal drag
+            activateGravity = false;//no gravity
+            if (colliderArray[2] == false)//if is not colliding on ground then gravity
                 activateGravity = true;
-            this.gameTime = time;
+            this.gameTime = time;//gametime reference
             //Move();
-            if (colliderArray[3] || colliderArray[1])
+            if (colliderArray[3] || colliderArray[1])//if collided on left or right
             {
-                collided++;
-                if (collided >= 16)
+                collided++;//increase number of times collided
+                if (collided >= 16)//if collided 16 times(if in succession, 1 seconds worth of collision)
                 {
-                    collided = 0;
-                    velocity = new Vector2((enemyState == EnemyState.FaceLeft) ? 2f : -2f, 0);
-                    enemyState = (enemyState == EnemyState.FaceLeft) ? EnemyState.FaceRight : EnemyState.FaceLeft;
+                    collided = 0;//reset counter
+                    velocity = new Vector2((enemyState == EnemyState.FaceLeft) ? 2f : -2f, 0);//move a little in other direction
+                    enemyState = (enemyState == EnemyState.FaceLeft) ? EnemyState.FaceRight : EnemyState.FaceLeft;//change direction
                 }
             }
-            if(velocity.X > 4)
+            if(velocity.X > 4)//slow down
             {
                 velocity.X = 2;
             }
-            if (velocity.X < -4)
+            if (velocity.X < -4)//slow down
             {
                 velocity.X = -2;
             }
-            if(counter >60)
+            if(counter >60)//pushes ooze a little more
             {
                 drag = false;
                 Move();
@@ -103,7 +103,7 @@ namespace UnanimousOverkillGame
             counter++;
             Updates(time);
         }
-        public void Move()
+        public void Move()//adds force in direction its facing, will max out velocity
         {
             if (enemyState == EnemyState.FaceLeft)
             {
