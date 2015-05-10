@@ -52,6 +52,8 @@ namespace UnanimousOverkillGame
         Rectangle healthBox;
         Rectangle health;
         Rectangle intoxBox;
+        List<int> scores = new List<int>();
+        bool alreadyRead;
         //Handling switching between GameStates
         GameState gameState;
         Keys currentKey;
@@ -127,12 +129,42 @@ namespace UnanimousOverkillGame
             roomManager = new RoomManager(player, collisionManager, font, Content, GraphicsDevice);
             roomManager.LoadContent(GraphicsDevice);
             player.RoomManagerGet(roomManager);
-            if(enableShaders)
+            if (enableShaders)
                 lightingEffect = LoadEffect("Content/Test.mgfx");
             health = new Rectangle(player.X - (player.Rect.Width + 20 - player.Rect.Width) / 2, player.Y - 30, player.Rect.Width + 20, 5);
             healthBox = health;
 
 
+
+            System.IO.StreamReader input = null;
+            try
+            {
+                input = new System.IO.StreamReader("Scores.txt");
+                string line = null;
+                while ((line = input.ReadLine()) != null && alreadyRead == false)
+                {
+                    scores.Add(Int32.Parse(line));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                input.Close();
+            }
+
+
+            //string line;
+            //// Read the file and display it line by line.
+            //System.IO.StreamReader file = new System.IO.StreamReader("Scores.txt");
+            //while ((line = file.ReadLine()) != null && alreadyRead ==false)
+            //{
+            //    scores.Add(Int32.Parse(line));
+            //}
+            alreadyRead = true;
+            //file.Close();
         }
 
         private Effect LoadEffect(String file)
@@ -186,6 +218,25 @@ namespace UnanimousOverkillGame
                         currentKey = Keys.Escape;
                         if (prevKey != currentKey)
                         {
+                            System.IO.StreamWriter output = null;
+                            try
+                            {
+                                output = new System.IO.StreamWriter("Scores.txt");
+                                output.AutoFlush = true;
+                                foreach (int i in scores)
+                                {
+                                    output.WriteLine(i);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+                            finally
+                            {
+                                output.Close();
+                            }
+
                             Exit();
                         }
                     }
@@ -208,7 +259,7 @@ namespace UnanimousOverkillGame
                         player.Health = 0;
                     }
                     prevkbState = kbState;
-                    health.X =(int)( roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2),(player.Y - 20)).X);
+                    health.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).X);
                     health.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).Y);
                     healthBox.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).X);
                     healthBox.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).Y);
@@ -219,17 +270,35 @@ namespace UnanimousOverkillGame
                     health.Width = (int)(value * healthBox.Width);
                     intoxBox.Width = (int)(player.Intox * 1.5);
 
-                    if(player.Y > 1500)
+                    if (player.Y > 1500)
                     {
                         player.PState = PlayerState.Dead;
                     }
-                    if(player.PState == PlayerState.Dead)
+                    if (player.PState == PlayerState.Dead)
                     {
                         player.deathCounter++;
-                        if(player.deathCounter <= 5)
+                        if (player.deathCounter <= 5)
                             roomManager.RespawnRoom();
                         else
+                        {
                             gameState = GameState.Menu;
+
+                            int depth = roomManager.Current.depth;
+                            int index = scores.Count;
+                            for (int i = scores.Count-1; i >=0; i--)
+                            {
+                                if (scores[i] < depth)
+                                {
+                                    index = i;
+                                }
+                            }
+                            scores.Insert(index, depth);
+                            if (scores.Count > 3)
+                            {
+                                scores.Remove(3);
+                            }
+
+                        }
                     }
 
                     kbState = Keyboard.GetState();
@@ -291,7 +360,7 @@ namespace UnanimousOverkillGame
 
             GraphicsDevice.Clear(Color.Black);
 
-            
+
             switch (gameState)
             {
                 case GameState.Menu:
@@ -299,20 +368,42 @@ namespace UnanimousOverkillGame
                     uiSpriteBatch.Begin();
                     spriteBatch.DrawString(font, "MENU", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to start", new Vector2(250, 170), Color.White);
+                    try
+                    {
+                        uiSpriteBatch.DrawString(font, "High Scores:  \n1:  " + scores[0]
+                            , new Vector2(GraphicsDevice.Viewport.Width - 400, 230), Color.Yellow);
+                    }
+                    catch (Exception e)
+                    { }
+                    try
+                    {
+                        uiSpriteBatch.DrawString(font, "2:  " + scores[1]
+                            , new Vector2(GraphicsDevice.Viewport.Width - 400, 270), Color.Yellow);
+                    }
+                    catch (Exception e)
+                    { }
+                    try
+                    {
+                        uiSpriteBatch.DrawString(font, "3:  " + scores[2]
+                            , new Vector2(GraphicsDevice.Viewport.Width - 400, 290), Color.Yellow);
+                    }
+                    catch (Exception e)
+                    { }
+
                     break;
                 case GameState.Game:
 
-                     spriteBatch.Begin(0, null, null, null, null, lightingEffect);
-                     uiSpriteBatch.Begin();
-                     if (enableShaders)
-                     {
-                         // Set params
-                         EffectParameter lightPos = lightingEffect.Parameters["lightPos"];
-                         EffectParameter lightColor = lightingEffect.Parameters["lightColor"];
+                    spriteBatch.Begin(0, null, null, null, null, lightingEffect);
+                    uiSpriteBatch.Begin();
+                    if (enableShaders)
+                    {
+                        // Set params
+                        EffectParameter lightPos = lightingEffect.Parameters["lightPos"];
+                        EffectParameter lightColor = lightingEffect.Parameters["lightColor"];
 
-                         lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X+140, roomManager.WorldToScreen(player.X, player.Y).Y+150, 120));
-                         lightColor.SetValue(Color.White.ToVector4());
-                     }
+                        lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X + 140, roomManager.WorldToScreen(player.X, player.Y).Y + 150, 120));
+                        lightColor.SetValue(Color.White.ToVector4());
+                    }
                     roomManager.Draw(GraphicsDevice, spriteBatch);
 
                     kbState = Keyboard.GetState();
@@ -334,7 +425,7 @@ namespace UnanimousOverkillGame
                     uiSpriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
                     uiSpriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
                     uiSpriteBatch.DrawString(font, "intoxication: " + player.Intox
-                        , new Vector2(intoxBox.X-74,intoxBox.Y+2), Color.Red);
+                        , new Vector2(intoxBox.X - 74, intoxBox.Y + 2), Color.Red);
                     break;
                 case GameState.Paused:
                     spriteBatch.Begin();
