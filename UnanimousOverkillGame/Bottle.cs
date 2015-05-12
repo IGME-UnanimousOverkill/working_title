@@ -105,6 +105,15 @@ namespace UnanimousOverkillGame
                 else
                     spriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 33, 51), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             }
+            if(y>1500)
+            {
+                drawing = false;
+                isCollidable = false;
+                rm.Current.Colliders.Remove(this);
+                rm.Current.Enemies.Remove(this);
+            }
+            
+
             if (count < -50)
                 bounce = true;
             if (count > 0)
