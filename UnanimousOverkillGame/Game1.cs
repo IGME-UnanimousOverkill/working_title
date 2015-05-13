@@ -137,22 +137,25 @@ namespace UnanimousOverkillGame
 
 
             System.IO.StreamReader input = null;
-            try
+            if (System.IO.File.Exists("Scores.txt"))
             {
-                input = new System.IO.StreamReader("Scores.txt");
-                string line = null;
-                while ((line = input.ReadLine()) != null && alreadyRead == false)
+                try
                 {
-                    scores.Add(Int32.Parse(line));
+                    input = new System.IO.StreamReader("Scores.txt");
+                    string line = null;
+                    while ((line = input.ReadLine()) != null && alreadyRead == false)
+                    {
+                        scores.Add(Int32.Parse(line));
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            finally
-            {
-                input.Close();
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    input.Close();
+                }
             }
 
 
