@@ -93,8 +93,12 @@ namespace Map_Tool
 
         private void ExportButton_Click(object sender, EventArgs e)
         {
-            (new System.IO.FileInfo("Rooms/" + nameTextBox.Text + ".txt")).Directory.Create();
-            System.IO.StreamWriter writer = new System.IO.StreamWriter("Rooms/" + nameTextBox.Text + ".txt");
+            if (folderBrowserDialog.SelectedPath == null || folderBrowserDialog.SelectedPath == "")
+            {
+                MessageBox.Show("You must select a folder to export to.", "Choose map folder.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            System.IO.StreamWriter writer = new System.IO.StreamWriter(folderBrowserDialog.SelectedPath + "/" + nameTextBox.Text + ".txt");
             for (int y = 0; y < tiles.GetLength(1); y++)
             {
                 string line = "";
@@ -159,19 +163,36 @@ namespace Map_Tool
 
         private void FillBackground(int x, int y)
         {
-            PictureBox tile = tiles[x,y];
-            if (tile.Tag as string != "*" && tile.Tag as string != "-")
+            if (x >= 0 && x < tiles.GetLength(0) && y >= 0 && y < tiles.GetLength(1))
             {
-                if (tile.Tag as string == " ")
+                PictureBox tile = tiles[x, y];
+                if (tile.Tag as string != "<")
                 {
                     tile.Tag = "-";
-                    tile.Image = background;
+                tile.Image = background;
                 }
-                FillBackground(x + 1, y);
-                FillBackground(x - 1, y);
-                FillBackground(x, y + 1);
-                FillBackground(x, y - 1);
+                if (x + 1 < tiles.GetLength(0) && tiles[x + 1, y].Tag as string == " ")
+                {
+                    FillBackground(x + 1, y);
+                }
+                if (x - 1 >= 0 && tiles[x - 1, y].Tag as string == " ")
+                {
+                    FillBackground(x - 1, y);
+                }
+                if (y + 1 < tiles.GetLength(1) && tiles[x, y + 1].Tag as string == " ")
+                {
+                    FillBackground(x, y + 1);
+                }
+                if (y - 1 >= 0 && tiles[x, y - 1].Tag as string == " ")
+                {
+                    FillBackground(x, y - 1);
+                }
             }
+        }
+
+        private void destButton_Click(object sender, EventArgs e)
+        {
+            folderBrowserDialog.ShowDialog();
         }
     }
 }
