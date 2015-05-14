@@ -414,6 +414,27 @@ namespace UnanimousOverkillGame
                     spriteBatch.DrawString(font, "MENU", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to start", new Vector2(250, 170), Color.White);
                     spriteBatch.End();
+                    try
+                    {
+                        uiSpriteBatch.DrawString(font, "High Scores:  \n1:  " + scores[0]
+                            , new Vector2(GraphicsDevice.Viewport.Width - 400, 230), Color.Yellow);
+                    }
+                    catch (Exception e)
+                    { }
+                    try
+                    {
+                        uiSpriteBatch.DrawString(font, "2:  " + scores[1]
+                            , new Vector2(GraphicsDevice.Viewport.Width - 400, 270), Color.Yellow);
+                    }
+                    catch (Exception e)
+                    { }
+                    try
+                    {
+                        uiSpriteBatch.DrawString(font, "3:  " + scores[2]
+                            , new Vector2(GraphicsDevice.Viewport.Width - 400, 290), Color.Yellow);
+                    }
+                    catch (Exception e)
+                    { }
                     break;
                 case GameState.Game:
 
@@ -438,11 +459,16 @@ namespace UnanimousOverkillGame
 
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
+                    if (developerMode)
+                    {
+                        uiSpriteBatch.DrawString(font, "You are a god Currently"
+                            , new Vector2(10, 10), Color.Red);
+                    }
                     uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.ID
                         , new Vector2(300, 230), Color.White);
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
-                    uiSpriteBatch.DrawString(font, "Deaths:" + player.deathCounter
+                    uiSpriteBatch.DrawString(font, "lives:" +(5- player.deathCounter)
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 15), Color.Red);
                     uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, Color.Red);
                     uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, new Rectangle(0, 0, roomManager.spikesTexture.Width, roomManager.spikesTexture.Height), Color.Red, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
