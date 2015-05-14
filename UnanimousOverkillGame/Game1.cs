@@ -290,10 +290,10 @@ namespace UnanimousOverkillGame
                         player.Health = 0;
                     }
                     prevkbState = kbState;
-                    health.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).X);
-                    health.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).Y);
-                    healthBox.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).X);
-                    healthBox.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width) / 2), (player.Y - 20)).Y);
+                    health.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width / 2)), (player.Y - 20)).X);
+                    health.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width /*- player.Rect.Width*/)), (player.Y - 20)).Y);
+                    healthBox.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width/ 2) ), (player.Y - 20)).X);
+                    healthBox.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width /*- player.Rect.Width*/)), (player.Y - 20)).Y);
                     //calls the player update method to get the logic for movement
                     player.Update(gameTime);
                     roomManager.Update(gameTime);
@@ -447,7 +447,7 @@ namespace UnanimousOverkillGame
                         EffectParameter lightPos = lightingEffect.Parameters["lightPos"];
                         EffectParameter lightColor = lightingEffect.Parameters["lightColor"];
 
-                        lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X, roomManager.WorldToScreen(player.X, player.Y).Y, 12));
+                        lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X+player.Rect.Width/2, player.Y+player.Rect.Height/2).X, roomManager.WorldToScreen(player.X+player.Rect.Width/2, player.Y+player.Rect.Height/2).Y, 12));
                         lightColor.SetValue(Color.White.ToVector4());
                     }
 
@@ -497,13 +497,13 @@ namespace UnanimousOverkillGame
                         if (pixelSize != null) pixelSize.SetValue(new Vector2(1.0f / GraphicsDevice.Viewport.Width, 1.0f / GraphicsDevice.Viewport.Height));
 
                         //OK to fiddle with
-                        if (blurAmount != null && player.Intox > 100) blurAmount.SetValue(blurAmt);
-                        if (blurAmt > 0) blurAmt--;
-                        if (rampCount != null) rampCount.SetValue(255);
+                        if (blurAmount != null && player.Intox > 100) blurAmount.SetValue(player.blurAmount);
+                        //if (rampCount != null) rampCount.SetValue(player.rampAmount);
+                        if (rampCount != null) rampCount.SetValue(50 - (int)(Math.Sin(gameTime.TotalGameTime.TotalMilliseconds)*10));
 
                         spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                         spriteBatch.End();
-
+                        
                         GraphicsDevice.SetRenderTarget(null);
                         GraphicsDevice.Clear(Color.Red);
                         GraphicsDevice.Textures[1] = bumpMap;
@@ -516,11 +516,13 @@ namespace UnanimousOverkillGame
 
                         spriteBatch.End();
                     }
-
-                    spriteBatch.Begin();
-                    GraphicsDevice.SetRenderTarget(null);
-                    spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                    spriteBatch.End();
+                    else
+                    {
+                        spriteBatch.Begin();
+                        GraphicsDevice.SetRenderTarget(null);
+                        spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                        spriteBatch.End();
+                    }
 
                     break;
                 case GameState.Paused:
