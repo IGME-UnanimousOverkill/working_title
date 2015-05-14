@@ -236,6 +236,7 @@ namespace UnanimousOverkillGame
                                 int percent = rand.Next(100);
                                 if (percent > 100 - depth)
                                 {
+                                    tile.rumble = true;
                                     enemies.Add(tile);
                                     tile.color = Color.Gray;
                                     percent = rand.Next(100);

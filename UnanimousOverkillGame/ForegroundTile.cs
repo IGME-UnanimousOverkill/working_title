@@ -24,6 +24,7 @@ namespace UnanimousOverkillGame
         public bool falling = false;
         float fallTime = 1f;
         float curTime = 0f;
+        public bool rumble;
 
         /// <summary>
         /// Instantiates a tile that physicsobjects can collide with. This will need to be editted to allow for pseudo-isometric view.
@@ -77,6 +78,14 @@ namespace UnanimousOverkillGame
             {
                 falling = true;
             }
+            if(rumble)
+            if(other is Bottle)
+            {
+                RoomManager.GetRoomManager.Current.Colliders.Remove(this);
+                RoomManager.GetRoomManager.Current.Enemies.Remove(this);
+                RoomManager.GetRoomManager.Current.Drawable.Remove(this);
+            }
+                
         }
     }
 }

@@ -297,7 +297,7 @@ namespace UnanimousOverkillGame
                     health.Width = (int)(value * healthBox.Width);
                     intoxBox.Width = (int)(player.Intox * 1.5);
 
-                    if (player.Y > 1500)
+                    if (player.Y > 1500 && !developerMode)
                     {
                         player.PState = PlayerState.Dead;
                     }
@@ -305,7 +305,10 @@ namespace UnanimousOverkillGame
                     {
                         player.deathCounter++;
                         if (player.deathCounter <= 5)
+                        {
                             roomManager.RespawnRoom();
+                            developerMode = false;
+                        }
                         else
                         {
                             gameState = GameState.Menu;
@@ -438,7 +441,7 @@ namespace UnanimousOverkillGame
                         , new Vector2(300, 230), Color.White);
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
-                    uiSpriteBatch.DrawString(font, "Deaths:" + player.deathCounter
+                    uiSpriteBatch.DrawString(font, "Lives:" + (5-player.deathCounter)
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 15), Color.Red);
                     uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, Color.Red);
                     uiSpriteBatch.Draw(roomManager.spikesTexture, healthBox, new Rectangle(0, 0, roomManager.spikesTexture.Width, roomManager.spikesTexture.Height), Color.Red, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
