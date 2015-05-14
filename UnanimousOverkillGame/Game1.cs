@@ -285,6 +285,10 @@ namespace UnanimousOverkillGame
                             gameState = GameState.Paused;
                         }
                     }
+                    if (Keyboard.GetState().IsKeyDown(Keys.L) && !(prevkbState.IsKeyDown(Keys.L)))
+                    {
+                        DiscoMode = !DiscoMode;
+                    }
                     kbState = Keyboard.GetState();
                     if (kbState.IsKeyDown(Keys.P) && !(prevkbState.IsKeyDown(Keys.P)))
                     {
