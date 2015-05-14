@@ -30,10 +30,7 @@ namespace UnanimousOverkillGame
 
         public virtual void Update(GameTime time)
         {
-            if(Y>=1500)
-            {
-                Die();
-            }
+            
         }
 
         public void GetHit()
