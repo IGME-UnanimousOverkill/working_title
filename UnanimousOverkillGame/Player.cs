@@ -190,6 +190,8 @@ namespace UnanimousOverkillGame
                         if (mState.RightButton == ButtonState.Pressed)
                         {
                             holding = false;
+                            health++;
+                            intoxDecreaseCounter = 0;
                             intox += 5;
                             bottlesOnHand--;
                         }
@@ -224,11 +226,15 @@ namespace UnanimousOverkillGame
                     intox -= 5;
                     intoxDecreaseCounter = 0;
                 }
-                if (intox >= 40)//if intox is >= 40 you can wallclimb otherwise you cant
+                if (intox >= 25)//if intox is >= 25 you have greater max health and you heal by drinking bottles
+                    maxHealth = 150;
+                else
+                    maxHealth = 100;
+                if (intox >= 50)//if intox is >= 50 you can wallclimb otherwise you cant
                     wallClimb = true;
                 else
                     wallClimb = false;
-                if (intox >= 70)//if intox >=70 you jump higher otherwise you jump at a normal height
+                if (intox >= 100)//if intox >=100 you jump higher otherwise you jump at a normal height
                     jumpHeight = 700;
                 else
                     jumpHeight = 500;
