@@ -34,7 +34,7 @@ namespace UnanimousOverkillGame
         private Button buttonInRange;//if a button is in range of the player
         private Door doorInRange;//if a door is in range of a player
         //SpriteBatch spriteBatch;
-
+        private int colorCounter = 0;
         public int Health { get { return health; } set { health = value; } }//health property
         private SpriteBatch playerSpriteBatch;//the players spritebatch, acts just as a reference to the spritebatch given from the draw call
         Bottle b;//the bottle that can be thrown
@@ -507,166 +507,166 @@ namespace UnanimousOverkillGame
                 if (pState == PlayerState.Falling || pState == PlayerState.Jumping || pState == PlayerState.Dead)
                     holding = false;
             }
-            if (color != Color.White)//used to make player flash when hit or picking up bottle
-            {
-                switch (pState)
-                {
-                    case PlayerState.WalkRight:
-                        {
-                            if (!colliderArray[1])
-                                uispritebatch.Draw(spriteSheet,
-                                               spriteRect,
-                                               new Rectangle(
-                                                   frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
-                                                   MARIO_RECT_Y_OFFSET,
-                                                   MARIO_RECT_WIDTH,
-                                                   MARIO_RECT_HEIGHT),
-                                               color,
-                                               0,
-                                               Vector2.Zero,
-                                               SpriteEffects.None,
-                                               0);
-                            else
-                                uispritebatch.Draw(spriteSheet,
-                                            spriteRect,
-                                            new Rectangle(
-                                                0,
-                                                MARIO_RECT_Y_OFFSET,
-                                                MARIO_RECT_WIDTH,
-                                                MARIO_RECT_HEIGHT),
-                                            color,
-                                            0,
-                                            Vector2.Zero,
-                                            SpriteEffects.None,
-                                            0);
-                            break;
-                        }
-                    case PlayerState.WalkLeft:
-                        {
-                            if (!colliderArray[3])
-                                uispritebatch.Draw(spriteSheet,
-                                                 spriteRect,
-                                                 new Rectangle(
-                                                     frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
-                                                     MARIO_RECT_Y_OFFSET,
-                                                     MARIO_RECT_WIDTH,
-                                                     MARIO_RECT_HEIGHT),
-                                                 color,
-                                                 0,
-                                                 Vector2.Zero,
-                                                 SpriteEffects.FlipHorizontally,
-                                                 0);
-                            else
-                                uispritebatch.Draw(spriteSheet,
-                                            spriteRect,
-                                            new Rectangle(
-                                                0,
-                                                MARIO_RECT_Y_OFFSET,
-                                                MARIO_RECT_WIDTH,
-                                                MARIO_RECT_HEIGHT),
-                                            color,
-                                            0,
-                                            Vector2.Zero,
-                                            SpriteEffects.FlipHorizontally,
-                                            0);
-                            break;
-                        }
-                    case PlayerState.FaceRight:
-                        {
-                            uispritebatch.Draw(spriteSheet,
-                                            spriteRect,
-                                            new Rectangle(
-                                                0,
-                                                0,
-                                                MARIO_RECT_WIDTH,
-                                                MARIO_RECT_HEIGHT),
-                                            color,
-                                            0,
-                                            Vector2.Zero,
-                                            SpriteEffects.None,
-                                            0);
-                            break;
-                        }
-                    case PlayerState.FaceLeft:
-                        {
-                            uispritebatch.Draw(spriteSheet,
-                                            spriteRect,
-                                            new Rectangle(
-                                                0,
-                                                0,
-                                                MARIO_RECT_WIDTH,
-                                                MARIO_RECT_HEIGHT),
-                                            color,
-                                            0,
-                                            Vector2.Zero,
-                                            SpriteEffects.FlipHorizontally,
-                                            0);
-                            break;
-                        }
-                    case PlayerState.Jumping:
-                        {
-                            if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
-                                uispritebatch.Draw(spriteSheet,
-                                    spriteRect,
-                                    new Rectangle(
-                                        (1 * MARIO_RECT_WIDTH),
-                                        0,
-                                        MARIO_RECT_WIDTH,
-                                        MARIO_RECT_HEIGHT),
-                                        color,
-                                        0,
-                                        Vector2.Zero,
-                                        SpriteEffects.FlipHorizontally,
-                                        0);
-                            else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
-                                uispritebatch.Draw(spriteSheet,
-                                    spriteRect,
-                                    new Rectangle(
-                                        (1 * MARIO_RECT_WIDTH),
-                                        0,
-                                        MARIO_RECT_WIDTH,
-                                        MARIO_RECT_HEIGHT),
-                                        color,
-                                        0,
-                                        Vector2.Zero,
-                                        SpriteEffects.None,
-                                        0);
-                            break;
-                        }
-                    case PlayerState.Falling:
-                        {
-                            if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
-                                uispritebatch.Draw(spriteSheet,
-                                    spriteRect,
-                                    new Rectangle(
-                                        (1 * MARIO_RECT_WIDTH),
-                                        0,
-                                        MARIO_RECT_WIDTH,
-                                        MARIO_RECT_HEIGHT),
-                                        color, 0,
-                                        Vector2.Zero,
-                                        SpriteEffects.
-                                        FlipHorizontally,
-                                        0);
-                            else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
-                                uispritebatch.Draw(
-                                    spriteSheet,
-                                    spriteRect,
-                                    new Rectangle(
-                                        (1 * MARIO_RECT_WIDTH),
-                                        0,
-                                        MARIO_RECT_WIDTH,
-                                        MARIO_RECT_HEIGHT),
-                                        color,
-                                        0,
-                                        Vector2.Zero,
-                                        SpriteEffects.None,
-                                        0);
-                            break;
-                        }
-                }
-            }
-
+            //if (color != Color.White)//used to make player flash when hit or picking up bottle
+            //{
+            //    switch (pState)
+            //    {
+            //        case PlayerState.WalkRight:
+            //            {
+            //                if (!colliderArray[1])
+            //                    uispritebatch.Draw(spriteSheet,
+            //                                   spriteRect,
+            //                                   new Rectangle(
+            //                                       frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
+            //                                       MARIO_RECT_Y_OFFSET,
+            //                                       MARIO_RECT_WIDTH,
+            //                                       MARIO_RECT_HEIGHT),
+            //                                   color,
+            //                                   0,
+            //                                   Vector2.Zero,
+            //                                   SpriteEffects.None,
+            //                                   0);
+            //                else
+            //                    uispritebatch.Draw(spriteSheet,
+            //                                spriteRect,
+            //                                new Rectangle(
+            //                                    0,
+            //                                    MARIO_RECT_Y_OFFSET,
+            //                                    MARIO_RECT_WIDTH,
+            //                                    MARIO_RECT_HEIGHT),
+            //                                color,
+            //                                0,
+            //                                Vector2.Zero,
+            //                                SpriteEffects.None,
+            //                                0);
+            //                break;
+            //            }
+            //        case PlayerState.WalkLeft:
+            //            {
+            //                if (!colliderArray[3])
+            //                    uispritebatch.Draw(spriteSheet,
+            //                                     spriteRect,
+            //                                     new Rectangle(
+            //                                         frame * (MARIO_RECT_WIDTH + MARIO_RECT_X_OFFSET),
+            //                                         MARIO_RECT_Y_OFFSET,
+            //                                         MARIO_RECT_WIDTH,
+            //                                         MARIO_RECT_HEIGHT),
+            //                                     color,
+            //                                     0,
+            //                                     Vector2.Zero,
+            //                                     SpriteEffects.FlipHorizontally,
+            //                                     0);
+            //                else
+            //                    uispritebatch.Draw(spriteSheet,
+            //                                spriteRect,
+            //                                new Rectangle(
+            //                                    0,
+            //                                    MARIO_RECT_Y_OFFSET,
+            //                                    MARIO_RECT_WIDTH,
+            //                                    MARIO_RECT_HEIGHT),
+            //                                color,
+            //                                0,
+            //                                Vector2.Zero,
+            //                                SpriteEffects.FlipHorizontally,
+            //                                0);
+            //                break;
+            //            }
+            //        case PlayerState.FaceRight:
+            //            {
+            //                uispritebatch.Draw(spriteSheet,
+            //                                spriteRect,
+            //                                new Rectangle(
+            //                                    0,
+            //                                    0,
+            //                                    MARIO_RECT_WIDTH,
+            //                                    MARIO_RECT_HEIGHT),
+            //                                color,
+            //                                0,
+            //                                Vector2.Zero,
+            //                                SpriteEffects.None,
+            //                                0);
+            //                break;
+            //            }
+            //        case PlayerState.FaceLeft:
+            //            {
+            //                uispritebatch.Draw(spriteSheet,
+            //                                spriteRect,
+            //                                new Rectangle(
+            //                                    0,
+            //                                    0,
+            //                                    MARIO_RECT_WIDTH,
+            //                                    MARIO_RECT_HEIGHT),
+            //                                color,
+            //                                0,
+            //                                Vector2.Zero,
+            //                                SpriteEffects.FlipHorizontally,
+            //                                0);
+            //                break;
+            //            }
+            //        case PlayerState.Jumping:
+            //            {
+            //                if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
+            //                    uispritebatch.Draw(spriteSheet,
+            //                        spriteRect,
+            //                        new Rectangle(
+            //                            (1 * MARIO_RECT_WIDTH),
+            //                            0,
+            //                            MARIO_RECT_WIDTH,
+            //                            MARIO_RECT_HEIGHT),
+            //                            color,
+            //                            0,
+            //                            Vector2.Zero,
+            //                            SpriteEffects.FlipHorizontally,
+            //                            0);
+            //                else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
+            //                    uispritebatch.Draw(spriteSheet,
+            //                        spriteRect,
+            //                        new Rectangle(
+            //                            (1 * MARIO_RECT_WIDTH),
+            //                            0,
+            //                            MARIO_RECT_WIDTH,
+            //                            MARIO_RECT_HEIGHT),
+            //                            color,
+            //                            0,
+            //                            Vector2.Zero,
+            //                            SpriteEffects.None,
+            //                            0);
+            //                break;
+            //            }
+            //        case PlayerState.Falling:
+            //            {
+            //                if (prevState == PlayerState.FaceLeft || prevState == PlayerState.WalkLeft)
+            //                    uispritebatch.Draw(spriteSheet,
+            //                        spriteRect,
+            //                        new Rectangle(
+            //                            (1 * MARIO_RECT_WIDTH),
+            //                            0,
+            //                            MARIO_RECT_WIDTH,
+            //                            MARIO_RECT_HEIGHT),
+            //                            color, 0,
+            //                            Vector2.Zero,
+            //                            SpriteEffects.
+            //                            FlipHorizontally,
+            //                            0);
+            //                else if (prevState == PlayerState.FaceRight || prevState == PlayerState.WalkRight)
+            //                    uispritebatch.Draw(
+            //                        spriteSheet,
+            //                        spriteRect,
+            //                        new Rectangle(
+            //                            (1 * MARIO_RECT_WIDTH),
+            //                            0,
+            //                            MARIO_RECT_WIDTH,
+            //                            MARIO_RECT_HEIGHT),
+            //                            color,
+            //                            0,
+            //                            Vector2.Zero,
+            //                            SpriteEffects.None,
+            //                            0);
+            //                break;
+            //            }
+            //    }
+            //}
+            //else
             switch (pState)
             {
                 case PlayerState.WalkRight:
@@ -824,7 +824,13 @@ namespace UnanimousOverkillGame
                     }
 
             }
-            color = Color.White;
+            if (colorCounter >= 1)
+            {
+                color = Color.White;
+                colorCounter = 0;
+            }
+            if (color != Color.White)
+                colorCounter++;
         }
     }
 }
