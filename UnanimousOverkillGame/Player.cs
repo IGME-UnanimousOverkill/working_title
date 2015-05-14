@@ -26,6 +26,7 @@ namespace UnanimousOverkillGame
         private int intox; //will represent the amount of goo drunk, initialized to 0
         private int health; //will show the amount of health the player currently has, initialized to 50 for now
         public int maxHealth;//max health value
+        public int maxIntox = 150;
         private bool holding; //will show whether the player is holding an object or not, initilized to false
         private PlayerState pState; //will hold the movement state the player is currently in, inside of the Game1 file
         private PlayerState prevState;//previous state as of the previous frame
@@ -139,8 +140,8 @@ namespace UnanimousOverkillGame
                 }
                 if (health > maxHealth)//resets the health to maxhealth if it goes past
                     health = maxHealth;
-                if (intox > 100)//if the intox goes past the max value, then resets it to it
-                    intox = 100;
+                if (intox > maxIntox)//if the intox goes past the max value, then resets it to it
+                    intox = 150;
                 if (intox < 0)//keeps the intox from going below 0
                     intox = 0;
 
@@ -246,6 +247,10 @@ namespace UnanimousOverkillGame
                     jumpHeight = 700;
                 else
                     jumpHeight = 500;
+                if (intox >= 150)
+                    Game1.DiscoMode = true;
+                else
+                    Game1.DiscoMode = false;
 
                 //switch case for the player state to determine if the player is facing/walking a certain way and then changing to the next state when a key is pressed, or lifted up.
                 switch (pState)
@@ -422,7 +427,35 @@ namespace UnanimousOverkillGame
             }
             else
             {
-                
+
+                if (health <= 0)//resets health back to 0 if it goes below and kills the player
+                {
+                    health = 0;
+                    pState = PlayerState.Dead;
+                }
+                if (health > maxHealth)//resets the health to maxhealth if it goes past
+                    health = maxHealth;
+                if (intox > maxIntox)//if the intox goes past the max value, then resets it to it
+                    intox = 150;
+                if (intox < 0)//keeps the intox from going below 0
+                    intox = 0;
+
+                if (intox >= 25)//if intox is >= 25 you have greater max health and you heal by drinking bottles
+                    maxHealth = 150;
+                else
+                    maxHealth = 100;
+                if (intox >= 50)//if intox is >= 50 you can wallclimb otherwise you cant
+                    wallClimb = true;
+                else
+                    wallClimb = false;
+                if (intox >= 100)//if intox >=100 you jump higher otherwise you jump at a normal height
+                    jumpHeight = 700;
+                else
+                    jumpHeight = 500;
+                if (intox >= 150)
+                    Game1.DiscoMode = true;
+                else
+                    Game1.DiscoMode = false;
                 if (kbState.IsKeyDown(Keys.E) && buttonInRange != null && !prevKeyboardState.IsKeyDown(Keys.E))//if you press e while in range of a button it presses the button
                     buttonInRange.PressButton();
                 if (kbState.IsKeyDown(Keys.W) && doorInRange != null && !prevKeyboardState.IsKeyDown(Keys.W))//if you press w while in range of a door it opens the door and progresses to the next room
@@ -450,6 +483,7 @@ namespace UnanimousOverkillGame
                             holding = false;
                             intox += 5;
                             bottlesOnHand--;
+                            health++;
                         }
                         else if (mState.LeftButton == ButtonState.Pressed)
                         {

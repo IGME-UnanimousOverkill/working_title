@@ -301,7 +301,8 @@ namespace UnanimousOverkillGame
                     roomManager.Update(gameTime);
                     double value = ((double)(player.Health) / player.maxHealth);
                     health.Width = (int)(value * healthBox.Width);
-                    intoxBox.Width = (int)(player.Intox * 1.5);
+                    value = ((double)(player.Intox)/player.maxIntox);
+                    intoxBox.Width = (int)(value * 100);
 
                     if (player.Y > 1500)
                     {
