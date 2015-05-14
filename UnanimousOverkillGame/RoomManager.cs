@@ -199,7 +199,7 @@ namespace UnanimousOverkillGame
             string[] files = Directory.GetFiles(ROOM_DIR);
             room.LoadRoom(files[rand.Next(files.Length)]);
 
-            if (current != null && current.depth >= 10)
+            if (current != null && current.depth >= 6)
             {
                 Game1.RumbleMode = true;
             }

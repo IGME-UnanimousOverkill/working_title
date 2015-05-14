@@ -232,18 +232,21 @@ namespace UnanimousOverkillGame
                             tile.PositionLocked = true;
                             if (Game1.RumbleMode)
                             {
-                                tile.PositionLocked = false;
-                                int percent = rand.Next(100);
-                                if (percent > 100 - depth)
+                                if (NoDoors(x,y))
                                 {
-                                    tile.rumble = true;
-
-                                    enemies.Add(tile);
-                                    tile.color = Color.Gray;
-                                    percent = rand.Next(100);
-                                    if (percent > 110 - depth)
+                                    tile.PositionLocked = false;
+                                    int percent = rand.Next(100);
+                                    if (percent > 100 - depth)
                                     {
-                                        tile.falling = true;
+                                        tile.rumble = true;
+
+                                        enemies.Add(tile);
+                                        tile.color = Color.Gray;
+                                        percent = rand.Next(100);
+                                        if (percent > 110 - depth)
+                                        {
+                                            tile.falling = true;
+                                        }
                                     }
                                 }
                             }
@@ -418,6 +421,46 @@ namespace UnanimousOverkillGame
             prevSize2 = enemies.Count;
             drawable.Add(player);
         }   
+
+        public bool NoDoors(int x, int y)
+        {
+            bool doors = true;
+
+            if (x > 0 && ((level[x - 1, y] == '<') || (level[x - 1, y] == '>')))
+            {
+                return false;
+            }
+            if (y > 0 && ((level[x, y - 1] == '<') || (level[x, y - 1] == '>')))
+            {
+                return false;
+            }
+            if (x < level.GetLength(0) - 1 && ((level[x + 1, y] == '<') || (level[x + 1, y] == '>')))
+            {
+                return false;
+            }
+            if (y < level.GetLength(1) - 1 && ((level[x, y + 1] == '<') || (level[x, y + 1] == '>')))
+            {
+                return false;
+            }
+            if (y < level.GetLength(1) - 1 && x < level.GetLength(0) - 1 && ((level[x + 1, y + 1] == '<') || (level[x + 1, y + 1] == '>')))
+            {
+                return false;
+            }
+            if (y < level.GetLength(1) - 1 && x > 0 && ((level[x - 1, y + 1] == '<') || (level[x - 1, y + 1] == '>')))
+            {
+                return false;
+            }
+            if (y > 0 && x < level.GetLength(0) - 1 && ((level[x + 1, y - 1] == '<') || (level[x + 1, y - 1] == '>')))
+            {
+                return false;
+            }
+            if (y > 0 && x > 0 && ((level[x - 1, y - 1] == '<') || (level[x - 1, y - 1] == '>')))
+            {
+                return false;
+            }
+
+            return doors;
+        }
    
         public void RespawnRoom()
         {
