@@ -29,12 +29,10 @@ C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Normals\frontNormals\FrontNormalMap_07.png
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Ooze.png
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\PostProcess.fx
-C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\bar.txt
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\Keegan'sRoom.txt
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom11.txt
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom12.txt
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom13.txt
-C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom14.txt
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom4.txt
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom7.txt
 C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\Rooms\TestRoom8.txt

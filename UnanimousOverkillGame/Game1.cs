@@ -76,6 +76,8 @@ namespace UnanimousOverkillGame
         RenderTarget2D rt2;
         Texture2D bumpMap;
 
+        int blurAmt;
+
         public Game1()
             : base()
         {
@@ -108,7 +110,9 @@ namespace UnanimousOverkillGame
 
             //SHADERS -- render targets
             rt = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            rt2 = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height); 
+            rt2 = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+            blurAmt = 0;
 
             base.Initialize();
         }
@@ -467,7 +471,8 @@ namespace UnanimousOverkillGame
                         if (pixelSize != null) pixelSize.SetValue(new Vector2(1.0f / GraphicsDevice.Viewport.Width, 1.0f / GraphicsDevice.Viewport.Height));
 
                         //OK to fiddle with
-                        if (blurAmount != null && player.Intox > 100) blurAmount.SetValue(0);
+                        if (blurAmount != null && player.Intox > 100) blurAmount.SetValue(blurAmt);
+                        if (blurAmt > 0) blurAmt--;
                         if (rampCount != null) rampCount.SetValue(255);
 
                         spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
@@ -485,6 +490,11 @@ namespace UnanimousOverkillGame
 
                         spriteBatch.End();
                     }
+
+                    spriteBatch.Begin();
+                    GraphicsDevice.SetRenderTarget(null);
+                    spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.End();
 
                     break;
                 case GameState.Paused:
