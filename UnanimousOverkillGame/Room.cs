@@ -364,7 +364,17 @@ namespace UnanimousOverkillGame
                             break;
 
                         case ('s'):
-                            Spikes spikes = new Spikes(x * TILE_WIDTH, y * TILE_HEIGHT, spikeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player);
+                            bool onGround = false;
+                            try
+                            {
+                                if (levelObjects[x, y + 1] == null)
+                                    onGround = false;
+                                else
+                                    onGround = true;
+                            }
+                            catch (Exception e)
+                            { }
+                            Spikes spikes = new Spikes(x * TILE_WIDTH, y * TILE_HEIGHT, spikeTexture, manager.content.Load<Texture2D>("Normals/BlankNormal.png"), player, onGround);
                             colliders.Add(spikes);
                             enemies.Add(spikes);
                             drawable.Add(spikes);
