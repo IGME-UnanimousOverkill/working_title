@@ -1,7 +1,7 @@
 ﻿SamplerState TextureSampler : register(s0);
 SamplerState CustomSampler : register(s1);
 
-Texture2D mario : register(t0);
+Texture2D tex : register(t0);
 Texture2D normalMap : register(t1);
 
 float3 lightPos;
@@ -17,22 +17,22 @@ float4 main(float4 position : SV_Position, float4 color : COLOR0, float2 texCoor
 
 	// Do lighting calculations
 	float3 vecToLight = lightPos - position.xyz;
-	//vecToLight.y *= -1;
+	vecToLight.y *= -1;
 	float lightDist = length(vecToLight);
 
-	float3 dirToLight = normalize(vecToLight);
-	float lightAmount = saturate(dot(.5, dirToLight));
+	//float3 dirToLight = normalize(vecToLight);
+	float lightAmount = saturate(dot(.8, 1));
 	
 	//Decides the size of the lightcircle around the player
-	lightAmount -= lightDist*(.001);
+	lightAmount -= lightDist*.002;
 
-	// Now sample mario's texture
-	float4 texColor = mario.Sample(TextureSampler, texCoord);
+	// Sample texture
+	float4 texColor = tex.Sample(TextureSampler, texCoord);
 	
 	//texColor = lerp(texColor, lightColor, lightAmount);
 	texColor.rgb *= lightAmount * lightColor.rgb;
 	
-	return texColor;
+	return texColor * color;
 }
 
 

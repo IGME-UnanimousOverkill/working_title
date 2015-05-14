@@ -70,6 +70,11 @@ namespace UnanimousOverkillGame
 
         //Shader stuff
         Effect lightingEffect;
+        Effect postEffect;
+        Effect bumpEffect;
+        RenderTarget2D rt;
+        RenderTarget2D rt2;
+        Texture2D bumpMap;
 
         public Game1()
             : base()
@@ -101,6 +106,10 @@ namespace UnanimousOverkillGame
             prevKeyCount = 0;
             intoxBox = new Rectangle(GraphicsDevice.Viewport.Width - 200, 200, 0, 25);
 
+            //SHADERS -- render targets
+            rt = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            rt2 = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height); 
+
             base.Initialize();
         }
 
@@ -131,7 +140,11 @@ namespace UnanimousOverkillGame
             roomManager.LoadContent(GraphicsDevice);
             player.RoomManagerGet(roomManager);
             if (enableShaders)
+            {
                 lightingEffect = LoadEffect("Content/Test.mgfx");
+                postEffect = LoadEffect("Content/PostProcess.mgfx");
+                bumpEffect = LoadEffect("Content/BumpMapper.mgfx");
+            }
             health = new Rectangle(player.X - (player.Rect.Width + 20 - player.Rect.Width) / 2, player.Y - 30, player.Rect.Width + 20, 5);
             healthBox = health;
 
@@ -178,9 +191,11 @@ namespace UnanimousOverkillGame
             try
             {
                 effect = new Effect(GraphicsDevice, reader.ReadBytes((int)reader.BaseStream.Length));
+                Console.WriteLine("SUCCESSFULLY LOADED " + file);
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 enableShaders = false;
             }
             reader.Close();
@@ -381,53 +396,36 @@ namespace UnanimousOverkillGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-
+            GraphicsDevice.SetRenderTarget(rt);
             GraphicsDevice.Clear(Color.Black);
 
 
             switch (gameState)
             {
                 case GameState.Menu:
+                    GraphicsDevice.SetRenderTarget(null);
+
                     spriteBatch.Begin();
                     uiSpriteBatch.Begin();
                     spriteBatch.DrawString(font, "MENU", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to start", new Vector2(250, 170), Color.White);
-                    try
-                    {
-                        uiSpriteBatch.DrawString(font, "High Scores:  \n1:  " + scores[0]
-                            , new Vector2(GraphicsDevice.Viewport.Width - 400, 230), Color.Yellow);
-                    }
-                    catch (Exception e)
-                    { }
-                    try
-                    {
-                        uiSpriteBatch.DrawString(font, "2:  " + scores[1]
-                            , new Vector2(GraphicsDevice.Viewport.Width - 400, 270), Color.Yellow);
-                    }
-                    catch (Exception e)
-                    { }
-                    try
-                    {
-                        uiSpriteBatch.DrawString(font, "3:  " + scores[2]
-                            , new Vector2(GraphicsDevice.Viewport.Width - 400, 290), Color.Yellow);
-                    }
-                    catch (Exception e)
-                    { }
-
+                    spriteBatch.End();
                     break;
                 case GameState.Game:
 
                     spriteBatch.Begin(0, null, null, null, null, lightingEffect);
                     uiSpriteBatch.Begin();
+
                     if (enableShaders)
                     {
                         // Set params
                         EffectParameter lightPos = lightingEffect.Parameters["lightPos"];
                         EffectParameter lightColor = lightingEffect.Parameters["lightColor"];
 
-                        lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X + 140, roomManager.WorldToScreen(player.X, player.Y).Y + 150, 120));
+                        lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X, roomManager.WorldToScreen(player.X, player.Y).Y, 12));
                         lightColor.SetValue(Color.White.ToVector4());
                     }
+
                     roomManager.Draw(GraphicsDevice, spriteBatch);
 
                     kbState = Keyboard.GetState();
@@ -436,12 +434,7 @@ namespace UnanimousOverkillGame
 
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
-                    if (developerMode)
-                    {
-                        uiSpriteBatch.DrawString(font, "You are a god Currently"
-                            , new Vector2(10, 10), Color.Red);
-                    }
-                    uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.depth
+                    uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.ID + " / " + (roomManager.greatestID - 1)
                         , new Vector2(300, 230), Color.White);
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
@@ -453,20 +446,61 @@ namespace UnanimousOverkillGame
 
                     uiSpriteBatch.Draw(roomManager.boundsTexture, health, Color.White);
                     uiSpriteBatch.Draw(roomManager.boundsTexture, intoxBox, Color.White);
-                    uiSpriteBatch.DrawString(font, "intoxication: " + player.Intox
-                        , new Vector2(intoxBox.X - 74, intoxBox.Y + 2), Color.Red);
+                    uiSpriteBatch.DrawString(font, "intoxication: " + player.Intox, new Vector2(intoxBox.X - 74, intoxBox.Y + 2), Color.Red);
+                    spriteBatch.End();
+
+                    /*
+                     *  SHADER STUFF
+                     */
+                    if (enableShaders)
+                    {
+                        GraphicsDevice.SetRenderTarget(rt2);
+                        GraphicsDevice.Clear(Color.White);
+
+                        spriteBatch.Begin(0, null, null, null, null, postEffect);
+
+                        EffectParameter pixelSize = postEffect.Parameters["pixelSize"];
+                        EffectParameter blurAmount = postEffect.Parameters["blurAmount"];
+                        EffectParameter rampCount = postEffect.Parameters["rampCount"];
+
+                        //Don't change this!
+                        if (pixelSize != null) pixelSize.SetValue(new Vector2(1.0f / GraphicsDevice.Viewport.Width, 1.0f / GraphicsDevice.Viewport.Height));
+
+                        //OK to fiddle with
+                        if (blurAmount != null && player.Intox > 100) blurAmount.SetValue(0);
+                        if (rampCount != null) rampCount.SetValue(255);
+
+                        spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                        spriteBatch.End();
+
+                        GraphicsDevice.SetRenderTarget(null);
+                        GraphicsDevice.Clear(Color.Red);
+                        GraphicsDevice.Textures[1] = bumpMap;
+
+                        EffectParameter camPos = bumpEffect.Parameters["camPos"];
+                        EffectParameter mouseOffset = bumpEffect.Parameters["mouseOffset"];
+
+                        spriteBatch.Begin(0, null, null, null, null, bumpEffect);
+                        spriteBatch.Draw(rt2, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+
+                        spriteBatch.End();
+                    }
+
                     break;
                 case GameState.Paused:
+                    GraphicsDevice.SetRenderTarget(null);
+
                     spriteBatch.Begin();
                     spriteBatch.DrawString(font, "PAUSED", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
                     spriteBatch.DrawString(font, "Press ENTER to continue", new Vector2(250, 170), Color.White);
                     spriteBatch.DrawString(font, "Press ESC to go to Menu", new Vector2(250, 210), Color.White);
                     roomManager.BoundsDraw(spriteBatch);
+                    spriteBatch.End();
                     break;
             }
 
-            spriteBatch.End();
             uiSpriteBatch.End();
+
             base.Draw(gameTime);
         }
     }
