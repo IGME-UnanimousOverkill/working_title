@@ -60,7 +60,7 @@ namespace UnanimousOverkillGame
         Keys prevKey;
         int prevKeyCount; //makes sure pause menu isn't skipped
 
-        Boolean enableShaders = true;
+        Boolean enableShaders = false;
 
         bool Fullscreen = true;
 
@@ -152,7 +152,8 @@ namespace UnanimousOverkillGame
             }
             finally
             {
-                input.Close();
+                if(input != null)
+                    input.Close();
             }
 
 

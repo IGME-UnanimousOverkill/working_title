@@ -126,7 +126,7 @@ namespace UnanimousOverkillGame
             Y = (int)(Y + velocity.Y);
         }
 
-        public void Updates(GameTime gameTime)
+        public virtual void Updates(GameTime gameTime)
         {
             UpdateVelocity(gameTime);
             UpdatePosition();
