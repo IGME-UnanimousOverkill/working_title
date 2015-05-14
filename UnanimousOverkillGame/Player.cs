@@ -18,6 +18,10 @@ namespace UnanimousOverkillGame
 {
     class Player : PhysicsEntity
     {
+        //shaders
+        public int blurAmount;
+        public int rampAmount;
+
         //fields
         private int intox; //will represent the amount of goo drunk, initialized to 0
         private int health; //will show the amount of health the player currently has, initialized to 50 for now
@@ -100,6 +104,10 @@ namespace UnanimousOverkillGame
             intoxDecreaseCounter = 0;
             deathCounter = 0;
             wallClimb = false;
+
+            //shaders!
+            blurAmount = 0;
+            rampAmount = 0;
         }
         public void getUISpriteBatch(SpriteBatch ui)
         {

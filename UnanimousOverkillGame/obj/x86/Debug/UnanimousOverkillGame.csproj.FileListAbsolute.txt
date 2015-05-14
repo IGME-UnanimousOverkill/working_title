@@ -154,3 +154,4 @@ C:\Users\Sean\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Co
 C:\Users\Sean\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.exe
 C:\Users\Sean\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\UnanimousOverkillGame.pdb
 C:\Users\Sean\Documents\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\fan.png
+C:\Users\J\Desktop\working_title\UnanimousOverkillGame\bin\Windows\Debug\Content\fan.png
