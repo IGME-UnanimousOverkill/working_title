@@ -55,7 +55,7 @@ namespace UnanimousOverkillGame
                 drawing = false;
                 isCollidable = false;
                 player.bottlesOnHand++;
-                player.Color = Color.DarkGreen;
+                player.Color = Color.Green;
                 rm.Current.Colliders.Remove(this);
                 rm.Current.Enemies.Remove(this);
                 EntityIsRemoved();
