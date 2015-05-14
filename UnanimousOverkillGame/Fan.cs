@@ -51,8 +51,8 @@ namespace UnanimousOverkillGame
             return effectBoxes;
         }
 
-        public Fan(int x, int y, int width, int height, char fanType, int fanStrength = 65)
-            : base(x, y, width, height, null, null)
+        public Fan(int x, int y, int width, int height, char fanType, Texture2D fanTex, int fanStrength = 65)
+            : base(x, y, width, height, fanTex, null)
         {
 
             this.fanStrength = fanStrength;

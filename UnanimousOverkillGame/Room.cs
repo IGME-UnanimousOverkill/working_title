@@ -292,7 +292,7 @@ namespace UnanimousOverkillGame
                             }
                             break;
                         case ('┴'):
-                            Fan fan = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
+                            Fan fan = new Fan((x * TILE_WIDTH) - ((int)((TILE_WIDTH * ISO_SCALE) - TILE_WIDTH) / 2), (y * TILE_HEIGHT) - ((int)((TILE_HEIGHT * ISO_SCALE) - TILE_HEIGHT) / 2), (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), level[x, y], manager.content.Load<Texture2D>("fan.png"));
                             colliders.Add(fan);
                             colliders.AddRange(fan.getEffects());
                             enemies.AddRange(fan.getEffects());
@@ -300,7 +300,7 @@ namespace UnanimousOverkillGame
                             levelObjects[x, y] = fan;
                             break;
                         case ('┤'):
-                            Fan fan1 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
+                            Fan fan1 = new Fan((x * TILE_WIDTH) - ((int)((TILE_WIDTH * ISO_SCALE) - TILE_WIDTH) / 2), (y * TILE_HEIGHT) - ((int)((TILE_HEIGHT * ISO_SCALE) - TILE_HEIGHT) / 2), (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), level[x, y], manager.content.Load<Texture2D>("fan.png"));
                             colliders.Add(fan1);
                             colliders.AddRange(fan1.getEffects());
                             enemies.AddRange(fan1.getEffects());
@@ -309,7 +309,7 @@ namespace UnanimousOverkillGame
                             break;
 
                         case ('┬'):
-                            Fan fan2 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
+                            Fan fan2 = new Fan((x * TILE_WIDTH) - ((int)((TILE_WIDTH * ISO_SCALE) - TILE_WIDTH) / 2), (y * TILE_HEIGHT) - ((int)((TILE_HEIGHT * ISO_SCALE) - TILE_HEIGHT) / 2), (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), level[x, y], manager.content.Load<Texture2D>("fan.png"));
                             colliders.Add(fan2);
                             colliders.AddRange(fan2.getEffects());
                             enemies.AddRange(fan2.getEffects());
@@ -318,7 +318,7 @@ namespace UnanimousOverkillGame
                             break;
 
                         case ('├'):
-                            Fan fan3 = new Fan(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, level[x, y]);
+                            Fan fan3 = new Fan((x * TILE_WIDTH) - ((int)((TILE_WIDTH * ISO_SCALE) - TILE_WIDTH) / 2), (y * TILE_HEIGHT) - ((int)((TILE_HEIGHT * ISO_SCALE) - TILE_HEIGHT) / 2), (int)(TILE_WIDTH * ISO_SCALE), (int)(TILE_HEIGHT * ISO_SCALE), level[x, y], manager.content.Load<Texture2D>("fan.png"));
                             colliders.Add(fan3);
                             colliders.AddRange(fan3.getEffects());
                             enemies.AddRange(fan3.getEffects());
