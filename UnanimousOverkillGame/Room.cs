@@ -54,6 +54,13 @@ namespace UnanimousOverkillGame
         private Texture2D spikeTexture;
         private RoomManager manager;
         private static Random rand = new Random();
+
+
+
+        public Texture2D OozeTexture { get { return oozeTexture; } }
+        public Texture2D BottleTexture { get { return bottleTexture; } }
+
+
         public List<PhysicsEntity> Colliders { get { return colliders; } set { colliders= value; } }
         public List<PhysicsEntity> Enemies { get { return enemies; } set { enemies = value; } }
         public List<GameObject> Drawable { get { return drawable; } set { drawable = value; } }

@@ -40,6 +40,7 @@
     <Compile Include="Button.cs" />
     <Compile Include="Collision.cs" />
     <Compile Include="CollisionManager.cs" />
+    <Compile Include="EntitySpawner.cs" />
     <Compile Include="Spikes.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="EffectBox.cs" />
