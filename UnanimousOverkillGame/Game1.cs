@@ -497,13 +497,12 @@ namespace UnanimousOverkillGame
                         if (pixelSize != null) pixelSize.SetValue(new Vector2(1.0f / GraphicsDevice.Viewport.Width, 1.0f / GraphicsDevice.Viewport.Height));
 
                         //OK to fiddle with
-                        if (blurAmount != null && player.Intox > 100) blurAmount.SetValue(blurAmt);
-                        if (blurAmt > 0) blurAmt--;
-                        if (rampCount != null) rampCount.SetValue(255);
+                        if (blurAmount != null && player.Intox > 100) blurAmount.SetValue(player.blurAmount);
+                        if (rampCount != null) rampCount.SetValue(player.rampAmount);
 
                         spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                         spriteBatch.End();
-
+                        
                         GraphicsDevice.SetRenderTarget(null);
                         GraphicsDevice.Clear(Color.Red);
                         GraphicsDevice.Textures[1] = bumpMap;
@@ -516,11 +515,13 @@ namespace UnanimousOverkillGame
 
                         spriteBatch.End();
                     }
-
-                    spriteBatch.Begin();
-                    GraphicsDevice.SetRenderTarget(null);
-                    spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                    spriteBatch.End();
+                    else
+                    {
+                        spriteBatch.Begin();
+                        GraphicsDevice.SetRenderTarget(null);
+                        spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                        spriteBatch.End();
+                    }
 
                     break;
                 case GameState.Paused:

@@ -143,6 +143,7 @@ namespace UnanimousOverkillGame
             this.accelerationChange = accelerationChange;
             parent = null;
             originalRect = new Rectangle(x, y, width, height);
+            PositionLocked = true;
         }
 
         public EffectBox(int x, int y, int width, int height, Vector2 accelerationChange, PhysicsEntity parent, Texture2D texture = null)
@@ -150,6 +151,7 @@ namespace UnanimousOverkillGame
         {
             this.accelerationChange = accelerationChange;
             this.parent = parent;
+            PositionLocked = true;
             parentCentrer = parent.Rect.Center;
             originalRect = new Rectangle(x, y, width, height);
         }
