@@ -87,6 +87,14 @@ namespace UnanimousOverkillGame
                             continue;
                         if (gameObject is Bottle && physEntity is Bottle)
                             continue;
+                        if(((gameObject is Door || gameObject is Button||gameObject is EffectBox)&& physEntity is Player )||(gameObject is Player&&(physEntity is Door || physEntity is Button||gameObject is EffectBox)))
+                        {
+                        }
+                        else if (Game1.developerMode && (gameObject is Player || physEntity is Player))
+                        {    
+                            continue;
+                        }
+
                         // Calculate the bottom and right side locations for the gameObject
                         float objBottom = gameObject.Y + gameObject.Rect.Height;
                         float objRight = gameObject.X + gameObject.Rect.Width;
