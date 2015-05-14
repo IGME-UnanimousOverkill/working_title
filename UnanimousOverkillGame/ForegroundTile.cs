@@ -43,8 +43,14 @@ namespace UnanimousOverkillGame
             {
                 tileRectangle = new Rectangle(tileNum * 100, 0, 100, 100);
             }
-            //color = new Color(120 + rand.Next(30), 120 + rand.Next(30), 120 + rand.Next(30));
-            color = Color.White;
+            if (Game1.DiscoMode)
+            {
+                color = new Color(120 + rand.Next(30), 120 + rand.Next(30), 120 + rand.Next(30));
+            }
+            else
+            {
+                color = Color.White;
+            }
         }
 
         public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
@@ -52,7 +58,10 @@ namespace UnanimousOverkillGame
             device.Textures[1] = normal;
             if (texture != null)
             {
-                //color = new Color(rand.Next(250), rand.Next(250), rand.Next(250));
+                if (Game1.DiscoMode)
+                {
+                    color = new Color(rand.Next(250), rand.Next(250), rand.Next(250));
+                }
                 spriteBatch.Draw(texture, new Rectangle(x - ((isoRectangle.Width - rectangle.Width) / 2), y - ((isoRectangle.Height - rectangle.Height) / 2), isoRectangle.Width, isoRectangle.Height), tileRectangle, color); 
             }
         }

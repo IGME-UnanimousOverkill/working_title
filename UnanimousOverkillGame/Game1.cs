@@ -41,6 +41,7 @@ namespace UnanimousOverkillGame
     {
         public static bool RumbleMode = false;
         public static bool developerMode = false;
+        public static bool DiscoMode = false;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
