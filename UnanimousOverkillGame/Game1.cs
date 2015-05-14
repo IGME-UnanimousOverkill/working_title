@@ -174,7 +174,15 @@ namespace UnanimousOverkillGame
         private Effect LoadEffect(String file)
         {
             System.IO.BinaryReader reader = new System.IO.BinaryReader(TitleContainer.OpenStream(file));
-            Effect effect = new Effect(GraphicsDevice, reader.ReadBytes((int)reader.BaseStream.Length));
+            Effect effect = null;
+            try
+            {
+                effect = new Effect(GraphicsDevice, reader.ReadBytes((int)reader.BaseStream.Length));
+            }
+            catch (Exception e)
+            {
+                enableShaders = false;
+            }
             reader.Close();
             return effect;
         }
