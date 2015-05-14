@@ -290,9 +290,10 @@ namespace UnanimousOverkillGame
                         player.Health = 0;
                     }
                     prevkbState = kbState;
-                    health.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width / 2)), (player.Y - 20)).X);
-                    health.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width /*- player.Rect.Width*/)), (player.Y - 20)).Y);
-                    healthBox.X = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width/ 2) ), (player.Y - 20)).X);
+                    int val = healthBox.Width - player.Rect.Width/2;
+                    health.X = (int)(roomManager.WorldToScreen(player.X - val, (player.Y - 20)).X);
+                    health.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width - player.Rect.Width)), (player.Y - 20)).Y);
+                    healthBox.X = (int)(roomManager.WorldToScreen(player.X - val, (player.Y - 20)).X);
                     healthBox.Y = (int)(roomManager.WorldToScreen((player.X - (healthBox.Width /*- player.Rect.Width*/)), (player.Y - 20)).Y);
                     //calls the player update method to get the logic for movement
                     player.Update(gameTime);
