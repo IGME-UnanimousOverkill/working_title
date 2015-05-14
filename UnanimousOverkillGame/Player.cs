@@ -30,7 +30,7 @@ namespace UnanimousOverkillGame
         private Button buttonInRange;//if a button is in range of the player
         private Door doorInRange;//if a door is in range of a player
         //SpriteBatch spriteBatch;
-
+        private int colorCounter = 0;
         public int Health { get { return health; } set { health = value; } }//health property
         private SpriteBatch playerSpriteBatch;//the players spritebatch, acts just as a reference to the spritebatch given from the draw call
         Bottle b;//the bottle that can be thrown
@@ -816,7 +816,13 @@ namespace UnanimousOverkillGame
                     }
 
             }
-            color = Color.White;
+            if(colorCounter >=3)
+            {
+                color = Color.White;
+                colorCounter = 0;
+            }
+            if(color !=Color.White)
+            colorCounter++;
         }
     }
 }
