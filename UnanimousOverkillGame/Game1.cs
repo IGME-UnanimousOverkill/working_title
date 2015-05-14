@@ -438,7 +438,7 @@ namespace UnanimousOverkillGame
 
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
-                    uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.ID + " / " + (roomManager.greatestID - 1)
+                    uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.ID
                         , new Vector2(300, 230), Color.White);
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
