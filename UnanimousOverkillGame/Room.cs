@@ -55,12 +55,15 @@ namespace UnanimousOverkillGame
         private RoomManager manager;
         private static Random rand = new Random();
 
+        private List<PhysicsEntity> enemiesToAdd;
 
 
         public Texture2D OozeTexture { get { return oozeTexture; } }
         public Texture2D BottleTexture { get { return bottleTexture; } }
+        public RoomManager Manager { get { return manager; } }
 
 
+        public List<PhysicsEntity> EnemiesToAdd { get { return enemiesToAdd; } }
         public List<PhysicsEntity> Colliders { get { return colliders; } set { colliders= value; } }
         public List<PhysicsEntity> Enemies { get { return enemies; } set { enemies = value; } }
         public List<GameObject> Drawable { get { return drawable; } set { drawable = value; } }
@@ -91,9 +94,12 @@ namespace UnanimousOverkillGame
             enemies = new List<PhysicsEntity>();
             nextRooms = new List<Room>();
             doors = new List<Door>();
+            enemiesToAdd = new List<PhysicsEntity>();
             ID = manager.MakeID();
             depth = num;
         }
+
+        
 
         public Room(RoomManager roomManager, Room previous, SpriteFont roomFont, int num)
         {
@@ -108,6 +114,7 @@ namespace UnanimousOverkillGame
             enemies = new List<PhysicsEntity>();
             nextRooms = new List<Room>();
             doors = new List<Door>();
+            enemiesToAdd = new List<PhysicsEntity>();
             ID = manager.MakeID();
             depth = num;
         }
@@ -377,6 +384,13 @@ namespace UnanimousOverkillGame
                             drawable.Add(spikes);
                             levelObjects[x, y] = spikes;
                             break;
+                        case('S'):
+                            EntitySpawner spawner = new EntitySpawner(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, this);
+                            colliders.Add(spawner);
+                            enemies.Add(spawner);
+                            drawable.Add(spawner);
+                            levelObjects[x, y] = spawner;
+                            break;
                     }
                     if (level[x, y] != ' ')
                     {
@@ -448,6 +462,12 @@ namespace UnanimousOverkillGame
                     else
                         enemy.Updates(time);
                 }
+            }
+
+            if (enemiesToAdd != null)
+            {
+                enemies.AddRange(enemiesToAdd);
+                enemiesToAdd.Clear();
             }
             if(prevSize != colliders.Count)
             {

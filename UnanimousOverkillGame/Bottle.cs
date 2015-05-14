@@ -58,10 +58,11 @@ namespace UnanimousOverkillGame
                 player.Color = Color.Green;
                 rm.Current.Colliders.Remove(this);
                 rm.Current.Enemies.Remove(this);
+                EntityIsRemoved();
             }
             if(thrown)//if it has been thrown determine what it has collided with and deal with it accordingly
             {
-                if (!(other is EffectBox) && !(other is Button) && !(other is Player)&&!(other is Fan)&&!(other is Bottle)&&!(other is Spikes))
+                if (!(other is EffectBox) && !(other is Button) && !(other is Player)&&!(other is Fan)&&!(other is Bottle)&&!(other is Spikes) && (other.IsCollidable))
                 {
                     drawing = false;
                     isCollidable = false;

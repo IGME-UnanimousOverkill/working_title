@@ -31,6 +31,8 @@ namespace UnanimousOverkillGame
         private float maxXVelocity = 5;
         private float maxYVelocity = 1000;
 
+        private EntitySpawner spawner;
+
 
 
         public bool drag = true;
@@ -57,6 +59,21 @@ namespace UnanimousOverkillGame
             acceleration = new Vector2(0.0f, 0.0f);
             activateGravity = false;
         }
+
+
+        public void EntityIsRemoved()
+        {
+            if (spawner != null)
+            {
+                spawner.RemoveChild(this);
+            }
+        }
+
+        public void SetSpawner(EntitySpawner spawner)
+        {
+            this.spawner = spawner;
+        }
+
 
         public virtual void OnCollide(PhysicsEntity other)
         {

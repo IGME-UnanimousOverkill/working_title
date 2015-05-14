@@ -43,6 +43,7 @@ namespace UnanimousOverkillGame
         }
         public void Die()
         {
+            EntityIsRemoved();
             RoomManager.GetRoomManager.Current.Enemies.Remove(this);
             RoomManager.GetRoomManager.Current.Colliders.Remove(this);
             RoomManager.GetRoomManager.Current.Drawable.Remove(this);
