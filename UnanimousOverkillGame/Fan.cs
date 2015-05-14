@@ -78,7 +78,45 @@ namespace UnanimousOverkillGame
         }
 
 
-
+        public override void Draw(GraphicsDevice device, SpriteBatch spriteBatch, int x, int y)
+        {
+            device.Textures[1] = normal;
+            if (texture != null)
+            { 
+                float rotation = 0;
+                SpriteEffects effect = SpriteEffects.None;
+                Vector2 origin = Vector2.Zero;
+                if (direction == Direction.up)
+                {
+                    rotation = 0;
+                }
+                if (direction == Direction.right)
+                {
+                    rotation = 1.57f;
+                    effect = SpriteEffects.FlipHorizontally;
+                    origin = new Vector2(0, 100);
+                }
+                if (direction == Direction.down)
+                {
+                    rotation = 3.141f;
+                    effect = SpriteEffects.FlipVertically;
+                }
+                if (direction == Direction.left)
+                {
+                    rotation = 4.712f;
+                    effect = SpriteEffects.FlipHorizontally;
+                    origin = new Vector2(0, 100);
+                }
+                spriteBatch.Draw(texture, 
+                    new Rectangle(x, y, rectangle.Width, rectangle.Height), 
+                    new Rectangle(0, 0, 100, 100),
+                    Color.White,
+                    rotation,
+                    origin,
+                    effect,
+                    0); 
+            }
+        }
 
     }
 }
