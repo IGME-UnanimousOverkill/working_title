@@ -40,6 +40,7 @@ namespace UnanimousOverkillGame
     public class Game1 : Game
     {
         public static bool RumbleMode = false;
+        public static bool developerMode = false;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -59,8 +60,8 @@ namespace UnanimousOverkillGame
         Keys currentKey;
         Keys prevKey;
         int prevKeyCount; //makes sure pause menu isn't skipped
-
-        Boolean enableShaders = false;
+        Boolean enableShaders = true;
+        KeyboardState devprevkbState;
 
         bool Fullscreen = true;
 
@@ -137,23 +138,25 @@ namespace UnanimousOverkillGame
 
 
             System.IO.StreamReader input = null;
-            try
+            if (System.IO.File.Exists("Scores.txt"))
             {
-                input = new System.IO.StreamReader("Scores.txt");
-                string line = null;
-                while ((line = input.ReadLine()) != null && alreadyRead == false)
+                try
                 {
-                    scores.Add(Int32.Parse(line));
+                    input = new System.IO.StreamReader("Scores.txt");
+                    string line = null;
+                    while ((line = input.ReadLine()) != null && alreadyRead == false)
+                    {
+                        scores.Add(Int32.Parse(line));
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            finally
-            {
-                if(input != null)
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
                     input.Close();
+                }
             }
 
 
@@ -286,7 +289,7 @@ namespace UnanimousOverkillGame
 
                             int depth = roomManager.Current.depth;
                             int index = scores.Count;
-                            for (int i = scores.Count-1; i >=0; i--)
+                            for (int i = scores.Count - 1; i >= 0; i--)
                             {
                                 if (scores[i] < depth)
                                 {
@@ -304,9 +307,6 @@ namespace UnanimousOverkillGame
 
                     kbState = Keyboard.GetState();
 
-                    if (kbState.IsKeyDown(Keys.Up)) { player.Y -= 10; player.velocity.Y = 0; }
-                    if (kbState.IsKeyDown(Keys.Down)) { player.Y += 10; player.velocity.Y = 0; }
-
                     if (prevkbState.IsKeyDown(Keys.OemPeriod) && kbState.IsKeyUp(Keys.OemPeriod))
                     {
                         RumbleMode = !RumbleMode;
@@ -314,6 +314,21 @@ namespace UnanimousOverkillGame
 
                     collisionManager.DetectCollisions();
                     collisionManager.HandleCollisions();
+                    KeyboardState DevkbState = Keyboard.GetState();
+                    if (DevkbState.IsKeyDown(Keys.OemTilde) && devprevkbState.IsKeyUp(Keys.OemTilde))
+                    {
+                        developerMode = (developerMode) ? false : true;
+                        player.activateGravity = (developerMode) ? false : true;
+                    }
+                    if (developerMode)
+                    {
+                        if (DevkbState.IsKeyDown(Keys.Up) || DevkbState.IsKeyDown(Keys.W)) { player.Y -= 10; player.velocity.Y = 0; }
+                        if (DevkbState.IsKeyDown(Keys.Down) || DevkbState.IsKeyDown(Keys.S)) { player.Y += 10; player.velocity.Y = 0; }
+                        if (DevkbState.IsKeyDown(Keys.Left) || DevkbState.IsKeyDown(Keys.A)) { player.PState = PlayerState.FaceLeft; player.X -= 10; player.velocity.X = 0; }
+                        if (DevkbState.IsKeyDown(Keys.Right) || DevkbState.IsKeyDown(Keys.D)) { player.PState = PlayerState.FaceRight; player.X += 10; player.velocity.X = 0; }
+
+                    }
+                    devprevkbState = kbState;
 
                     prevkbState = kbState;
 
@@ -413,6 +428,11 @@ namespace UnanimousOverkillGame
 
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
                         , new Vector2(GraphicsDevice.Viewport.Width - 200, 230), Color.Yellow);
+                    if (developerMode)
+                    {
+                        uiSpriteBatch.DrawString(font, "You are a god Currently"
+                            , new Vector2(10, 10), Color.Red);
+                    }
                     uiSpriteBatch.DrawString(font, "Room:  " + roomManager.Current.depth
                         , new Vector2(300, 230), Color.White);
                     uiSpriteBatch.DrawString(font, "Bottles In Inventory:" + player.bottlesOnHand
