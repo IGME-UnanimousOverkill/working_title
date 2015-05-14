@@ -447,7 +447,7 @@ namespace UnanimousOverkillGame
                         EffectParameter lightPos = lightingEffect.Parameters["lightPos"];
                         EffectParameter lightColor = lightingEffect.Parameters["lightColor"];
 
-                        lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X, player.Y).X, roomManager.WorldToScreen(player.X, player.Y).Y, 12));
+                        lightPos.SetValue(new Vector3(roomManager.WorldToScreen(player.X+player.Rect.Width/2, player.Y+player.Rect.Height/2).X, roomManager.WorldToScreen(player.X+player.Rect.Width/2, player.Y+player.Rect.Height/2).Y, 12));
                         lightColor.SetValue(Color.White.ToVector4());
                     }
 
@@ -498,7 +498,8 @@ namespace UnanimousOverkillGame
 
                         //OK to fiddle with
                         if (blurAmount != null && player.Intox > 100) blurAmount.SetValue(player.blurAmount);
-                        if (rampCount != null) rampCount.SetValue(player.rampAmount);
+                        //if (rampCount != null) rampCount.SetValue(player.rampAmount);
+                        if (rampCount != null) rampCount.SetValue(50 - (int)(Math.Sin(gameTime.TotalGameTime.TotalMilliseconds)*10));
 
                         spriteBatch.Draw(rt, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                         spriteBatch.End();
