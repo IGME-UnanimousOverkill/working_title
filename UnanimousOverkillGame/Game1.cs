@@ -419,6 +419,7 @@ namespace UnanimousOverkillGame
                     spriteBatch.Begin();
                     uiSpriteBatch.Begin();
                     spriteBatch.DrawString(font, "MENU", new Vector2(250, 120), Color.White, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
+                    uiSpriteBatch.DrawString(font, "Instructions: \nTry to get through as many rooms as you can. The bottles can help you, but at what cost?\n\nControls:\nNormal Intoxication values: \n     A: move left\n     D: move right\n     Space: Jump\n     E: interact with normal buttons\n     F: Hold Bottle\n          while holding bottle:\n               LMB: throw bottle(can kill enemies, activate buttons with no letter on them, and destroy fallen blocks)\n               RMB: Drink bottle(increase intoxication)\n     P: Kill yoursefl\n     `: developer mode\n     While in developer mode:\n          W/up arrow: move up\n          S/down arrow: move down\n          A/left arrow: Move left\n          D/right arrow: Move right\nHigher Intoxication values:\n     while clinging to wall:\n          W/space: Move up\n          S: Move down\nIntoxication Explanation:\n          drink the bottles to increase your intoxication value which in turn can allow you to enhance your skills.\n     You feel invigorated with each bottle you drink, but it slowly diminishes.", new Vector2(250, 300), Color.White);
                     spriteBatch.DrawString(font, "Press ENTER to start", new Vector2(250, 170), Color.White);
                     spriteBatch.End();
                     try
